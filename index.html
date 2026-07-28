@@ -57,7 +57,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Rubik:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- FontAwesome Icons -->
@@ -220,6 +220,11 @@
         .nav-item:hover .dropdown-menu {
             display: block;
         }
+
+        /* Mobile dropdown icon rotation */
+        .mobile-dropdown .fa-chevron-down {
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
 
@@ -256,9 +261,6 @@
             <div class="flex items-center space-x-3 rtl:space-x-reverse font-semibold text-gray-700 text-xs">
                 <button id="lang-ar" onclick="switchLanguage('ar')"
                     class="hover:text-dzGreen-700 transition font-bold font-cairo text-dzGreen-700 underline underline-offset-4">العربية</button>
-                <span class="text-gray-300">|</span>
-                <button id="lang-tz" onclick="switchLanguage('tz')"
-                    class="hover:text-dzGreen-700 transition">ⵜⴰⵎⴰⵣⵉⵖⵜ</button>
                 <span class="text-gray-300">|</span>
                 <button id="lang-en" onclick="switchLanguage('en')"
                     class="hover:text-dzGreen-700 transition">English</button>
@@ -339,7 +341,7 @@
 
         <!-- قائمة الهواتف المحمولة (ديناميكي) -->
         <div id="mobile-menu"
-            class="hidden lg:hidden bg-dzGreen-800 border-t border-dzGreen-600 px-4 py-3 space-y-2 text-sm font-semibold">
+            class="hidden lg:hidden bg-white border-t border-gray-200 shadow-inner max-h-[70vh] overflow-y-auto">
             <!-- يتم توليدها ديناميكياً بواسطة JavaScript -->
         </div>
     </nav>
@@ -430,9 +432,9 @@
                     <div class="flex items-center justify-between border-b border-gray-200 pb-2">
                         <h3 class="section-heading-green text-base sm:text-lg md:text-xl flex items-center gap-2">
                             <i class="fa-solid fa-chalkboard-user text-dzGreen-700"></i>
-                            <span id="sec-teach-title">${t('teachersSection')}</span>
+                            <span id="sec-teach-title">فضاء الأساتذة والتأطير التربوي</span>
                         </h3>
-                        <span id="sec-teach-subtitle" class="text-xs text-gray-500 font-bold">${t('teachersSubtitle')}</span>
+                        <span id="sec-teach-subtitle" class="text-xs text-gray-500 font-bold">استعمال الزمن • الحراسة • المناشير الرسمية</span>
                     </div>
 
                     <div id="teachers-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -462,7 +464,7 @@
                 <!-- ودجت 1: قائمة الإعلانات البارزة -->
                 <div class="press-box overflow-hidden bg-white shadow-sm">
                     <div class="press-box-header px-4 py-2.5 text-xs tracking-wide">
-                        <span id="wb-press-title">${t('newsTitle')}</span>
+                        <span id="wb-press-title">إعلانات الإدارة</span>
                     </div>
 
                     <ul id="announcements-container" class="divide-y divide-gray-100 text-xs font-medium">
@@ -475,7 +477,7 @@
                     <div class="border-b border-gray-200 pb-2">
                         <h3 class="section-heading-red text-base md:text-lg flex items-center gap-2">
                             <i class="fa-solid fa-video text-dzRed-600"></i>
-                            <span id="sec-vid-sidebar-title">${t('videosTitle')}</span>
+                            <span id="sec-vid-sidebar-title">مكتبة الفيديوهات</span>
                         </h3>
                     </div>
                     <div id="videos-sidebar-container" class="space-y-4">
@@ -559,14 +561,12 @@
         </div>
 
         <div
-            class="max-w-7xl mx-auto px-4 pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-gray-400">
-            <div class="text-center sm:text-right ltr:sm:text-left">
-                <p id="ft-copy">متوسطة بني جماتي © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية</p>
-                <p class="text-dzGold-400 font-mono">Ayerbaz Alemmas n It Jmatti</p>
-            </div>
-
+            class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+            <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+            <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
             <button onclick="scrollToTop()"
-                class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow"
+                class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2"
                 aria-label="العودة للأعلى">
                 <i class="fa-solid fa-arrow-up text-sm"></i>
             </button>
@@ -584,11 +584,17 @@
             </div>
             <div class="relative">
                 <input type="text" id="search-input" placeholder="اكتب كلمات البحث..."
-                    class="w-full border border-gray-300 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-dzGreen-700">
-                <button onclick="alert('جاري البحث...')"
+                    class="w-full border border-gray-300 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-dzGreen-700"
+                    onkeydown="if(event.key==='Enter') performSearch()">
+                <button onclick="performSearch()"
                     class="absolute left-2 rtl:left-2 ltr:left-auto ltr:right-2 top-2 bg-dzGreen-700 text-white px-4 py-1 rounded text-xs font-bold hover:bg-dzGreen-800">
-                    بحث
+                    <span id="search-btn-label">بحث</span>
                 </button>
+            </div>
+            <div id="search-results" class="max-h-80 overflow-y-auto space-y-2 hidden"></div>
+            <div id="search-empty" class="text-center text-gray-400 text-xs py-4 hidden">
+                <i class="fa-solid fa-magnifying-glass text-2xl mb-2 block"></i>
+                <span id="search-empty-text">اكتب كلمة ثم اضغط بحث</span>
             </div>
         </div>
     </div>
@@ -756,55 +762,6 @@
                 navVideos: 'معرض الفيديوهات',
                 navContact: 'اتصل بنا'
             },
-            tz: {
-                readMore: 'ɣer talɣut',
-                viewDetails: 'ɣer talɣut aked usader',
-                viewDoc: 'ɣer asenflan',
-                coverage: 'asiger',
-                category: 'Ismasen',
-                footerAddress: 'Tasqqt official n Beni Jmatti',
-                footerLinks: 'Asagraw',
-                footerAwwaliya: 'Asagraw n uwelli - Adlis n Yeswal',
-                footerEdu: 'Abutur official n Adlis n Yeswal',
-                footerOnec: 'Adlis Agherbaz n Tezlit',
-                footerGuide: 'Amalay n udiwenni',
-                footerLibrary: 'Tamawit n temazart',
-                footerAdmin: 'Tabrat n usekles',
-                copyright: 'Izerfan',
-                teachersSection: 'Ismasen',
-                teachersSubtitle: 'Asrag • Aselkem',
-                activitiesTitle: 'Inaggaren',
-                dossiersTitle: 'Iwulef',
-                pressTitle: 'Alɣu',
-                videosTitle: 'Tividyutin',
-                newsTitle: 'Alɣu n usekles',
-                backToTop: 'Dawer',
-                searchTitle: 'Enadi',
-                searchPlaceholder: 'Aru awal...',
-                searchBtn: 'Enadi',
-                videoTitle: 'Tividyutin',
-                menuTitle: 'Amawas',
-                parentsSpace: 'Asagraw n uwelli',
-                teachersSpace: 'Asagraw n ismasen',
-                employeeSpace: 'Asagraw n umaggaz',
-                langLabel: 'ⵜⴰⵎⴰⵣⵉⵖⵜ',
-                featuredLabel: 'Amaynut',
-                navHome: 'Asebbwi',
-                navActivities: 'Inaggaren',
-                navCultural: 'Inaggaren n umeslay',
-                navScientific: 'Isnasen',
-                navExhibitions: 'Asmagger',
-                navPress: 'Alɣu',
-                navExamSchedule: 'Asrag n tezlit',
-                navParentNews: 'Alɣu n uwelli',
-                navHolidays: 'Aswir',
-                navDigital: 'Asagraw',
-                navParents: 'Asagraw n uwelli',
-                navBEM: 'Asiḍan',
-                navTeachers: 'Ismasen',
-                navVideos: 'Tividyutin',
-                navContact: 'Tutlayt'
-            },
             en: {
                 readMore: 'Read more',
                 viewDetails: 'View details',
@@ -869,7 +826,7 @@
             const cacheKey = `${targetLang}:${text}`;
             if (translationCache[cacheKey]) return translationCache[cacheKey];
 
-            const langMap = { tz: 'ber', en: 'en', ar: 'ar' };
+            const langMap = { en: 'en', ar: 'ar' };
             const lang = langMap[targetLang] || 'en';
 
             try {
@@ -1026,6 +983,9 @@
                 if (siteData.settings.awliyaUrl) {
                     document.getElementById('social-awliya').href = siteData.settings.awliyaUrl;
                 }
+                if (siteData.settings.fontFamily) {
+                    document.body.style.fontFamily = "'" + siteData.settings.fontFamily + "', sans-serif";
+                }
             }
 
             if (siteData.hero && currentLang === 'ar') {
@@ -1051,7 +1011,6 @@
                 const typeIcons = { toppers: 'fa-trophy', event: 'fa-calendar-star', exam: 'fa-file-alt', announcement: 'fa-bullhorn' };
                 const typeLabels = {
                     ar: { toppers: 'المتميزون الأوائل', event: 'مناسبة هامة', exam: 'نتائج الامتحانات', announcement: 'إعلان عاجل' },
-                    tz: { toppers: 'Imaynuten', event: 'Aswir', exam: 'Titlikin', announcement: 'Alɣu' },
                     en: { toppers: 'Top Students', event: 'Special Event', exam: 'Exam Results', announcement: 'Urgent Notice' }
                 };
                 const icon = typeIcons[fp.type] || 'fa-star';
@@ -1240,12 +1199,10 @@
             // Translation map for navbar items (by id)
             const navLabels = {
                 ar: { 1: 'الرئيسية', 2: 'النشاطات التربوية', 3: 'الأنشطة الثقافية', 4: 'الإعلانات والبلاغات', 5: 'الفضاء الرقمي', 6: 'فضاء الأساتذة', 7: 'معرض الفيديوهات', 8: 'اتصل بنا' },
-                tz: { 1: 'Asebbwi', 2: 'Inaggaren', 3: 'Inaggaren n umeslay', 4: 'Alɣu', 5: 'Asagraw', 6: 'Ismasen', 7: 'Tividyutin', 8: 'Tutlayt' },
                 en: { 1: 'Home', 2: 'Activities', 3: 'Cultural Activities', 4: 'Announcements', 5: 'Digital Space', 6: 'Teachers', 7: 'Videos', 8: 'Contact Us' }
             };
             const navSubLabels = {
                 ar: { 31: 'الأنشطة التربوية والرياضية', 32: 'النوادي العلمية والرياضية', 33: 'معارض الأنشطة الثقافية', 41: 'جدول الامتحانات والفروض', 42: 'إعلانات أولياء التلاميذ', 43: 'رزنامة العطل المدرسية', 51: 'فضاء الأولياء الرقمي', 52: 'حاسبة معدل شهادة BEM' },
-                tz: { 31: 'Inaggaren', 32: 'Isnasen', 33: 'Asmagger', 41: 'Asrag n tezlit', 42: 'Alɣu n uwelli', 43: 'Aswir', 51: 'Asagraw n uwelli', 52: 'Asiḍan' },
                 en: { 31: 'Educational Activities', 32: 'Scientific Clubs', 33: 'Exhibitions', 41: 'Exam Schedule', 42: 'Parent News', 43: 'Holidays', 51: 'Parents Portal', 52: 'BEM Calculator' }
             };
             const labels = navLabels[currentLang] || navLabels.ar;
@@ -1285,15 +1242,19 @@
                     `;
 
                     // Mobile Dropdown
+                    const subItemsHtml = item.dropdown.map(sub => {
+                        const targetAttr = sub.isExternal || (sub.link && sub.link.startsWith('http')) ? 'target="_blank"' : '';
+                        const subLabel = subLabels[sub.id] || sub.label;
+                        return `<a href="${sub.link || '#'}" ${targetAttr} onclick="toggleMobileMenu()" class="block py-2.5 pr-6 pl-4 hover:bg-dzGreen-50 hover:text-dzGreen-700 transition text-[13px] text-gray-600 border-b border-gray-100 last:border-0">${subLabel}</a>`;
+                    }).join('');
                     mobileNav.innerHTML += `
-                        <div class="border-b border-dzGreen-600 pb-2">
-                            <div class="py-2.5 px-3 font-bold text-dzGold-300">${itemLabel}</div>
-                            <div class="pl-4 space-y-1">
-                                ${item.dropdown.map(sub => {
-                                    const targetAttr = sub.isExternal || (sub.link && sub.link.startsWith('http')) ? 'target="_blank"' : '';
-                                    const subLabel = subLabels[sub.id] || sub.label;
-                                    return `<a href="${sub.link || '#'}" ${targetAttr} onclick="toggleMobileMenu()" class="block py-2 hover:bg-black/20 px-3 rounded transition text-[13px]">${subLabel}</a>`;
-                                }).join('')}
+                        <div class="mobile-dropdown border-b border-gray-100">
+                            <button onclick="toggleMobileDropdown(this)" class="w-full py-3 px-4 flex items-center justify-between text-dzDark-800 hover:bg-dzGreen-50 transition">
+                                <span class="font-bold text-sm">${itemLabel}</span>
+                                <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 transition-transform duration-300"></i>
+                            </button>
+                            <div class="mobile-dropdown-content bg-gray-50 border-t border-gray-100" style="max-height:0;overflow:hidden;transition:max-height 0.3s ease;">
+                                ${subItemsHtml}
                             </div>
                         </div>
                     `;
@@ -1308,7 +1269,7 @@
 
                     // Mobile Simple Link
                     mobileNav.innerHTML += `
-                        <a href="${item.link || '#'}" onclick="toggleMobileMenu()" class="block py-2.5 hover:bg-black/20 px-3 rounded transition">${itemLabel}</a>
+                        <a href="${item.link || '#'}" onclick="toggleMobileMenu()" class="block py-3 px-4 hover:bg-dzGreen-50 hover:text-dzGreen-700 transition text-sm text-dzDark-800 font-semibold border-b border-gray-100 ${item.color || ''}">${itemLabel}</a>
                     `;
                 }
             });
@@ -1320,8 +1281,79 @@
         });
 
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
-        function openSearchModal() { document.getElementById('search-modal').classList.remove('hidden'); document.getElementById('search-modal').classList.add('flex'); document.getElementById('search-input').focus(); }
+        function toggleMobileDropdown(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('i');
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0px';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+        function openSearchModal() {
+            document.getElementById('search-modal').classList.remove('hidden');
+            document.getElementById('search-modal').classList.add('flex');
+            document.getElementById('search-input').focus();
+            document.getElementById('search-results').classList.add('hidden');
+            document.getElementById('search-empty').classList.remove('hidden');
+            document.getElementById('search-input').value = '';
+        }
         function closeSearchModal() { document.getElementById('search-modal').classList.add('hidden'); document.getElementById('search-modal').classList.remove('flex'); }
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const resultsEl = document.getElementById('search-results');
+            const emptyEl = document.getElementById('search-empty');
+            if (!query) { resultsEl.classList.add('hidden'); emptyEl.classList.remove('hidden'); return; }
+
+            const data = JSON.parse(localStorage.getItem('cem_site_data')) || defaultCemData;
+            const results = [];
+
+            (data.activities || []).forEach(item => {
+                if (item.title && item.title.toLowerCase().includes(query)) {
+                    results.push({ type: 'activity', icon: 'fa-calendar-star', color: 'text-blue-600', bg: 'bg-blue-50', label: currentLang === 'en' ? 'Activity' : 'نشاط تربوي', title: item.title, date: item.date, link: `detail.html?type=activity&id=${item.id}` });
+                }
+            });
+            (data.announcements || []).forEach(item => {
+                if (item.title && item.title.toLowerCase().includes(query)) {
+                    results.push({ type: 'announcement', icon: 'fa-bullhorn', color: 'text-red-600', bg: 'bg-red-50', label: currentLang === 'en' ? 'Announcement' : 'إعلان رسمي', title: item.title, date: item.date, link: `detail.html?type=announcement&id=${item.id}` });
+                }
+            });
+            (data.dossiers || []).forEach(item => {
+                if (item.title && item.title.toLowerCase().includes(query)) {
+                    results.push({ type: 'dossier', icon: 'fa-folder-open', color: 'text-purple-600', bg: 'bg-purple-50', label: currentLang === 'en' ? 'Dossier' : 'ملف وتوجيه', title: item.title, date: '', link: `detail.html?type=dossier&id=${item.id}` });
+                }
+            });
+            (data.teachers || []).forEach(item => {
+                if ((item.title && item.title.toLowerCase().includes(query)) || (item.description && item.description.toLowerCase().includes(query))) {
+                    results.push({ type: 'teacher', icon: 'fa-chalkboard-teacher', color: 'text-green-600', bg: 'bg-green-50', label: currentLang === 'en' ? 'Teacher Space' : 'فضاء الأساتذة', title: item.title, date: item.date, link: `detail.html?type=teacher_memo&id=${item.id}` });
+                }
+            });
+            (data.videos || []).forEach(item => {
+                if ((item.title && item.title.toLowerCase().includes(query)) || (item.category && item.category.toLowerCase().includes(query))) {
+                    results.push({ type: 'video', icon: 'fa-play-circle', color: 'text-orange-600', bg: 'bg-orange-50', label: currentLang === 'en' ? 'Video' : 'فيديو', title: item.title, date: item.date, link: '#', isVideo: true, videoUrl: item.videoUrl });
+                }
+            });
+
+            if (results.length === 0) {
+                resultsEl.innerHTML = `<div class="text-center text-gray-400 text-xs py-4"><i class="fa-solid fa-face-sad-tear text-2xl mb-2 block"></i>${currentLang === 'en' ? 'No results found' : 'لا توجد نتائج مطابقة'}</div>`;
+            } else {
+                resultsEl.innerHTML = results.map(r => `
+                    <a href="${r.isVideo ? '#' : r.link}" onclick="${r.isVideo ? `event.preventDefault(); closeSearchModal(); playVideoModal('${r.videoUrl}','${r.title.replace(/'/g,"\\'")}');` : 'closeSearchModal()'}" class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-50 transition border border-gray-100">
+                        <div class="w-9 h-9 rounded-lg ${r.bg} flex items-center justify-center shrink-0"><i class="fa-solid ${r.icon} ${r.color} text-sm"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-bold text-gray-800 truncate">${r.title}</p>
+                            <p class="text-[10px] text-gray-400">${r.label}${r.date ? ' • ' + r.date : ''}</p>
+                        </div>
+                        <i class="fa-solid fa-arrow-left text-gray-300 text-xs ltr:rotate-180"></i>
+                    </a>
+                `).join('');
+            }
+            resultsEl.classList.remove('hidden');
+            emptyEl.classList.add('hidden');
+        }
         function playVideoModal(videoUrl, title) {
             const iframe = document.getElementById('video-modal-iframe');
             const titleEl = document.getElementById('video-modal-title');
@@ -1342,60 +1374,14 @@
 
         function switchLanguage(lang) {
             const btnAr = document.getElementById('lang-ar');
-            const btnTz = document.getElementById('lang-tz');
             const btnEn = document.getElementById('lang-en');
             currentLang = lang;
             localStorage.setItem('cem_lang', lang);
             
             // Reset all buttons
-            [btnAr, btnTz, btnEn].forEach(b => b.classList.remove('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4'));
+            [btnAr, btnEn].forEach(b => b.classList.remove('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4'));
             
-            if (lang === 'tz') {
-                document.documentElement.setAttribute('dir', 'ltr');
-                document.documentElement.setAttribute('lang', 'tz');
-                btnTz.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
-                // Header
-                document.getElementById('hdr-country').textContent = 'Aɣiwəl n Dzayer';
-                document.getElementById('hdr-ministry').textContent = 'Adlis n Yeswal n Umaga';
-                document.getElementById('hdr-title').textContent = 'Tasdawit n Beni Jmatti';
-                document.getElementById('hdr-sub').textContent = 'Ayerbaz Alemmas n It Jmatti';
-                // Hero
-                document.getElementById('hero-category').textContent = 'Abutur n Umaga';
-                document.getElementById('hero-title').textContent = 'Tasqqt n Beni Jmatti';
-                document.getElementById('hero-desc').textContent = 'Tasqqt. Tarewla. Afugal.';
-                document.getElementById('hero-btn').querySelector('span').textContent = 'Wali inaggaren';
-                // Sections
-                document.getElementById('sec-act-title').textContent = 'Inaggaren';
-                document.getElementById('sec-dos-title').textContent = 'Iwulef';
-                document.getElementById('sec-teach-title').textContent = 'Ismasen';
-                document.getElementById('sec-teach-subtitle').textContent = 'Asrag • Aselkem';
-                document.getElementById('sec-supp-title').textContent = 'Alɣu';
-                document.getElementById('sec-vid-sidebar-title').textContent = 'Tividyutin';
-                document.getElementById('wb-press-title').textContent = 'Alɣu n usekles';
-                // Footer
-                document.getElementById('ft-sec1-title').textContent = 'Tasqqt n Beni Jmatti';
-                document.getElementById('ft-subtitle').textContent = 'Ayerbaz Alemmas n It Jmatti';
-                document.getElementById('ft-ministry-txt').textContent = 'Adlis n Yeswal n Umaga';
-                document.getElementById('ft-country-txt').textContent = 'Aɣiwəl n Dzayer';
-                document.getElementById('ft-sec2-title').textContent = 'Asagraw';
-                document.getElementById('ft-copy').textContent = 'Tasqqt n Beni Jmatti © 2026';
-                // Menu
-                document.getElementById('lbl-menu').textContent = 'Amawas';
-                // Search
-                document.getElementById('modal-search-title').textContent = 'Enadi';
-                document.getElementById('search-input').placeholder = 'Aru awal...';
-                document.getElementById('video-modal-title').textContent = 'Tividyutin';
-                // Social
-                document.getElementById('social-awliya').querySelector('span').textContent = 'Asagraw n uwelli';
-                document.getElementById('social-ostad').querySelector('span').textContent = 'Asagraw n ismasen';
-                document.getElementById('social-mowadaf').querySelector('span').textContent = 'Asagraw n umaggaz';
-                // Footer links
-                const ftLinks = document.getElementById('ft-address');
-                if (ftLinks) {
-                    const ps = ftLinks.querySelectorAll('p');
-                    if (ps[1]) ps[1].textContent = 'Tasqqt official n Beni Jmatti';
-                }
-            } else if (lang === 'en') {
+            if (lang === 'en') {
                 document.documentElement.setAttribute('dir', 'ltr');
                 document.documentElement.setAttribute('lang', 'en');
                 btnEn.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
@@ -1423,12 +1409,16 @@
                 document.getElementById('ft-ministry-txt').textContent = 'Ministry of National Education';
                 document.getElementById('ft-country-txt').textContent = 'People\'s Democratic Republic of Algeria';
                 document.getElementById('ft-sec2-title').textContent = 'Useful Links';
-                document.getElementById('ft-copy').textContent = 'Beni Jmatti School © 2026 All rights reserved';
+                document.getElementById('ft-copy').textContent = 'Isguid Ali Secondary School - Beni Jmatti - © 2026 All rights reserved - Ministry of National Education - Directorate of Education, Setif Province';
+                document.getElementById('ft-developer-label').textContent = 'Developed by';
+                document.querySelector('#ft-developer-label + span').textContent = 'Mr. HAKIM BOUZOURDAZ';
                 // Menu
                 document.getElementById('lbl-menu').textContent = 'Main Menu';
                 // Search
                 document.getElementById('modal-search-title').textContent = 'Search Beni Jmatti School';
                 document.getElementById('search-input').placeholder = 'Type search words...';
+                document.getElementById('search-btn-label').textContent = 'Search';
+                document.getElementById('search-empty-text').textContent = 'Type a word then click search';
                 document.getElementById('video-modal-title').textContent = 'Video Library';
                 // Social
                 document.getElementById('social-awliya').querySelector('span').textContent = 'Parents Digital Space';
@@ -1468,12 +1458,16 @@
                 document.getElementById('ft-ministry-txt').textContent = 'وزارة التربية الوطنية - مديرية التربية';
                 document.getElementById('ft-country-txt').textContent = 'الجمهورية الجزائرية الديمقراطية الشعبية';
                 document.getElementById('ft-sec2-title').textContent = 'منصات وروابط مفيدة';
-                document.getElementById('ft-copy').textContent = 'متوسطة بني جماتي © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية';
+                document.getElementById('ft-copy').textContent = 'متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف';
+                document.getElementById('ft-developer-label').textContent = 'تم التطوير بواسطة';
+                document.querySelector('#ft-developer-label + span').textContent = 'الأستاذ حكيم بوزورداز';
                 // Menu
                 document.getElementById('lbl-menu').textContent = 'القائمة الرئيسية';
                 // Search
                 document.getElementById('modal-search-title').textContent = 'البحث في موقع متوسطة بني جماتي';
                 document.getElementById('search-input').placeholder = 'اكتب كلمات البحث...';
+                document.getElementById('search-btn-label').textContent = 'بحث';
+                document.getElementById('search-empty-text').textContent = 'اكتب كلمة ثم اضغط بحث';
                 document.getElementById('video-modal-title').textContent = 'مكتبة الفيديو للمؤسسة';
                 // Social
                 document.getElementById('social-awliya').querySelector('span').textContent = 'فضاء الأولياء الرقمي';

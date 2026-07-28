@@ -42,7 +42,7 @@
         }
     </script>
     <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Rubik:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -231,6 +231,17 @@
                         <div>
                             <label class="block mb-1 text-gray-700">رابط فضاء الأولياء الرقمي</label>
                             <input type="text" id="cfg-awliya" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">خط الموقع (Font Family)</label>
+                            <select id="cfg-font-family" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 bg-white">
+                                <option value="Cairo">Cairo</option>
+                                <option value="Tajawal">Tajawal</option>
+                                <option value="Rubik">Rubik</option>
+                                <option value="IBM Plex Sans Arabic">IBM Plex Sans Arabic</option>
+                            </select>
+                            <p class="text-[10px] text-gray-400 mt-1">سيتم تطبيق الخط على جميع صفحات الموقع</p>
                         </div>
                     </div>
 
@@ -852,6 +863,7 @@
             document.getElementById('cfg-logo').value = currentData.settings.logoUrl || '';
             document.getElementById('cfg-cover').value = currentData.settings.coverUrl || '';
             document.getElementById('cfg-awliya').value = currentData.settings.awliyaUrl || '';
+            document.getElementById('cfg-font-family').value = currentData.settings.fontFamily || 'Cairo';
             document.getElementById('cfg-binid').value = currentData.settings.binId || globalCfg.jsonbinId;
             document.getElementById('cfg-masterkey').value = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
             document.getElementById('imgbb-api-key').value = currentData.settings.imgbbKey || globalCfg.imgbbApiKey;
@@ -1689,6 +1701,7 @@
             currentData.settings.logoUrl = document.getElementById('cfg-logo').value;
             currentData.settings.coverUrl = document.getElementById('cfg-cover').value;
             currentData.settings.awliyaUrl = document.getElementById('cfg-awliya').value;
+            currentData.settings.fontFamily = document.getElementById('cfg-font-family').value;
             currentData.settings.binId = document.getElementById('cfg-binid').value.trim();
             currentData.settings.masterKey = document.getElementById('cfg-masterkey').value.trim();
             currentData.settings.imgbbKey = document.getElementById('imgbb-api-key').value.trim();

@@ -27,7 +27,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Rubik:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -61,8 +61,6 @@
                 <!-- محول اللغة -->
                 <div class="flex items-center space-x-2 rtl:space-x-reverse font-semibold text-gray-700">
                     <button id="lang-ar" onclick="switchLanguage('ar')" class="hover:text-dzGreen-700 transition font-bold text-dzGreen-700 underline underline-offset-4">العربية</button>
-                    <span class="text-gray-300">|</span>
-                    <button id="lang-tz" onclick="switchLanguage('tz')" class="hover:text-dzGreen-700 transition">ⵜⴰⵎⴰⵣⵉⵖⵜ</button>
                     <span class="text-gray-300">|</span>
                     <button id="lang-en" onclick="switchLanguage('en')" class="hover:text-dzGreen-700 transition">English</button>
                 </div>
@@ -202,17 +200,14 @@
 
     <!-- التذييل -->
     <footer class="bg-dzDark-800 text-gray-400 py-6 border-t-4 border-dzGreen-700 mt-auto">
-        <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full border border-dzGold-400 p-0.5 bg-white overflow-hidden shrink-0">
-                    <img id="footer-logo-detail" src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
-                </div>
-                <div>
-                    <p class="font-bold text-white text-sm" id="ft-inst">متوسطة بني جماتي</p>
-                    <p class="text-dzGold-400 font-mono text-[11px]">Ayerbaz Alemmas n It Jmatti</p>
-                </div>
+        <div class="max-w-5xl mx-auto px-4 flex flex-col items-center justify-center gap-1 text-xs">
+            <div class="w-9 h-9 rounded-full border border-dzGold-400 p-0.5 bg-white overflow-hidden shrink-0 mb-2">
+                <img id="footer-logo-detail" src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
             </div>
-            <p id="ft-copy-detail" class="text-gray-500">متوسطة بني جماتي © 2026 جميع الحقوق محفوظة</p>
+            <p class="font-bold text-white text-sm" id="ft-inst">متوسطة بني جماتي</p>
+            <p class="text-gray-500 text-center" id="ft-copy-detail">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+            <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
         </div>
     </footer>
 
@@ -234,7 +229,7 @@
             const cacheKey = `${targetLang}:${text}`;
             if (translationCache[cacheKey]) return translationCache[cacheKey];
             try {
-                const langMap = { tz: 'ber', en: 'en' };
+                const langMap = { en: 'en' };
                 const lang = langMap[targetLang] || 'en';
                 const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
                 const response = await fetch(url);
@@ -267,27 +262,28 @@
             currentLang = lang;
             localStorage.setItem('cem_lang', lang);
             const btnAr = document.getElementById('lang-ar');
-            const btnTz = document.getElementById('lang-tz');
             const btnEn = document.getElementById('lang-en');
-            [btnAr, btnTz, btnEn].forEach(b => b.classList.remove('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4'));
+            [btnAr, btnEn].forEach(b => b.classList.remove('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4'));
             
-            if (lang === 'tz') {
-                document.documentElement.setAttribute('dir', 'ltr');
-                document.documentElement.setAttribute('lang', 'tz');
-                btnTz.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
-                document.getElementById('lbl-back').textContent = 'Dawer';
-                document.getElementById('breadcrumb-section').textContent = 'Inaggaren';
-            } else if (lang === 'en') {
+            if (lang === 'en') {
                 document.documentElement.setAttribute('dir', 'ltr');
                 document.documentElement.setAttribute('lang', 'en');
                 btnEn.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
                 document.getElementById('lbl-back').textContent = 'Back to Home';
                 document.getElementById('breadcrumb-section').textContent = 'Activities';
+                document.getElementById('ft-copy-detail').textContent = 'Isguid Ali Secondary School - Beni Jmatti - © 2026 All rights reserved - Ministry of National Education - Directorate of Education, Setif Province';
+                document.getElementById('ft-inst').textContent = 'Isguid Ali Secondary School - Beni Jmatti';
+                document.getElementById('ft-developer-label').textContent = 'Developed by';
+                document.querySelector('#ft-developer-label + span').textContent = 'Mr. HAKIM BOUZOURDAZ';
             } else {
                 document.documentElement.setAttribute('dir', 'rtl');
                 document.documentElement.setAttribute('lang', 'ar');
                 btnAr.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
                 document.getElementById('lbl-back').textContent = 'العودة للصفحة الرئيسية';
+                document.getElementById('ft-copy-detail').textContent = 'متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف';
+                document.getElementById('ft-inst').textContent = 'متوسطة بني جماتي';
+                document.getElementById('ft-developer-label').textContent = 'تم التطوير بواسطة';
+                document.querySelector('#ft-developer-label + span').textContent = 'الأستاذ حكيم بوزورداز';
             }
             // Translate dynamic content in background
             translatePage();
@@ -302,10 +298,12 @@
             document.getElementById('footer-logo-detail').src = settings.logoUrl;
         }
         if (settings.ministry) document.getElementById('detail-ministry').textContent = settings.ministry;
-        if (settings.institution) {
+            if (settings.institution) {
             document.getElementById('detail-institution').textContent = settings.institution;
             document.getElementById('ft-inst').textContent = settings.institution;
-            document.getElementById('ft-copy-detail').textContent = settings.institution + ' © 2026 جميع الحقوق محفوظة';
+        }
+        if (settings.fontFamily) {
+            document.body.style.fontFamily = "'" + settings.fontFamily + "', sans-serif";
         }
 
         // --- Parse URL Params ---
@@ -323,12 +321,6 @@
 
         const typeConfigTranslated = {
             ar: typeConfig,
-            tz: {
-                activity: { label: 'Inaggaren', badge: 'type-badge-activity', section: 'Inaggaren', dataKey: 'activities' },
-                announcement: { label: 'Alɣu', badge: 'type-badge-announcement', section: 'Alɣu', dataKey: 'announcements' },
-                dossier: { label: 'Iwulef', badge: 'type-badge-dossier', section: 'Iwulef', dataKey: 'dossiers' },
-                teacher_memo: { label: 'Ismasen', badge: 'type-badge-teacher', section: 'Ismasen', dataKey: 'teachers' }
-            },
             en: {
                 activity: { label: 'Educational Activity', badge: 'type-badge-activity', section: 'Educational Activities', dataKey: 'activities' },
                 announcement: { label: 'Official Announcement', badge: 'type-badge-announcement', section: 'Announcements', dataKey: 'announcements' },
@@ -451,10 +443,18 @@
             if (data.settings?.institution) {
                 document.getElementById('detail-institution').textContent = data.settings.institution;
                 document.getElementById('ft-inst').textContent = data.settings.institution;
-                document.getElementById('ft-copy-detail').textContent = data.settings.institution + ' © 2026 جميع الحقوق محفوظة';
+                if (currentLang === 'en') {
+                    document.getElementById('ft-copy-detail').textContent = 'Isguid Ali Secondary School - Beni Jmatti - © 2026 All rights reserved - Ministry of National Education - Directorate of Education, Setif Province';
+                    document.getElementById('ft-inst').textContent = 'Isguid Ali Secondary School - Beni Jmatti';
+                } else {
+                    document.getElementById('ft-copy-detail').textContent = 'متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف';
+                }
             }
             if (data.settings?.ministry) {
                 document.getElementById('detail-ministry').textContent = data.settings.ministry;
+            }
+            if (data.settings?.fontFamily) {
+                document.body.style.fontFamily = "'" + data.settings.fontFamily + "', sans-serif";
             }
 
             // Show content, hide loading

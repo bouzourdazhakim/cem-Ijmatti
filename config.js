@@ -19,7 +19,7 @@ window.CEM_CONFIG = {
     cloudinaryPreset: "cem_preset",
 
     // 4. كلمة مرور لوحة التحكم الخاصة بالمؤسسة
-    adminPassword: "CEM19092002",
+    adminPassword: "admin123",
 
     // 5. روابط الاتصال والفضاء الرقمي للأولياء
     awliyaUrl: "https://awlyaa.education.dz/",
