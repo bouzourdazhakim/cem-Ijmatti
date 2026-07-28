@@ -233,22 +233,22 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
-            height: 44px;
+            height: 48px;
         }
 
         /* Slanted "مستجدات" Right Badge */
         .dz-ticker-badge {
             position: relative;
             z-index: 30;
-            background: #e6e6e6;
+            background: #f0f0f0;
             color: #1f2937;
-            padding: 0 20px 0 32px;
+            padding: 0 24px 0 16px;
             height: 100%;
             display: flex;
             align-items: center;
             gap: 8px;
             font-weight: 900;
-            font-size: 14px;
+            font-size: 15px;
             font-family: 'Cairo', 'Tajawal', sans-serif;
             clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%);
             box-shadow: -4px 0 10px rgba(0,0,0,0.25);
@@ -279,7 +279,7 @@
             background-color: #cc0000;
         }
 
-        /* Ticker Track Wrapper clipped precisely along the slanted badge cut */
+        /* Ticker Track Wrapper - Static scrollable content */
         .dz-ticker-track-wrapper {
             flex: 1;
             overflow: hidden;
@@ -294,23 +294,72 @@
             clip-path: polygon(18px 0, 100% 0, 100% 100%, 2px 100%);
         }
 
-        /* TV News Marquee Animation - Enters from LEFT, Exits RIGHT - No Repeat */
-        @keyframes tvNewsMarqueeLTR {
-            0%   { transform: translateX(-50%); }
-            100% { transform: translateX(150vw); }
-        }
-
+        /* TV News Ticker - Slider */
         .ticker-marquee-rtl {
             display: flex;
             align-items: center;
-            width: max-content;
-            animation: tvNewsMarqueeLTR 16s linear infinite;
-            will-change: transform;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            min-height: 40px;
         }
 
-        .ticker-marquee-rtl:hover {
-            animation-play-state: paused;
+        .ticker-marquee-rtl .ticker-item {
+            display: none;
+            width: 100%;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px clamp(36px, 5vw, 50px);
+            box-sizing: border-box;
+            animation: tickerFadeIn 0.4s ease;
         }
+
+        .ticker-marquee-rtl .ticker-item.active {
+            display: flex;
+        }
+
+        @keyframes tickerFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .dz-ticker-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.18);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            font-size: 11px;
+            backdrop-filter: blur(2px);
+        }
+
+        .dz-ticker-nav:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .dz-ticker-nav:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .dz-ticker-nav-prev { right: 6px; }
+        .dz-ticker-nav-next { left: 6px; }
+
+        [dir="ltr"] .dz-ticker-nav-prev { left: 6px; right: auto; }
+        [dir="ltr"] .dz-ticker-nav-next { right: 6px; left: auto; }
 
         /* Slanted Date Badge (Parallelogram) */
         .dz-date-badge {
@@ -321,6 +370,7 @@
             margin: 0 8px;
             border-radius: 2px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+            flex-shrink: 0;
         }
 
         .dz-date-badge span {
@@ -338,8 +388,12 @@
         .dz-ticker-text {
             color: #ffffff;
             font-weight: 700;
-            font-size: 14px;
-            white-space: nowrap;
+            font-size: clamp(11px, 2.5vw, 15px);
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            line-height: 1.4;
             font-family: 'Cairo', 'Tajawal', sans-serif;
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
@@ -385,8 +439,21 @@
                 overflow: hidden;
                 display: flex;
                 align-items: center;
-                height: 38px;
+                min-height: 48px;
+                height: auto;
             }
+
+            .dz-ticker-nav {
+                width: 26px;
+                height: 26px;
+                font-size: 10px;
+            }
+
+            .dz-ticker-nav-prev { right: 4px; }
+            .dz-ticker-nav-next { left: 4px; }
+
+            [dir="ltr"] .dz-ticker-nav-prev { left: 4px; right: auto; }
+            [dir="ltr"] .dz-ticker-nav-next { right: 4px; left: auto; }
 
             /* On mobile, hide desktop badge inside bar */
             .dz-ticker-badge-desktop {
@@ -1222,7 +1289,7 @@
                     return dateStr;
                 }
 
-                const marqueeItemsHtml = titles.map((item) => {
+                const sliderItemsHtml = titles.map((item, idx) => {
                     if (!item) return '';
                     const text = (typeof item === 'object' && item !== null) ? (item.text || '') : String(item);
                     const rawDate = (typeof item === 'object' && item !== null) ? (item.date || '') : '';
@@ -1230,18 +1297,14 @@
                     const link = (typeof item === 'object' && item !== null ? item.link : '') || '#';
                     const dateHtml = date ? `<span class="dz-date-badge"><span>${date}</span></span>` : '';
                     return `
-                        <a href="${link}" class="inline-flex items-center hover:opacity-90 transition px-2 py-1">
+                        <a href="${link}" class="ticker-item inline-flex items-center hover:opacity-90 transition${idx === 0 ? ' active' : ''}">
                             ${dateHtml}
                             <span class="dz-ticker-text">${text}</span>
-                            <span class="text-white/50 text-[11px] mx-3.5">★</span>
                         </a>
                     `;
                 }).join('');
 
-                // No duplication - each item appears once, scrolls fully left-to-right
-                const duplicateItems = marqueeItemsHtml;
                 const headerLabel = (currentLang === 'en') ? 'Updates' : 'مستجدات';
-                const duration = (fp && fp.duration) ? fp.duration : 50;
 
                 fpBanner.innerHTML = `
                     <div class="dz-ticker-bar w-full" style="position:relative;">
@@ -1264,9 +1327,15 @@
 
                                 <!-- Scrolling content -->
                                 <div class="dz-ticker-track-wrapper" style="flex:1;">
-                                    <div class="ticker-marquee-rtl flex items-center" style="animation-duration: ${duration}s;">
-                                        ${duplicateItems}
+                                    <button class="dz-ticker-nav dz-ticker-nav-next" aria-label="Next">
+                                        <i class="fa-solid fa-chevron-${currentLang === 'en' ? 'right' : 'left'}"></i>
+                                    </button>
+                                    <div class="ticker-marquee-rtl flex items-center">
+                                        ${sliderItemsHtml}
                                     </div>
+                                    <button class="dz-ticker-nav dz-ticker-nav-prev" aria-label="Previous">
+                                        <i class="fa-solid fa-chevron-${currentLang === 'en' ? 'left' : 'right'}"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1275,21 +1344,32 @@
                 `;
                 fpBanner.classList.remove('hidden');
 
-                // Dynamically set duration based on content width so the gap between
-                // the last item exiting and the first item re-entering is very short.
-                requestAnimationFrame(() => {
-                    const marqueeEl = fpBanner.querySelector('.ticker-marquee-rtl');
-                    const trackEl = fpBanner.querySelector('.dz-ticker-track-wrapper');
-                    if (marqueeEl && trackEl) {
-                        const contentW = marqueeEl.scrollWidth;           // actual text width
-                        const containerW = trackEl.offsetWidth || window.innerWidth; // visible area
-                        const speed = 120; // pixels per second — adjust for faster/slower feel
-                        // Total travel = content width (off-left) + container width (off-right)
-                        const calculatedDuration = (contentW + containerW) / speed;
-                        // The gap before re-entry = containerW/speed ≈ a few seconds only
-                        marqueeEl.style.animationDuration = calculatedDuration.toFixed(1) + 's';
-                    }
-                });
+                // Slider logic
+                const allItems = fpBanner.querySelectorAll('.ticker-item');
+                const prevBtn = fpBanner.querySelector('.dz-ticker-nav-prev');
+                const nextBtn = fpBanner.querySelector('.dz-ticker-nav-next');
+                let currentSlide = 0;
+                let slideTimer;
+
+                function goToSlide(idx) {
+                    if (allItems.length === 0) return;
+                    allItems[currentSlide].classList.remove('active');
+                    currentSlide = (idx + allItems.length) % allItems.length;
+                    allItems[currentSlide].classList.add('active');
+                }
+
+                function nextSlide() { goToSlide(currentSlide + 1); }
+                function prevSlide() { goToSlide(currentSlide - 1); }
+
+                function startAutoSlide() {
+                    clearInterval(slideTimer);
+                    slideTimer = setInterval(nextSlide, 4000);
+                }
+
+                if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoSlide(); });
+                if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
+
+                if (allItems.length > 1) startAutoSlide();
             } else if (fpBanner) {
                 fpBanner.classList.add('hidden');
             }
@@ -1803,6 +1883,32 @@
             if (e.ctrlKey && e.shiftKey && e.key === 'A') {
                 e.preventDefault();
                 window.location.href = 'admin.html';
+            }
+        });
+
+        // إشعار عند النقر على رابط فارغ
+        function showToast(msg) {
+            let t = document.getElementById('global-toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'global-toast';
+                t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[999] text-sm font-bold flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none';
+                document.body.appendChild(t);
+            }
+            t.innerHTML = '<i class="fa-solid fa-circle-exclamation text-dzGold-400"></i> ' + msg;
+            t.classList.remove('opacity-0','translate-y-4','pointer-events-none');
+            t.classList.add('opacity-100','translate-y-0');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => { t.classList.add('opacity-0','translate-y-4','pointer-events-none'); t.classList.remove('opacity-100','translate-y-0'); }, 2500);
+        }
+
+        document.addEventListener('click', function(e) {
+            const a = e.target.closest('a[href]');
+            if (!a) return;
+            const href = a.getAttribute('href').trim();
+            if (href === '#' || href === '' || href === 'javascript:void(0)' || href === 'javascript:;') {
+                e.preventDefault();
+                showToast('هذا الرابط غير متوفر حالياً');
             }
         });
     </script>

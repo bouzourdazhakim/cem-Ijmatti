@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا | متوسطة بني جماتي</title>
+
+    <script src="config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dzGreen: { 50: '#f0fdf4', 100: '#dcfce7', 600: '#007a3d', 700: '#006633', 800: '#004d26', 900: '#003319' },
+                        dzRed: { 600: '#d9251d', 700: '#cc0000' },
+                        dzGold: { 300: '#e2c578', 400: '#c59d43', 500: '#a88434', 600: '#8c6b24' },
+                        dzDark: { 800: '#2b3036', 900: '#1e2227' }
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'Segoe UI', 'sans-serif'],
+                        cairo: ['Cairo', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=El+Messiri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Cairo', 'Tajawal', sans-serif; background-color: #ffffff; color: #2b3036; overflow-x: hidden; }
+        .dz-nav-bg { background-color: #006633; }
+        .logo-circular { border-radius: 50% !important; object-fit: cover !important; clip-path: circle(48.5% at 50% 50%) !important; overflow: hidden !important; }
+        .accent-bar-dual { width: 4px; background: linear-gradient(to bottom, #006633 50%, #d9251d 50%); border-radius: 2px; }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER -->
+    <header class="bg-white border-b border-gray-100 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                <a href="index.html" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center">
+                    <img src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
+                </a>
+                <div>
+                    <h3 class="text-xs md:text-sm font-bold text-gray-600">الجمهورية الجزائرية الديمقراطية الشعبية</h3>
+                    <p class="text-xs md:text-sm font-extrabold text-dzGreen-700">وزارة التربية الوطنية - مديرية التربية</p>
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800 tracking-tight">متوسطة بني جماتي</h1>
+                    <p class="text-[11px] sm:text-xs font-bold text-dzGold-600 font-tajawal">Ayerbaz Alemmas n It Jmatti</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVBAR -->
+    <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center text-sm font-bold">
+                <a href="index.html" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2">
+                    <i class="fa-solid fa-house text-xs"></i>
+                    <span>الرئيسية</span>
+                </a>
+                <span class="text-white/50 px-1">/</span>
+                <span class="py-3 px-2 text-dzGold-300">اتصل بنا</span>
+            </div>
+            <button onclick="window.history.back()" class="py-3 px-4 hover:bg-white/10 transition text-sm">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-10 w-full">
+
+        <!-- BREADCRUMB -->
+        <nav class="text-xs text-gray-400">
+            <a href="index.html" class="hover:text-dzGreen-700 transition">الرئيسية</a>
+            <span class="mx-1">/</span>
+            <span class="text-gray-600 font-bold">اتصل بنا</span>
+        </nav>
+
+        <!-- TITLE -->
+        <section class="text-center space-y-3">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-dzGreen-50 rounded-full border border-dzGreen-100">
+                <i class="fa-solid fa-envelope text-dzGreen-600 text-sm"></i>
+                <span class="text-dzGreen-700 text-xs font-bold">التواصل</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-dzDark-800">اتصل بنا</h1>
+            <div class="accent-bar-dual h-12 mx-auto"></div>
+            <p class="text-sm text-gray-500 max-w-xl mx-auto">نحن في خدمتكم. لا تترددوا في التواصل معنا لأي استفسار أو ملاحظة</p>
+        </section>
+
+        <!-- CONTACT CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-3 hover:shadow-md transition">
+                <div class="w-14 h-14 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto">
+                    <i class="fa-solid fa-location-dot text-dzGreen-700 text-xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-dzDark-800">العنوان</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">متوسطة إسغيد علي - بني جماتي<br>عين الكبيرة - سطيف - الجزائر</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-3 hover:shadow-md transition">
+                <div class="w-14 h-14 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto">
+                    <i class="fa-solid fa-phone text-dzGreen-700 text-xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-dzDark-800">الهاتف</h3>
+                <p class="text-xs text-gray-500" dir="ltr">+213 (0) 36 87 XX XX</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-3 hover:shadow-md transition">
+                <div class="w-14 h-14 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto">
+                    <i class="fa-solid fa-clock text-dzGreen-700 text-xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-dzDark-800">ساعات العمل</h3>
+                <p class="text-xs text-gray-500">الأحد إلى الخميس<br>08:00 - 12:00 / 13:00 - 16:00</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-3 hover:shadow-md transition">
+                <div class="w-14 h-14 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto">
+                    <i class="fa-solid fa-envelope text-dzGreen-700 text-xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-dzDark-800">البريد الإلكتروني</h3>
+                <p class="text-xs text-gray-500">ce.benijmatti@education.dz</p>
+            </div>
+        </section>
+
+        <!-- FORM + MAP -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- CONTACT FORM -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-5">
+                <div class="space-y-2">
+                    <h2 class="text-lg font-black text-dzDark-800">أرسل رسالة</h2>
+                    <div class="w-16 h-1 bg-dzGreen-700 rounded"></div>
+                </div>
+                <form id="contact-form" onsubmit="handleSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">الاسم الكامل</label>
+                            <input type="text" required placeholder="أدخل اسمك"
+                                class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:border-dzGreen-700 transition bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني</label>
+                            <input type="email" required placeholder="example@email.com"
+                                class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:border-dzGreen-700 transition bg-gray-50 focus:bg-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 mb-1 block">الموضوع</label>
+                        <select class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:border-dzGreen-700 transition bg-gray-50 focus:bg-white">
+                            <option>استفسار عام</option>
+                            <option>شكاية</option>
+                            <option>اقتراح</option>
+                            <option>طلب وثيقة</option>
+                            <option>其它问题</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 mb-1 block">الرسالة</label>
+                        <textarea rows="5" required placeholder="اكتب رسالتك هنا..."
+                            class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:border-dzGreen-700 transition resize-none bg-gray-50 focus:bg-white"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-dzGreen-700 text-white py-3 rounded-xl font-bold text-sm hover:bg-dzGreen-800 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <span>إرسال الرسالة</span>
+                    </button>
+                </form>
+                <div id="form-success" class="hidden bg-dzGreen-50 border border-dzGreen-100 rounded-xl p-4 text-center">
+                    <i class="fa-solid fa-circle-check text-dzGreen-600 text-2xl mb-2"></i>
+                    <p class="text-sm font-bold text-dzGreen-700">تم إرسال رسالتك بنجاح!</p>
+                    <p class="text-xs text-gray-500 mt-1">سنتواصل معك في أقرب وقت ممكن</p>
+                </div>
+            </div>
+
+            <!-- MAP / INFO -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div class="bg-dzGreen-700 px-6 py-3 flex items-center gap-2">
+                        <i class="fa-solid fa-map text-white text-sm"></i>
+                        <span class="text-white text-sm font-bold">موقعنا على الخريطة</span>
+                    </div>
+                    <div class="h-64 bg-gray-100 flex items-center justify-center">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3225.123456789!2d5.4!3d36.1!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDA2JzAwLjAiTiA1wrAyNCcwMC4wIkU!5e0!3m2!1sar!2sdz!4v1700000000000!5m2!1sar!2sdz"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <!-- SOCIAL LINKS -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+                    <h3 class="text-sm font-bold text-dzDark-800">تابعنا على شبكات التواصل</h3>
+                    <div class="flex gap-3">
+                        <a href="https://web.facebook.com/hbouzourdaz121" target="_blank" class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:opacity-90 transition text-lg">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-red-600 text-white flex items-center justify-center hover:opacity-90 transition text-lg">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-green-600 text-white flex items-center justify-center hover:opacity-90 transition text-lg">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-gray-800 text-white flex items-center justify-center hover:opacity-90 transition text-lg">
+                            <i class="fa-solid fa-globe"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-gray-700">
+            <div class="md:col-span-4 space-y-4">
+                <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div class="w-14 h-14 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center">
+                        <img src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">متوسطة بني جماتي</h4>
+                        <p class="text-[11px] text-dzGold-400 font-tajawal">Ayerbaz Alemmas n It Jmatti</p>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-300 leading-relaxed space-y-1">
+                    <p class="font-semibold text-white">وزارة التربية الوطنية - مديرية التربية</p>
+                    <p>المؤسسة الرسمية لمتوسطة بني جماتي</p>
+                    <p>الجمهورية الجزائرية الديمقراطية الشعبية</p>
+                </div>
+            </div>
+            <div class="md:col-span-8 space-y-4">
+                <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-dzGold-500 pb-2 inline-block">منصات وروابط مفيدة</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
+                    <a href="https://awlyaa.education.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
+                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
+                        <span>فضاء الأولياء الرقمي</span>
+                    </a>
+                    <a href="https://www.education.gov.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
+                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
+                        <span>بوابة وزارة التربية الوطنية</span>
+                    </a>
+                    <a href="https://bem.onec.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
+                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
+                        <span>الديوان الوطني للامتحانات (ONEC)</span>
+                    </a>
+                    <a href="index.html" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
+                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
+                        <span>العودة للرئيسية</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+            <p class="text-center">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+            <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> تم التطوير بواسطة <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
+        </div>
+    </footer>
+
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            document.getElementById('contact-form').classList.add('hidden');
+            document.getElementById('form-success').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('contact-form').classList.remove('hidden');
+                document.getElementById('form-success').classList.add('hidden');
+                e.target.reset();
+            }, 4000);
+        }
+
+// إشعار عند النقر على رابط فارغ
+function showToast(msg) {
+    let t = document.getElementById('global-toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'global-toast';
+        t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[999] text-sm font-bold flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none';
+        document.body.appendChild(t);
+    }
+    t.innerHTML = '<i class="fa-solid fa-circle-exclamation text-dzGold-400"></i> ' + msg;
+    t.classList.remove('opacity-0','translate-y-4','pointer-events-none');
+    t.classList.add('opacity-100','translate-y-0');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.classList.add('opacity-0','translate-y-4','pointer-events-none'); t.classList.remove('opacity-100','translate-y-0'); }, 2500);
+}
+
+document.addEventListener('click', function(e) {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href').trim();
+    if (href === '#' || href === '' || href === 'javascript:void(0)' || href === 'javascript:;') {
+        e.preventDefault();
+        showToast('هذا الرابط غير متوفر حالياً');
+    }
+});
+    </script>
+
+</body>
+</html>

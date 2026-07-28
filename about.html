@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عن المتوسطة | متوسطة بني جماتي</title>
+    <script src="config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26',900:'#003319'},dzRed:{600:'#d9251d',700:'#cc0000'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','Segoe UI','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=El+Messiri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body{font-family:'Cairo','Tajawal',sans-serif;background:#fff;color:#2b3036;overflow-x:hidden}
+        .dz-nav-bg{background:#006633}
+        .logo-circular{border-radius:50%!important;object-fit:cover!important;clip-path:circle(48.5% at 50% 50%)!important;overflow:hidden!important}
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+    <!-- HEADER -->
+    <header class="bg-white border-b border-gray-100 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                <a href="index.html" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center">
+                    <img id="hdr-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
+                </a>
+                <div>
+                    <h3 id="hdr-country" class="text-xs md:text-sm font-bold text-gray-600">الجمهورية الجزائرية الديمقراطية الشعبية</h3>
+                    <p id="hdr-ministry" class="text-xs md:text-sm font-extrabold text-dzGreen-700">وزارة التربية الوطنية - مديرية التربية</p>
+                    <h1 id="hdr-title" class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800 tracking-tight">متوسطة بني جماتي</h1>
+                    <p id="hdr-sub" class="text-[11px] sm:text-xs font-bold text-dzGold-600 font-tajawal">Ayerbaz Alemmas n It Jmatti</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- NAVBAR -->
+    <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <div id="desktop-navbar" class="hidden lg:flex items-center text-sm font-bold"></div>
+            <a href="index.html" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>العودة للرئيسية</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-10 w-full">
+        <nav class="text-xs text-gray-400">
+            <a href="index.html" class="hover:text-dzGreen-700 transition">الرئيسية</a>
+            <span class="mx-1">/</span>
+            <span class="text-gray-600 font-bold">عن المتوسطة</span>
+        </nav>
+
+        <section class="text-center space-y-3">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-dzGreen-50 rounded-full border border-dzGreen-100">
+                <i class="fa-solid fa-building-columns text-dzGreen-600 text-sm"></i>
+                <span class="text-dzGreen-700 text-xs font-bold">المؤسسة</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-dzDark-800" id="page-title">عن متوسطة بني جماتي</h1>
+        </section>
+
+        <!-- IDENTITY CARD -->
+        <section class="bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                <div class="lg:col-span-5">
+                    <img id="school-cover" src="cover.png" alt="متوسطة بني جماتي" class="w-full h-64 sm:h-72 lg:h-full object-cover">
+                </div>
+                <div class="lg:col-span-7 p-6 sm:p-8 space-y-6">
+                    <div class="space-y-2">
+                        <h2 class="text-xl sm:text-2xl font-black text-dzDark-800">بطاقة فنية عن المؤسسة</h2>
+                        <div class="w-16 h-1 bg-dzGreen-700 rounded"></div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="info-cards">
+                        <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-landmark text-dzGreen-700 text-sm"></i></div>
+                            <div><p class="text-[11px] text-gray-400 font-bold">اسم المؤسسة</p><p class="text-sm font-bold text-gray-800" id="info-name">متوسطة إسغيد علي - بني جماتي</p></div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-map-location-dot text-dzGreen-700 text-sm"></i></div>
+                            <div><p class="text-[11px] text-gray-400 font-bold">الولاية / البلدية</p><p class="text-sm font-bold text-gray-800">سطيف - عين الكبيرة</p></div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-calendar-check text-dzGreen-700 text-sm"></i></div>
+                            <div><p class="text-[11px] text-gray-400 font-bold">تاريخ التأسيس</p><p class="text-sm font-bold text-gray-800">2003 / 2004</p></div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-users text-dzGreen-700 text-sm"></i></div>
+                            <div><p class="text-[11px] text-gray-400 font-bold">الطاقة الاستيعابية</p><p class="text-sm font-bold text-gray-800">أكثر من 600 تلميذ</p></div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-chalkboard-user text-dzGreen-700 text-sm"></i></div>
+                            <div><p class="text-[11px] text-gray-400 font-bold">الطاقم التربوي</p><p class="text-sm font-bold text-gray-800">أكثر من 40 أستاذاً</p></div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-graduation-cap text-dzGreen-700 text-sm"></i></div>
+                            <div><p class="text-[11px] text-gray-400 font-bold">الشعب التعليمية</p><p class="text-sm font-bold text-gray-800">3 أقسام / سنة</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSION & VISION -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-bullseye text-dzGreen-700 text-lg"></i></div>
+                    <h3 class="text-lg font-black text-dzDark-800">رسالتنا</h3>
+                </div>
+                <p class="text-sm text-gray-600 leading-relaxed">تقديم تعليم متميز يرتكز على القيم الأخلاقية والوطنية، وتنمية قدرات التلاميذ علمياً ورياضياً وثقافياً، ومواكبة المستجدات التربوية والتقنية، مع توفير بيئة تعليمية آمنة ومحفزة للإبداع والابتكار.</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-dzGold-300/20 flex items-center justify-center shrink-0"><i class="fa-solid fa-eye text-dzGold-600 text-lg"></i></div>
+                    <h3 class="text-lg font-black text-dzDark-800">رؤيتنا</h3>
+                </div>
+                <p class="text-sm text-gray-600 leading-relaxed">أن نكون مؤسسة تعليمية مرجعية في المنطقة، تُخرج جيلاً واعياً ومتمكناً من المهارات، قادر على المساهمة في بناء الجزائر الجديدة، من خلال تعليم عصري يجمع بين العلم والمعرفة والأخلاق.</p>
+            </div>
+        </section>
+
+        <!-- HISTORY -->
+        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-clock-rotate-left text-dzGreen-700 text-lg"></i></div>
+                <div><h3 class="text-lg font-black text-dzDark-800">تاريخ المؤسسة</h3><p class="text-xs text-gray-400 font-bold">مسيرة تعليمية حافلة بالإنجازات</p></div>
+            </div>
+            <div class="relative">
+                <div class="absolute right-4 top-0 bottom-0 w-0.5 bg-dzGreen-100 hidden sm:block"></div>
+                <div class="space-y-6 sm:space-y-8">
+                    <div class="flex gap-4 sm:gap-6"><div class="hidden sm:flex w-8 h-8 rounded-full bg-dzGreen-700 text-white items-center justify-center shrink-0 text-xs font-bold z-10">1</div><div class="flex-1 bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100"><span class="text-xs font-bold text-dzGreen-700 bg-dzGreen-50 px-2 py-0.5 rounded">2003 - 2004</span><h4 class="text-sm font-bold text-gray-800 mt-2">تأسيس المؤسسة</h4><p class="text-xs text-gray-500 mt-1 leading-relaxed">تأسست متوسطة إسغيد علي بني جماتي بموجب القرار الوزاري لسنة 2003، لتكون إطاراً تعليمياً يخدم تلاميذ المنطقة.</p></div></div>
+                    <div class="flex gap-4 sm:gap-6"><div class="hidden sm:flex w-8 h-8 rounded-full bg-dzGreen-700 text-white items-center justify-center shrink-0 text-xs font-bold z-10">2</div><div class="flex-1 bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100"><span class="text-xs font-bold text-dzGold-600 bg-dzGold-300/20 px-2 py-0.5 rounded">2010 - 2015</span><h4 class="text-sm font-bold text-gray-800 mt-2">مرحلة التوسع والتحديث</h4><p class="text-xs text-gray-500 mt-1 leading-relaxed">إنشاء فضاءات جديدة تشمل المختبرات العلمية، قاعة المعلوماتية، والمكتبة مع أحدث الوسائل التعليمية.</p></div></div>
+                    <div class="flex gap-4 sm:gap-6"><div class="hidden sm:flex w-8 h-8 rounded-full bg-dzGreen-700 text-white items-center justify-center shrink-0 text-xs font-bold z-10">3</div><div class="flex-1 bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100"><span class="text-xs font-bold text-dzRed-700 bg-red-50 px-2 py-0.5 rounded">2016 - 2020</span><h4 class="text-sm font-bold text-gray-800 mt-2">التحوّل الرقمي</h4><p class="text-xs text-gray-500 mt-1 leading-relaxed">إطلاق البوابة الرقمية الرسمية وتطبيق نظام التعليم المساند بالتكنولوجيا وإنشاء فضاء الأولياء الرقمي.</p></div></div>
+                    <div class="flex gap-4 sm:gap-6"><div class="hidden sm:flex w-8 h-8 rounded-full bg-dzGreen-700 text-white items-center justify-center shrink-0 text-xs font-bold z-10">4</div><div class="flex-1 bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100"><span class="text-xs font-bold text-dzGreen-700 bg-dzGreen-50 px-2 py-0.5 rounded">2021 - 2026</span><h4 class="text-sm font-bold text-gray-800 mt-2">التميّز والريادة</h4><p class="text-xs text-gray-500 mt-1 leading-relaxed">تحقيق نتائج متميّزة في الامتحانات الرسمية وتنظيم معارض علمية وأنشطة ثقافية ورياضية.</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GOALS -->
+        <section class="bg-gradient-to-br from-dzGreen-700 to-dzGreen-900 rounded-2xl p-6 sm:p-8 text-white space-y-6">
+            <div class="text-center space-y-2"><h3 class="text-xl font-black">أهدافنا الاستراتيجية</h3><div class="w-16 h-1 bg-dzGold-400 rounded mx-auto"></div></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"><div class="flex items-center gap-3 mb-2"><i class="fa-solid fa-book-open text-dzGold-300"></i><h4 class="text-sm font-bold">التحصيل العلمي</h4></div><p class="text-xs text-white/70 leading-relaxed">رفع مستوى التحصيل العلمي وضمان اجتياز الامتحانات بنسبة نجاح مرتفعة.</p></div>
+                <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"><div class="flex items-center gap-3 mb-2"><i class="fa-solid fa-heart text-dzGold-300"></i><h4 class="text-sm font-bold">التربيّة والأخلاق</h4></div><p class="text-xs text-white/70 leading-relaxed">غرس القيم الوطنية والأخلاقية وتكوين مواطنين صالحين محبّين لوطنهم.</p></div>
+                <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"><div class="flex items-center gap-3 mb-2"><i class="fa-solid fa-laptop-code text-dzGold-300"></i><h4 class="text-sm font-bold">المهارات الرقمية</h4></div><p class="text-xs text-white/70 leading-relaxed">تطوير مهارات التلاميذ في تكنولوجيا المعلومات واستعمال الأدوات الرقمية.</p></div>
+                <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"><div class="flex items-center gap-3 mb-2"><i class="fa-solid fa-trophy text-dzGold-300"></i><h4 class="text-sm font-bold">التفوق الرياضي</h4></div><p class="text-xs text-white/70 leading-relaxed">تشجيع ممارسة الرياضة والمشاركة في التظاهرات الرياضية.</p></div>
+                <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"><div class="flex items-center gap-3 mb-2"><i class="fa-solid fa-people-group text-dzGold-300"></i><h4 class="text-sm font-bold">الشراكات المجتمعية</h4></div><p class="text-xs text-white/70 leading-relaxed">تعزيز التكامل بين المؤسسة والأسرة والمجتمع المحلي.</p></div>
+                <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"><div class="flex items-center gap-3 mb-2"><i class="fa-solid fa-shield-halved text-dzGold-300"></i><h4 class="text-sm font-bold">الأمن المدرسي</h4></div><p class="text-xs text-white/70 leading-relaxed">ضمان بيئة مدرسية آمنة وصحية لجميع التلاميذ والطاقم.</p></div>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-2"><div class="w-12 h-12 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto"><i class="fa-solid fa-users text-dzGreen-700 text-xl"></i></div><p class="text-2xl font-black text-dzDark-800">600+</p><p class="text-xs text-gray-400 font-bold">تلميذ</p></div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-2"><div class="w-12 h-12 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto"><i class="fa-solid fa-chalkboard-user text-dzGreen-700 text-xl"></i></div><p class="text-2xl font-black text-dzDark-800">40+</p><p class="text-xs text-gray-400 font-bold">أستاذ</p></div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-2"><div class="w-12 h-12 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto"><i class="fa-solid fa-door-open text-dzGreen-700 text-xl"></i></div><p class="text-2xl font-black text-dzDark-800">18</p><p class="text-xs text-gray-400 font-bold">قاعة</p></div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center space-y-2"><div class="w-12 h-12 rounded-full bg-dzGreen-50 flex items-center justify-center mx-auto"><i class="fa-solid fa-award text-dzGreen-700 text-xl"></i></div><p class="text-2xl font-black text-dzDark-800">20+</p><p class="text-xs text-gray-400 font-bold">سنة خبرة</p></div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-gray-700">
+            <div class="md:col-span-4 space-y-4">
+                <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div class="w-14 h-14 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center"><img id="ft-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular"></div>
+                    <div><h4 id="ft-sec1-title" class="text-sm font-bold text-white uppercase tracking-wider">متوسطة بني جماتي</h4><p id="ft-subtitle" class="text-[11px] text-dzGold-400 font-tajawal">Ayerbaz Alemmas n It Jmatti</p></div>
+                </div>
+                <div id="ft-address" class="text-xs text-gray-300 leading-relaxed space-y-1">
+                    <p class="font-semibold text-white" id="ft-ministry-txt">وزارة التربية الوطنية - مديرية التربية</p>
+                    <p>المؤسسة الرسمية لمتوسطة بني جماتي</p>
+                    <p id="ft-country-txt">الجمهورية الجزائرية الديمقراطية الشعبية</p>
+                </div>
+            </div>
+            <div class="md:col-span-8 space-y-4">
+                <h4 id="ft-sec2-title" class="text-sm font-bold text-white uppercase tracking-wider border-b border-dzGold-500 pb-2 inline-block">منصات وروابط مفيدة</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
+                    <a href="https://awlyaa.education.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>فضاء الأولياء الرقمي</span></a>
+                    <a href="https://www.education.gov.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>بوابة وزارة التربية الوطنية</span></a>
+                    <a href="https://bem.onec.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>الديوان الوطني للامتحانات</span></a>
+                    <a href="index.html" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>العودة للرئيسية</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+            <p id="ft-copy" class="text-center">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة</p>
+            <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
+        </div>
+    </footer>
+
+    <script>
+        const globalCfg=window.CEM_CONFIG||{};
+        let siteData=JSON.parse(localStorage.getItem('cem_site_data'))||{};
+        if(!siteData.settings)siteData={settings:{country:"الجمهورية الجزائرية الديمقراطية الشعبية",ministry:"وزارة التربية الوطنية - مديرية التربية",institution:"متوسطة بني جماتي",subtitle:"Ayerbaz Alemmas n It Jmatti",logoUrl:"logo.png",coverUrl:"cover.png"}};
+
+        async function fetchFromJSONbin(){
+            const binId=siteData.settings.binId||globalCfg.jsonbinId;
+            const masterKey=siteData.settings.masterKey||globalCfg.jsonbinMasterKey;
+            if(binId&&masterKey){try{const c=new AbortController();const t=setTimeout(()=>c.abort(),5000);const r=await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`,{headers:{'X-Master-Key':masterKey},signal:c.signal});clearTimeout(t);if(r.ok){const j=await r.json();if(j.record){siteData=j.record;localStorage.setItem('cem_site_data',JSON.stringify(siteData));updatePage();}}}catch(e){console.error("Sync Error:",e);}}
+        }
+
+        function updatePage(){
+            if(siteData.settings){
+                if(siteData.settings.institution)document.getElementById('hdr-title').textContent=siteData.settings.institution;
+                if(siteData.settings.ministry)document.getElementById('hdr-ministry').textContent=siteData.settings.ministry;
+                if(siteData.settings.country)document.getElementById('hdr-country').textContent=siteData.settings.country;
+                if(siteData.settings.subtitle)document.getElementById('hdr-sub').textContent=siteData.settings.subtitle;
+                if(siteData.settings.logoUrl)document.getElementById('hdr-logo').src=siteData.settings.logoUrl;
+                if(siteData.settings.coverUrl)document.getElementById('school-cover').src=siteData.settings.coverUrl;
+                if(siteData.settings.institution){document.getElementById('ft-sec1-title').textContent=siteData.settings.institution;document.getElementById('ft-copy').textContent=siteData.settings.institution+' © 2026 جميع الحقوق محفوظة';}
+            }
+        }
+
+        updatePage();
+        fetchFromJSONbin();
+        setInterval(fetchFromJSONbin,30000);
+
+// إشعار عند النقر على رابط فارغ
+function showToast(msg) {
+    let t = document.getElementById('global-toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'global-toast';
+        t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[999] text-sm font-bold flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none';
+        document.body.appendChild(t);
+    }
+    t.innerHTML = '<i class="fa-solid fa-circle-exclamation text-dzGold-400"></i> ' + msg;
+    t.classList.remove('opacity-0','translate-y-4','pointer-events-none');
+    t.classList.add('opacity-100','translate-y-0');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.classList.add('opacity-0','translate-y-4','pointer-events-none'); t.classList.remove('opacity-100','translate-y-0'); }, 2500);
+}
+
+document.addEventListener('click', function(e) {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href').trim();
+    if (href === '#' || href === '' || href === 'javascript:void(0)' || href === 'javascript:;') {
+        e.preventDefault();
+        showToast('هذا الرابط غير متوفر حالياً');
+    }
+});
+    </script>
+</body>
+</html>
