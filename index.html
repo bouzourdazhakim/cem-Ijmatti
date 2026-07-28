@@ -225,6 +225,192 @@
         .mobile-dropdown .fa-chevron-down {
             transition: transform 0.3s ease;
         }
+
+        /* Algerian Education Ticker Bar Styles (شريط المستجدات الرسمي) */
+        .dz-ticker-bar {
+            background-color: #cc0000;
+            border-top: 3.5px solid #006633;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            height: 44px;
+        }
+
+        /* Slanted "مستجدات" Right Badge */
+        .dz-ticker-badge {
+            position: relative;
+            z-index: 30;
+            background: #e6e6e6;
+            color: #1f2937;
+            padding: 0 20px 0 32px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 900;
+            font-size: 14px;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%);
+            box-shadow: -4px 0 10px rgba(0,0,0,0.25);
+        }
+
+        [dir="ltr"] .dz-ticker-badge {
+            clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 100%, 0 100%);
+            padding: 0 32px 0 20px;
+        }
+
+        /* Concentric Red Target Icon inside Badge */
+        .dz-ticker-target {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #cc0000;
+            background-color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .dz-ticker-target::after {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: #cc0000;
+        }
+
+        /* Ticker Track Wrapper clipped precisely along the slanted badge cut */
+        .dz-ticker-track-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            clip-path: polygon(0 0, calc(100% - 2px) 0, calc(100% - 18px) 100%, 0 100%);
+        }
+
+        [dir="ltr"] .dz-ticker-track-wrapper {
+            clip-path: polygon(18px 0, 100% 0, 100% 100%, 2px 100%);
+        }
+
+        /* TV News Marquee Animation - Enters from LEFT, Exits RIGHT - No Repeat */
+        @keyframes tvNewsMarqueeLTR {
+            0%   { transform: translateX(-50%); }
+            100% { transform: translateX(150vw); }
+        }
+
+        .ticker-marquee-rtl {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            animation: tvNewsMarqueeLTR 16s linear infinite;
+            will-change: transform;
+        }
+
+        .ticker-marquee-rtl:hover {
+            animation-play-state: paused;
+        }
+
+        /* Slanted Date Badge (Parallelogram) */
+        .dz-date-badge {
+            display: inline-block;
+            background-color: #ffffff;
+            transform: skewX(-16deg);
+            padding: 2px 10px;
+            margin: 0 8px;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+        }
+
+        .dz-date-badge span {
+            display: inline-block;
+            transform: skewX(16deg);
+            color: #cc0000;
+            font-weight: 800;
+            font-size: 12.5px;
+            font-style: italic;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            white-space: nowrap;
+        }
+
+        /* Ticker item text */
+        .dz-ticker-text {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* ============================================================
+           MOBILE TICKER LAYOUT (Two-Row Design)
+           Row 1: gray label row  |  Row 2: red scrolling row
+        ============================================================ */
+        @media (max-width: 767px) {
+            .dz-ticker-bar {
+                height: auto !important;
+                overflow: visible !important;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Mobile: inner container stacks rows vertically */
+            .dz-ticker-inner {
+                flex-direction: column !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            /* Row 1 — gray label row */
+            .dz-ticker-label-row {
+                width: 100%;
+                background: #e6e6e6;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 6px 12px;
+                font-weight: 900;
+                font-size: 14px;
+                font-family: 'Cairo', 'Tajawal', sans-serif;
+                color: #1f2937;
+            }
+
+            /* Row 2 — red scrolling row */
+            .dz-ticker-scroll-row {
+                width: 100%;
+                background: #cc0000;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                height: 38px;
+            }
+
+            /* On mobile, hide desktop badge inside bar */
+            .dz-ticker-badge-desktop {
+                display: none !important;
+            }
+
+            /* On mobile, clip-path interferes — remove it */
+            .dz-ticker-track-wrapper {
+                clip-path: none !important;
+            }
+
+            /* close button on mobile */
+            .dz-ticker-close {
+                position: absolute;
+                top: 4px;
+                left: 8px;
+            }
+        }
+
+        /* Desktop: hide mobile label row */
+        @media (min-width: 768px) {
+            .dz-ticker-label-row { display: none !important; }
+            .dz-ticker-scroll-row { display: contents; }
+        }
     </style>
 </head>
 
@@ -269,8 +455,6 @@
         </div>
     </div>
 
-    <!-- المنشور المميز (شريط علوي) -->
-    <div id="featured-banner" class="hidden"></div>
 
     <!-- 2. EN-TÊTE OFFICIEL (الترويسة الرسمية بالشعار الدائري) -->
     <header class="bg-white py-4 px-4 border-b border-gray-100 watermark-seal relative">
@@ -346,6 +530,9 @@
         </div>
     </nav>
 
+    <!-- المنشور المميز - شريط الأخبار تحت القائمة الرئيسية -->
+    <div id="featured-banner" class="hidden"></div>
+
     <!-- 4. CONTENU PRINCIPAL (الكوفر والمحتوى الديناميكي) -->
     <main class="max-w-7xl mx-auto px-4 py-6 md:py-10 space-y-8 md:space-y-12 w-full">
 
@@ -358,7 +545,7 @@
                 <div class="lg:col-span-7 flex justify-center">
                     <div class="relative w-full max-w-xl group overflow-hidden hero-pill-frame">
                         <img id="hero-img" src="cover.png" alt="متوسطة بني جماتي - غلاف البوابة الرسمية"
-                            class="w-full h-[220px] sm:h-[300px] md:h-[360px] object-cover transform group-hover:scale-105 transition duration-700">
+                            class="w-full h-[220px] sm:h-[300px] md:h-[360px] object-cover transform group-hover:scale-105 transition duration-700 cursor-pointer" onclick="openPhotoModal(this.src)">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60">
                         </div>
@@ -399,7 +586,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
             <!-- العمود الأول: المحتوى الرئيسي (8 أعمدة) -->
-            <div class="lg:col-span-8 space-y-8 md:space-y-12">
+            <div class="lg:col-span-8 space-y-8 md:space-y-12 order-2 lg:order-none">
 
                 <!-- القسم 1: النشاطات التربوية الثقافية -->
                 <section id="activities" class="space-y-5">
@@ -453,7 +640,7 @@
             </div>
 
             <!-- العمود الثاني: الشريط الجانبي (4 أعمدة) -->
-            <aside class="lg:col-span-4 space-y-6 md:space-y-8">
+            <aside class="lg:col-span-4 space-y-6 md:space-y-8 order-1 lg:order-none">
 
                 <div class="border-b border-gray-200 pb-2">
                     <h3 id="sec-supp-title" class="section-heading-red text-base md:text-lg">
@@ -612,16 +799,11 @@
         </div>
     </div>
 
-    <div id="photo-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
-        <div class="bg-black rounded-lg max-w-3xl w-full overflow-hidden shadow-2xl">
-            <div class="flex justify-between items-center px-4 py-2 bg-gray-900 text-white">
-                <span class="text-xs font-bold">معرض الصور الرسمي</span>
-                <button onclick="closePhotoModal()" class="text-gray-400 hover:text-white"><i
-                        class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="h-96 bg-gray-900">
-                <img src="cover.png" alt="معرض الصور" class="w-full h-full object-contain">
-            </div>
+    <!-- معاينة الصور (Lightbox) -->
+    <div id="photo-modal" class="fixed inset-0 bg-black/95 z-50 hidden" onclick="closePhotoModal()">
+        <button onclick="closePhotoModal()" class="fixed top-3 right-3 sm:top-5 sm:right-5 text-white/90 hover:text-white text-2xl sm:text-3xl z-50 bg-white/10 hover:bg-white/20 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition"><i class="fa-solid fa-xmark"></i></button>
+        <div class="w-full h-full flex items-center justify-center p-4 sm:p-8 overflow-auto" onclick="event.stopPropagation()">
+            <img id="photo-modal-img" src="" alt="معاينة الصورة" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl cursor-zoom-out" onclick="closePhotoModal()">
         </div>
     </div>
 
@@ -649,15 +831,21 @@
                 btnLink: "#activities"
             },
             featuredPost: {
-                enabled: false,
-                type: "toppers",
-                title: "تهانينا للتلاميذ المتميزين - sesson 2026",
-                subtitle: "ن flashedBy Proudly恭喜 نتائج متميزة في شهادة التعليم المتوسط",
-                content: "يشرف إدارة مؤسسة متوسطة بني جماتي أن تهنئ التلاميذ المتميزين على نتائجهم المشرفة في الامتحانات الرسمية. نفخر بجهودكم ون souhaitez لكم التوفيق والنجاح في مسيرةكم العلمية.",
+                enabled: true,
+                type: "announcement",
+                title: "مستجدات وزارة التربية الوطنية",
+                titles: [
+                    { text: "تستقبل المتفوقين الأوائل وطنيا في شهادة البكالوريا وشهادة التعليم المتوسط دورة 2026", date: "28 يوليو 2026", link: "#" },
+                    { text: "بيـــــــان وزارة التربية الوطنية حول نتائج الامتحانات الرسمية", date: "28 يوليو 2026", link: "#" },
+                    { text: "وزير التربية يشرف على تكريم التلاميذ النجباء", date: "27 يوليو 2026", link: "#" },
+                    { text: "بـــــــلاغ هام لكافة أولياء التلاميذ والتأطير التربوي بالمؤسسة", date: "21 يوليو 2026", link: "#" }
+                ],
+                subtitle: "",
+                content: "",
                 image: "",
-                btnLink: "#toppers",
-                btnText: "عرض النتائج",
-                color: "gold"
+                btnLink: "#",
+                btnText: "",
+                color: "red"
             },
             activities: [
                 { id: 1, date: "14-07-2026", title: "حفل تكريم التلاميذ المتفوقين في الفصل الدراسي بالمؤسسة", image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80" },
@@ -952,6 +1140,10 @@
             if (!siteData.navbar || !Array.isArray(siteData.navbar) || siteData.navbar.length === 0) {
                 siteData.navbar = JSON.parse(JSON.stringify(defaultCemData.navbar));
             }
+            if (!siteData.featuredPost || siteData.featuredPost.enabled === undefined) {
+                if (!siteData.featuredPost) siteData.featuredPost = {};
+                siteData.featuredPost.enabled = true;
+            }
             if (!siteData.activities || !Array.isArray(siteData.activities)) siteData.activities = [];
             if (!siteData.announcements || !Array.isArray(siteData.announcements)) siteData.announcements = [];
             if (!siteData.dossiers || !Array.isArray(siteData.dossiers)) siteData.dossiers = [];
@@ -996,54 +1188,108 @@
                 document.getElementById('hero-btn').href = siteData.hero.btnLink || "#activities";
             }
 
-            // Featured Post Banner (Top Bar)
+            // Featured Post Banner (Top Bar - Marquee)
+            // Featured News Ticker Banner (شريط المستجدات الرسمي)
             const fp = siteData.featuredPost || {};
             const fpBanner = document.getElementById('featured-banner');
-            if (fpBanner && fp.enabled) {
-                const colors = {
-                    gold:    { bg: 'bg-amber-500', text: 'text-amber-700', badge: 'bg-amber-100 text-amber-700', icon: 'fa-trophy' },
-                    green:   { bg: 'bg-emerald-500', text: 'text-emerald-700', badge: 'bg-emerald-100 text-emerald-700', icon: 'fa-award' },
-                    red:     { bg: 'bg-red-500', text: 'text-red-700', badge: 'bg-red-100 text-red-700', icon: 'fa-fire' },
-                    blue:    { bg: 'bg-blue-500', text: 'text-blue-700', badge: 'bg-blue-100 text-blue-700', icon: 'fa-star' },
-                    purple:  { bg: 'bg-purple-500', text: 'text-purple-700', badge: 'bg-purple-100 text-purple-700', icon: 'fa-certificate' }
-                };
-                const c = colors[fp.color] || colors.gold;
-                const typeIcons = { toppers: 'fa-trophy', event: 'fa-calendar-star', exam: 'fa-file-alt', announcement: 'fa-bullhorn' };
-                const typeLabels = {
-                    ar: { toppers: 'المتميزون الأوائل', event: 'مناسبة هامة', exam: 'نتائج الامتحانات', announcement: 'إعلان عاجل' },
-                    en: { toppers: 'Top Students', event: 'Special Event', exam: 'Exam Results', announcement: 'Urgent Notice' }
-                };
-                const icon = typeIcons[fp.type] || 'fa-star';
-                const label = (typeLabels[currentLang] || typeLabels.ar)[fp.type] || t('featuredLabel');
+            if (fpBanner && (fp.enabled !== false)) {
+                let titles = [];
+                if (fp.titles && Array.isArray(fp.titles) && fp.titles.length > 0) {
+                    titles = fp.titles.filter(t => t && (t.text || typeof t === 'string'));
+                } else if (fp.title && fp.title.trim() !== '') {
+                    titles = [{ text: fp.title, date: fp.date || '', link: fp.btnLink || '#' }];
+                }
+                
+                if (titles.length === 0) {
+                    titles = [
+                        { text: "تستقبل المتفوقين الأوائل وطنيا في شهادة البكالوريا وشهادة التعليم المتوسط دورة 2026", date: "28 يوليو 2026", link: "#" },
+                        { text: "بيـــــــان وزارة التربية الوطنية حول نتائج الامتحانات الرسمية", date: "28 يوليو 2026", link: "#" },
+                        { text: "وزير التربية يشرف على تكريم التلاميذ النجباء", date: "27 يوليو 2026", link: "#" },
+                        { text: "بـــــــلاغ هام لكافة أولياء التلاميذ والتأطير التربوي بالمؤسسة", date: "21 يوليو 2026", link: "#" }
+                    ];
+                }
+
+                function formatArabicDate(dateStr) {
+                    if (!dateStr) return '';
+                    if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                        const parts = dateStr.split('-');
+                        const months = ["يناير", "فبراير", "مارس", "أبريل", "ماي", "يونيو", "يوليو", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+                        const day = parseInt(parts[2], 10);
+                        const month = months[parseInt(parts[1], 10) - 1];
+                        const year = parts[0];
+                        return `${day} ${month} ${year}`;
+                    }
+                    return dateStr;
+                }
+
+                const marqueeItemsHtml = titles.map((item) => {
+                    if (!item) return '';
+                    const text = (typeof item === 'object' && item !== null) ? (item.text || '') : String(item);
+                    const rawDate = (typeof item === 'object' && item !== null) ? (item.date || '') : '';
+                    const date = formatArabicDate(rawDate);
+                    const link = (typeof item === 'object' && item !== null ? item.link : '') || '#';
+                    const dateHtml = date ? `<span class="dz-date-badge"><span>${date}</span></span>` : '';
+                    return `
+                        <a href="${link}" class="inline-flex items-center hover:opacity-90 transition px-2 py-1">
+                            ${dateHtml}
+                            <span class="dz-ticker-text">${text}</span>
+                            <span class="text-white/50 text-[11px] mx-3.5">★</span>
+                        </a>
+                    `;
+                }).join('');
+
+                // No duplication - each item appears once, scrolls fully left-to-right
+                const duplicateItems = marqueeItemsHtml;
+                const headerLabel = (currentLang === 'en') ? 'Updates' : 'مستجدات';
+                const duration = (fp && fp.duration) ? fp.duration : 50;
 
                 fpBanner.innerHTML = `
-                    <div class="${c.bg} text-white py-2.5 px-4">
-                        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-3 min-w-0 flex-1">
-                                ${fp.image ? `
-                                    <img src="${fp.image}" alt="${fp.title}" class="w-10 h-10 rounded object-cover shrink-0">
-                                ` : `
-                                    <i class="fa-solid ${icon} text-lg shrink-0"></i>
-                                `}
-                                <div class="flex items-center gap-2.5 flex-wrap min-w-0">
-                                    <span class="bg-white/20 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 shrink-0">
-                                        <i class="fa-solid ${icon} text-[9px]"></i> ${label}
-                                    </span>
-                                    <span class="font-extrabold text-sm truncate">${fp.title || 'منشور مميز'}</span>
-                                    ${fp.btnLink ? `
-                                        <a href="${fp.btnLink}" class="bg-white text-gray-800 text-[11px] font-extrabold px-3 py-1 rounded-full hover:bg-gray-100 transition shrink-0 flex items-center gap-1 shadow-sm">
-                                            ${fp.btnText || 'المزيد'} <i class="fa-solid fa-arrow-left text-[9px]"></i>
-                                        </a>
-                                    ` : ''}
+                    <div class="dz-ticker-bar w-full" style="position:relative;">
+
+                        <!-- MOBILE ROW 1: Centered label (hidden on desktop) -->
+                        <div class="dz-ticker-label-row">
+                            <span class="dz-ticker-target"></span>
+                            <span>${headerLabel}</span>
+                        </div>
+
+                        <!-- DESKTOP single row / MOBILE ROW 2: red scrolling strip -->
+                        <div class="dz-ticker-scroll-row" style="flex:1;">
+                            <div class="max-w-7xl w-full mx-auto flex items-center justify-between h-full relative overflow-hidden">
+
+                                <!-- Badge (desktop only) -->
+                                <div class="dz-ticker-badge dz-ticker-badge-desktop shrink-0">
+                                    <span class="dz-ticker-target"></span>
+                                    <span>${headerLabel}</span>
+                                </div>
+
+                                <!-- Scrolling content -->
+                                <div class="dz-ticker-track-wrapper" style="flex:1;">
+                                    <div class="ticker-marquee-rtl flex items-center" style="animation-duration: ${duration}s;">
+                                        ${duplicateItems}
+                                    </div>
                                 </div>
                             </div>
-                            <button onclick="this.closest('#featured-banner').classList.add('hidden')" class="text-white/70 hover:text-white p-1 shrink-0" title="إخفاء">
-                                <i class="fa-solid fa-xmark text-sm"></i>
-                            </button>
                         </div>
+
                     </div>
                 `;
                 fpBanner.classList.remove('hidden');
+
+                // Dynamically set duration based on content width so the gap between
+                // the last item exiting and the first item re-entering is very short.
+                requestAnimationFrame(() => {
+                    const marqueeEl = fpBanner.querySelector('.ticker-marquee-rtl');
+                    const trackEl = fpBanner.querySelector('.dz-ticker-track-wrapper');
+                    if (marqueeEl && trackEl) {
+                        const contentW = marqueeEl.scrollWidth;           // actual text width
+                        const containerW = trackEl.offsetWidth || window.innerWidth; // visible area
+                        const speed = 120; // pixels per second — adjust for faster/slower feel
+                        // Total travel = content width (off-left) + container width (off-right)
+                        const calculatedDuration = (contentW + containerW) / speed;
+                        // The gap before re-entry = containerW/speed ≈ a few seconds only
+                        marqueeEl.style.animationDuration = calculatedDuration.toFixed(1) + 's';
+                    }
+                });
             } else if (fpBanner) {
                 fpBanner.classList.add('hidden');
             }
@@ -1064,9 +1310,9 @@
                             </div>
                             <div class="px-4 pb-4 space-y-3">
                                 <div class="rounded-lg overflow-hidden h-40 sm:h-44 border border-gray-100">
-                                    <img src="${act.image}" alt="${act.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <img src="${act.image}" alt="${act.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer" onclick="event.preventDefault(); openPhotoModal('${act.image}')">
                                 </div>
-                                <a href="detail.html?type=activity&id=${act.id}" class="flex items-center justify-between text-xs font-bold text-dzGreen-700 hover:text-dzGreen-800 transition pt-1 border-t border-gray-100">
+                                <a href="detail.html?type=activity&id=${act.id}" class="flex items-center justify-center gap-2 text-xs font-bold text-white bg-dzGreen-700 hover:bg-dzGreen-800 transition py-2 px-3 rounded-lg shadow-sm">
                                     <span>${t('readMore')}</span>
                                     <i class="fa-solid fa-arrow-left text-[10px]"></i>
                                 </a>
@@ -1083,13 +1329,13 @@
                     dosContainer.innerHTML += `
                         <article class="bg-white rounded-md overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition group">
                             <div class="h-40 sm:h-44 overflow-hidden">
-                                <img src="${dos.image}" alt="${dos.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <img src="${dos.image}" alt="${dos.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer" onclick="event.preventDefault(); openPhotoModal('${dos.image}')">
                             </div>
                             <div class="p-4 border-t border-gray-100 space-y-3">
                                 <h4 class="text-xs md:text-sm font-bold text-dzGreen-700 leading-snug line-clamp-2">
                                     ${dos.title}
                                 </h4>
-                                <a href="detail.html?type=dossier&id=${dos.id}" class="flex items-center justify-between text-xs font-bold text-dzGreen-700 hover:text-dzGreen-800 transition border-t border-gray-100 pt-3">
+                                <a href="detail.html?type=dossier&id=${dos.id}" class="flex items-center justify-center gap-2 text-xs font-bold text-white bg-dzGreen-700 hover:bg-dzGreen-800 transition py-2 px-3 rounded-lg shadow-sm">
                                     <span>${t('viewDetails')}</span>
                                     <i class="fa-solid fa-arrow-left text-[10px]"></i>
                                 </a>
@@ -1198,12 +1444,12 @@
 
             // Translation map for navbar items (by id)
             const navLabels = {
-                ar: { 1: 'الرئيسية', 2: 'النشاطات التربوية', 3: 'الأنشطة الثقافية', 4: 'الإعلانات والبلاغات', 5: 'الفضاء الرقمي', 6: 'فضاء الأساتذة', 7: 'معرض الفيديوهات', 8: 'اتصل بنا' },
-                en: { 1: 'Home', 2: 'Activities', 3: 'Cultural Activities', 4: 'Announcements', 5: 'Digital Space', 6: 'Teachers', 7: 'Videos', 8: 'Contact Us' }
+                ar: { 1: 'الرئيسية', 2: 'عن المتوسطة', 3: 'النشاطات التربوية', 4: 'الإعلانات والبلاغات', 5: 'الفضاء الرقمي', 6: 'فضاء الأساتذة', 7: 'معرض الفيديوهات', 8: 'اتصل بنا' },
+                en: { 1: 'Home', 2: 'About School', 3: 'Activities', 4: 'Announcements', 5: 'Digital Space', 6: 'Teachers', 7: 'Videos', 8: 'Contact Us' }
             };
             const navSubLabels = {
-                ar: { 31: 'الأنشطة التربوية والرياضية', 32: 'النوادي العلمية والرياضية', 33: 'معارض الأنشطة الثقافية', 41: 'جدول الامتحانات والفروض', 42: 'إعلانات أولياء التلاميذ', 43: 'رزنامة العطل المدرسية', 51: 'فضاء الأولياء الرقمي', 52: 'حاسبة معدل شهادة BEM' },
-                en: { 31: 'Educational Activities', 32: 'Scientific Clubs', 33: 'Exhibitions', 41: 'Exam Schedule', 42: 'Parent News', 43: 'Holidays', 51: 'Parents Portal', 52: 'BEM Calculator' }
+                ar: { 21: 'بطاقة فنية عن المؤسسة', 22: 'الطاقم الإداري والتربوي', 23: 'النظام الداخلي للمؤسسة', 31: 'التظاهرات العلمية والتكريمات', 32: 'النوادي العلمية والرياضية', 33: 'معارض الأنشطة الثقافية', 41: 'جدول الامتحانات والفروض', 42: 'إعلانات أولياء التلاميذ', 43: 'رزنامة العطل المدرسية', 51: 'فضاء الأولياء الرقمي', 52: 'حاسبة معدل شهادة BEM' },
+                en: { 21: 'School Profile', 22: 'Staff', 23: 'Rules', 31: 'Educational Events', 32: 'Scientific Clubs', 33: 'Exhibitions', 41: 'Exam Schedule', 42: 'Parent News', 43: 'Holidays', 51: 'Parents Portal', 52: 'BEM Calculator' }
             };
             const labels = navLabels[currentLang] || navLabels.ar;
             const subLabels = navSubLabels[currentLang] || navSubLabels.ar;
@@ -1215,14 +1461,14 @@
                 const colorClass = item.color || '';
                 const activeClass = item.isActive ? 'bg-black/20 border-b-2 border-dzGold-400' : '';
                 const iconHtml = item.icon ? `<i class="fa-solid ${item.icon} text-xs opacity-75"></i>` : '';
-                const itemLabel = labels[item.id] || item.label;
+                const itemLabel = item.label || labels[item.id];
 
                 if (hasDropdown) {
                     // Desktop Dropdown Item
                     let dropdownItems = '';
                     item.dropdown.forEach(sub => {
                         const targetAttr = sub.isExternal || (sub.link && sub.link.startsWith('http')) ? 'target="_blank"' : '';
-                        const subLabel = subLabels[sub.id] || sub.label;
+                        const subLabel = sub.label || subLabels[sub.id];
                         dropdownItems += `
                             <a href="${sub.link || '#'}" ${targetAttr}
                                 class="block px-4 py-2.5 text-xs hover:bg-dzGreen-50 hover:text-dzGreen-700 border-b border-gray-100">${subLabel}</a>
@@ -1244,7 +1490,7 @@
                     // Mobile Dropdown
                     const subItemsHtml = item.dropdown.map(sub => {
                         const targetAttr = sub.isExternal || (sub.link && sub.link.startsWith('http')) ? 'target="_blank"' : '';
-                        const subLabel = subLabels[sub.id] || sub.label;
+                        const subLabel = sub.label || subLabels[sub.id];
                         return `<a href="${sub.link || '#'}" ${targetAttr} onclick="toggleMobileMenu()" class="block py-2.5 pr-6 pl-4 hover:bg-dzGreen-50 hover:text-dzGreen-700 transition text-[13px] text-gray-600 border-b border-gray-100 last:border-0">${subLabel}</a>`;
                     }).join('');
                     mobileNav.innerHTML += `
@@ -1278,6 +1524,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderSiteData();
             fetchFromJSONbin();
+            // مزامنة تلقائية كل 30 ثانية
+            setInterval(fetchFromJSONbin, 30000);
         });
 
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
@@ -1368,8 +1616,20 @@
             document.getElementById('video-modal').classList.add('hidden');
             document.getElementById('video-modal').classList.remove('flex');
         }
-        function openPhotoModal() { document.getElementById('photo-modal').classList.remove('hidden'); document.getElementById('photo-modal').classList.add('flex'); }
-        function closePhotoModal() { document.getElementById('photo-modal').classList.add('hidden'); document.getElementById('photo-modal').classList.remove('flex'); }
+        function openPhotoModal(imgSrc) {
+            const modal = document.getElementById('photo-modal');
+            const img = document.getElementById('photo-modal-img');
+            img.src = imgSrc || 'cover.png';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closePhotoModal() {
+            const modal = document.getElementById('photo-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('photo-modal-img').src = '';
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePhotoModal(); });
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
         function switchLanguage(lang) {

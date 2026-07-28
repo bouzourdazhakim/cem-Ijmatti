@@ -34,7 +34,7 @@
         body { font-family: 'Cairo', sans-serif; background-color: #f8f9fa; color: #2b3036; }
         .logo-circular { border-radius: 50% !important; object-fit: cover !important; clip-path: circle(48.5% at 50% 50%) !important; }
         .dz-nav-bg { background-color: #006633; }
-        .hero-detail-img { max-height: 480px; object-fit: cover; width: 100%; border-radius: 16px; }
+        .hero-detail-img { max-height: 600px; object-fit: contain; width: 100%; border-radius: 8px; background: #f8f9fa; padding: 6px; border: 1px solid #e5e7eb; }
         .prose-ar { line-height: 2; font-size: 1rem; color: #374151; }
         .prose-ar p { margin-bottom: 1.25rem; }
         .type-badge-activity  { background: #dcfce7; color: #006633; border: 1px solid #bbf7d0; }
@@ -161,7 +161,7 @@
 
             <!-- Hero Image -->
             <div id="detail-image-wrapper" class="mb-8 overflow-hidden rounded-2xl shadow-md border border-gray-100">
-                <img id="detail-image" src="" alt="" class="hero-detail-img hover:scale-105 transition duration-700">
+                <img id="detail-image" src="" alt="" class="hero-detail-img hover:scale-105 transition duration-700 cursor-pointer" onclick="openPhotoModal(this.src)">
             </div>
 
             <!-- File Download Button (for dossiers) -->
@@ -212,6 +212,14 @@
         </div>
     </footer>
 
+    <!-- معاينة الصور (Lightbox) -->
+    <div id="photo-modal" class="fixed inset-0 bg-black/95 z-50 hidden" onclick="closePhotoModal()">
+        <button onclick="closePhotoModal()" class="fixed top-3 right-3 sm:top-5 sm:right-5 text-white/90 hover:text-white text-2xl sm:text-3xl z-50 bg-white/10 hover:bg-white/20 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition"><i class="fa-solid fa-xmark"></i></button>
+        <div class="w-full h-full flex items-center justify-center p-4 sm:p-8 overflow-auto" onclick="event.stopPropagation()">
+            <img id="photo-modal-img" src="" alt="معاينة الصورة" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl cursor-zoom-out" onclick="closePhotoModal()">
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white text-xs font-bold px-5 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 flex items-center gap-2 z-50">
         <i class="fa-solid fa-check-circle text-dzGreen-400"></i>
@@ -220,6 +228,22 @@
 
     <script>
         const globalCfg = window.CEM_CONFIG || {};
+
+        // --- Lightbox ---
+        function openPhotoModal(imgSrc) {
+            const modal = document.getElementById('photo-modal');
+            const img = document.getElementById('photo-modal-img');
+            img.src = imgSrc || '';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closePhotoModal() {
+            const modal = document.getElementById('photo-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('photo-modal-img').src = '';
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePhotoModal(); });
 
         // --- Google Translate ---
         let currentLang = localStorage.getItem('cem_lang') || 'ar';
@@ -291,7 +315,15 @@
         }
 
         // --- Load site settings ---
-        const siteData = JSON.parse(localStorage.getItem('cem_site_data')) || {};
+        const defaultDetailData = {
+            activities: [],
+            announcements: [],
+            dossiers: [],
+            teachers: [],
+            videos: [],
+            settings: { institution: 'متوسطة بني جماتي', ministry: 'وزارة التربية الوطنية - مديرية التربية' }
+        };
+        let siteData = JSON.parse(localStorage.getItem('cem_site_data')) || defaultDetailData;
         const settings = siteData.settings || {};
 
         if (settings.logoUrl) {
@@ -334,8 +366,6 @@
             const binId     = settings.binId     || globalCfg.jsonbinId;
             const masterKey = settings.masterKey || globalCfg.jsonbinMasterKey;
 
-            let data = siteData;
-
             if (binId && masterKey) {
                 try {
                     const controller = new AbortController();
@@ -347,9 +377,9 @@
                     clearTimeout(timeout);
                     if (res.ok) {
                         const json = await res.json();
-                        if (json.record) {
-                            data = json.record;
-                            localStorage.setItem('cem_site_data', JSON.stringify(data));
+                        if (json.record && json.record.activities) {
+                            siteData = json.record;
+                            localStorage.setItem('cem_site_data', JSON.stringify(siteData));
                         }
                     }
                 } catch (e) {
@@ -357,7 +387,11 @@
                 }
             }
 
-            renderDetail(data);
+            if (!siteData.activities || siteData.activities.length === 0) {
+                showError(); return;
+            }
+
+            renderDetail(siteData);
 
             // Apply saved language after rendering
             if (currentLang !== 'ar') {
