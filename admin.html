@@ -42,7 +42,7 @@
         }
     </script>
     <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Rubik:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Rubik:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Reem+Kufi:wght@400;500;600;700&family=El+Messiri:wght@400;500;600;700&family=Changa:wght@400;500;600;700;800&family=Almarai:wght@300;400;700;800&family=Markazi+Text:wght@400;500;600;700&family=Scheherazade+New:wght@400;500;600;700&family=Harmattan:wght@400;500;600;700&family=Lalezar&family=Aref+Ruqaa:wght@400;700&family=Lemonada:wght@300;400;500;600;700&family=Mada:wght@300;400;500;600;700;900&family=Rumaiq:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -236,10 +236,34 @@
                         <div>
                             <label class="block mb-1 text-gray-700">خط الموقع (Font Family)</label>
                             <select id="cfg-font-family" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 bg-white">
-                                <option value="Cairo">Cairo</option>
-                                <option value="Tajawal">Tajawal</option>
-                                <option value="Rubik">Rubik</option>
-                                <option value="IBM Plex Sans Arabic">IBM Plex Sans Arabic</option>
+                                <optgroup label="الخطوط العربية الحديثة">
+                                    <option value="Cairo">Cairo</option>
+                                    <option value="Tajawal">Tajawal</option>
+                                    <option value="Almarai">Almarai</option>
+                                    <option value="IBM Plex Sans Arabic">IBM Plex Sans Arabic</option>
+                                    <option value="Noto Sans Arabic">Noto Sans Arabic</option>
+                                    <option value="Rubik">Rubik</option>
+                                    <option value="Mada">Mada</option>
+                                    <option value="Rumaiq">Rumaiq</option>
+                                </optgroup>
+                                <optgroup label="خطوط الكوفي">
+                                    <option value="Noto Kufi Arabic">Noto Kufi Arabic</option>
+                                    <option value="Reem Kufi">Reem Kufi</option>
+                                    <option value="Lalezar">Lalezar</option>
+                                </optgroup>
+                                <optgroup label="خطوط النسخ والرقعة">
+                                    <option value="Amiri">Amiri</option>
+                                    <option value="Noto Naskh Arabic">Noto Naskh Arabic</option>
+                                    <option value="Scheherazade New">Scheherazade New</option>
+                                    <option value="Aref Ruqaa">Aref Ruqaa</option>
+                                    <option value="Markazi Text">Markazi Text</option>
+                                </optgroup>
+                                <optgroup label="خطوط زخرفية وإبداعية">
+                                    <option value="El Messiri">El Messiri</option>
+                                    <option value="Changa">Changa</option>
+                                    <option value="Harmattan">Harmattan</option>
+                                    <option value="Lemonada">Lemonada</option>
+                                </optgroup>
                             </select>
                             <p class="text-[10px] text-gray-400 mt-1">سيتم تطبيق الخط على جميع صفحات الموقع</p>
                         </div>
