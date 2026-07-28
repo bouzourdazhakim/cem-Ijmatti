@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">تفاصيل | متوسطة بني جماتي</title>
+    <meta name="description" id="page-meta-desc" content="تفاصيل المنشور - متوسطة بني جماتي">
+
+    <script src="config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dzGreen: { 50: '#f0fdf4', 100: '#dcfce7', 600: '#007a3d', 700: '#006633', 800: '#004d26', 900: '#003319' },
+                        dzRed: { 600: '#d9251d', 700: '#cc0000' },
+                        dzGold: { 300: '#e2c578', 400: '#c59d43', 500: '#a88434', 600: '#8c6b24' },
+                        dzDark: { 800: '#2b3036', 900: '#1e2227' }
+                    },
+                    fontFamily: { sans: ['Cairo', 'sans-serif'], cairo: ['Cairo', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #f8f9fa; color: #2b3036; }
+        .logo-circular { border-radius: 50% !important; object-fit: cover !important; clip-path: circle(48.5% at 50% 50%) !important; }
+        .dz-nav-bg { background-color: #006633; }
+        .hero-detail-img { max-height: 480px; object-fit: cover; width: 100%; border-radius: 16px; }
+        .prose-ar { line-height: 2; font-size: 1rem; color: #374151; }
+        .prose-ar p { margin-bottom: 1.25rem; }
+        .type-badge-activity  { background: #dcfce7; color: #006633; border: 1px solid #bbf7d0; }
+        .type-badge-announcement { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .type-badge-dossier   { background: #e0f2fe; color: #075985; border: 1px solid #bae6fd; }
+        .type-badge-teacher   { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+        .share-btn { transition: all 0.2s ease; }
+        .share-btn:hover { transform: translateY(-2px); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeInUp 0.5s ease forwards; }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- الشريط الأعلى -->
+    <div class="bg-gray-100 border-b border-gray-200 py-2 px-4 text-xs">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-1.5 text-dzGreen-700 font-bold hover:underline">
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                <span id="lbl-back">العودة للصفحة الرئيسية</span>
+            </a>
+            <div class="flex items-center gap-3">
+                <!-- محول اللغة -->
+                <div class="flex items-center space-x-2 rtl:space-x-reverse font-semibold text-gray-700">
+                    <button id="lang-ar" onclick="switchLanguage('ar')" class="hover:text-dzGreen-700 transition font-bold text-dzGreen-700 underline underline-offset-4">العربية</button>
+                    <span class="text-gray-300">|</span>
+                    <button id="lang-tz" onclick="switchLanguage('tz')" class="hover:text-dzGreen-700 transition">ⵜⴰⵎⴰⵣⵉⵖⵜ</button>
+                    <span class="text-gray-300">|</span>
+                    <button id="lang-en" onclick="switchLanguage('en')" class="hover:text-dzGreen-700 transition">English</button>
+                </div>
+                <a href="admin.html" class="bg-dzGreen-700 text-white text-[11px] font-bold px-2.5 py-1 rounded hover:bg-dzGreen-800 transition flex items-center gap-1 hidden">
+                    <i class="fa-solid fa-sliders text-[10px]"></i>
+                    <span id="lbl-admin">لوحة التحكم</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- الترويسة -->
+    <header class="bg-white py-3 px-4 border-b border-gray-200 shadow-sm">
+        <div class="max-w-5xl mx-auto flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-full border-2 border-dzGreen-700 p-0.5 bg-white overflow-hidden shrink-0">
+                    <img id="detail-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
+                </div>
+                <div>
+                    <p class="text-[11px] font-bold text-dzGreen-700" id="detail-ministry">وزارة التربية الوطنية</p>
+                    <h2 class="text-base font-black text-dzDark-800 group-hover:text-dzGreen-700 transition" id="detail-institution">متوسطة بني جماتي</h2>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- شريط التنقل -->
+    <nav class="dz-nav-bg text-white text-xs font-bold py-2.5 px-4 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <!-- Breadcrumb -->
+            <div class="flex items-center gap-1.5 text-white/80">
+                <a href="index.html" class="hover:text-white transition">الرئيسية</a>
+                <i class="fa-solid fa-chevron-left text-[9px] opacity-60"></i>
+                <span id="breadcrumb-section" class="text-white/80">النشاطات التربوية</span>
+                <i class="fa-solid fa-chevron-left text-[9px] opacity-60"></i>
+                <span id="breadcrumb-title" class="text-dzGold-300 truncate max-w-xs">تفاصيل المنشور</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 py-8 md:py-12">
+
+        <!-- Loading Spinner -->
+        <div id="loading-state" class="flex flex-col items-center justify-center py-24 space-y-4">
+            <div class="w-12 h-12 border-4 border-dzGreen-200 border-t-dzGreen-700 rounded-full animate-spin"></div>
+            <p class="text-sm font-bold text-gray-500">جاري تحميل التفاصيل...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 space-y-4 text-center">
+            <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl"></i>
+            </div>
+            <p class="text-base font-bold text-gray-700">لم يتم العثور على المحتوى المطلوب</p>
+            <a href="index.html" class="bg-dzGreen-700 text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-dzGreen-800 transition">
+                <i class="fa-solid fa-home ml-1.5"></i> العودة للرئيسية
+            </a>
+        </div>
+
+        <!-- Detail Content -->
+        <article id="detail-content" class="hidden animate-in">
+
+            <!-- Meta Row: Type Badge + Date + Share -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <div class="flex items-center gap-2">
+                    <span id="detail-type-badge" class="type-badge-activity text-xs font-bold px-3 py-1 rounded-full">
+                        نشاط تربوي
+                    </span>
+                    <span id="detail-date" class="text-xs font-mono font-bold text-gray-500 flex items-center gap-1">
+                        <i class="fa-regular fa-calendar text-dzGreen-600"></i>
+                        <span>28-07-2026</span>
+                    </span>
+                </div>
+
+                <!-- Share Buttons -->
+                <div class="flex items-center gap-2">
+                    <button onclick="copyPageLink()" class="share-btn bg-white border border-gray-200 text-gray-600 hover:border-dzGreen-700 hover:text-dzGreen-700 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-link text-[10px]"></i>
+                        <span>نسخ الرابط</span>
+                    </button>
+                    <a id="share-whatsapp" href="#" target="_blank" class="share-btn bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>مشاركة</span>
+                    </a>
+                    <a id="share-facebook" href="#" target="_blank" class="share-btn bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-brands fa-facebook-f text-[10px]"></i>
+                        <span>مشاركة</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h1 id="detail-title" class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800 leading-tight mb-6">
+                عنوان النشاط
+            </h1>
+
+            <!-- Hero Image -->
+            <div id="detail-image-wrapper" class="mb-8 overflow-hidden rounded-2xl shadow-md border border-gray-100">
+                <img id="detail-image" src="" alt="" class="hero-detail-img hover:scale-105 transition duration-700">
+            </div>
+
+            <!-- File Download Button (for dossiers) -->
+            <div id="detail-file-section" class="hidden mb-6">
+                <a id="detail-file-url" href="#" target="_blank" class="inline-flex items-center gap-2 bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold text-sm px-5 py-3 rounded-lg transition shadow-md">
+                    <i class="fa-solid fa-file-arrow-down text-base"></i>
+                    <span>تحميل الملف</span>
+                </a>
+            </div>
+
+            <!-- Description / Body Content -->
+            <div id="detail-description-wrapper" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 mb-8">
+                <h3 class="text-sm font-extrabold text-dzGreen-700 mb-4 flex items-center gap-2 border-b border-gray-100 pb-3">
+                    <i class="fa-solid fa-align-right"></i>
+                    <span>التفاصيل الكاملة</span>
+                </h3>
+                <div id="detail-description" class="prose-ar text-gray-700 leading-loose whitespace-pre-line text-sm md:text-base">
+                    <!-- Description rendered here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex flex-wrap items-center justify-between gap-4 border-t border-gray-200 pt-6">
+                <a href="index.html" class="flex items-center gap-2 text-sm font-bold text-dzGreen-700 hover:text-dzGreen-800 transition">
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                    <span>العودة للصفحة الرئيسية</span>
+                </a>
+                <button onclick="copyPageLink()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>مشاركة هذا المنشور</span>
+                </button>
+            </div>
+
+        </article>
+
+    </main>
+
+    <!-- التذييل -->
+    <footer class="bg-dzDark-800 text-gray-400 py-6 border-t-4 border-dzGreen-700 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full border border-dzGold-400 p-0.5 bg-white overflow-hidden shrink-0">
+                    <img id="footer-logo-detail" src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
+                </div>
+                <div>
+                    <p class="font-bold text-white text-sm" id="ft-inst">متوسطة بني جماتي</p>
+                    <p class="text-dzGold-400 font-mono text-[11px]">Ayerbaz Alemmas n It Jmatti</p>
+                </div>
+            </div>
+            <p id="ft-copy-detail" class="text-gray-500">متوسطة بني جماتي © 2026 جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white text-xs font-bold px-5 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 flex items-center gap-2 z-50">
+        <i class="fa-solid fa-check-circle text-dzGreen-400"></i>
+        <span id="toast-msg">تم نسخ الرابط!</span>
+    </div>
+
+    <script>
+        const globalCfg = window.CEM_CONFIG || {};
+
+        // --- Google Translate ---
+        let currentLang = localStorage.getItem('cem_lang') || 'ar';
+        let translationCache = JSON.parse(localStorage.getItem('cem_translations') || '{}');
+
+        async function translateText(text, targetLang) {
+            if (!text || text.trim() === '' || targetLang === 'ar') return text;
+            const cacheKey = `${targetLang}:${text}`;
+            if (translationCache[cacheKey]) return translationCache[cacheKey];
+            try {
+                const langMap = { tz: 'ber', en: 'en' };
+                const lang = langMap[targetLang] || 'en';
+                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                const translated = data[0].map(item => item[0]).join('');
+                translationCache[cacheKey] = translated;
+                localStorage.setItem('cem_translations', JSON.stringify(translationCache));
+                return translated;
+            } catch (err) {
+                return text;
+            }
+        }
+
+        async function translatePage() {
+            if (currentLang === 'ar') return;
+            const els = document.querySelectorAll('[data-translate]');
+            for (const el of els) {
+                const key = el.getAttribute('data-translate');
+                if (key) el.textContent = await translateText(key, currentLang);
+            }
+            // Translate dynamic content
+            const dynamicEls = document.querySelectorAll('[data-translate-dynamic]');
+            for (const el of dynamicEls) {
+                const original = el.textContent;
+                if (original) el.textContent = await translateText(original, currentLang);
+            }
+        }
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('cem_lang', lang);
+            const btnAr = document.getElementById('lang-ar');
+            const btnTz = document.getElementById('lang-tz');
+            const btnEn = document.getElementById('lang-en');
+            [btnAr, btnTz, btnEn].forEach(b => b.classList.remove('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4'));
+            
+            if (lang === 'tz') {
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', 'tz');
+                btnTz.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
+                document.getElementById('lbl-back').textContent = 'Dawer';
+                document.getElementById('breadcrumb-section').textContent = 'Inaggaren';
+            } else if (lang === 'en') {
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', 'en');
+                btnEn.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
+                document.getElementById('lbl-back').textContent = 'Back to Home';
+                document.getElementById('breadcrumb-section').textContent = 'Activities';
+            } else {
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', 'ar');
+                btnAr.classList.add('font-bold', 'text-dzGreen-700', 'underline', 'underline-offset-4');
+                document.getElementById('lbl-back').textContent = 'العودة للصفحة الرئيسية';
+            }
+            // Translate dynamic content in background
+            translatePage();
+        }
+
+        // --- Load site settings ---
+        const siteData = JSON.parse(localStorage.getItem('cem_site_data')) || {};
+        const settings = siteData.settings || {};
+
+        if (settings.logoUrl) {
+            document.getElementById('detail-logo').src = settings.logoUrl;
+            document.getElementById('footer-logo-detail').src = settings.logoUrl;
+        }
+        if (settings.ministry) document.getElementById('detail-ministry').textContent = settings.ministry;
+        if (settings.institution) {
+            document.getElementById('detail-institution').textContent = settings.institution;
+            document.getElementById('ft-inst').textContent = settings.institution;
+            document.getElementById('ft-copy-detail').textContent = settings.institution + ' © 2026 جميع الحقوق محفوظة';
+        }
+
+        // --- Parse URL Params ---
+        const params = new URLSearchParams(window.location.search);
+        const itemType = params.get('type');   // activity | announcement | dossier
+        const itemId   = parseInt(params.get('id'));
+
+        // --- Type labels & badges ---
+        const typeConfig = {
+            activity:     { label: 'نشاط تربوي',    badge: 'type-badge-activity',     section: 'النشاطات التربوية',     dataKey: 'activities' },
+            announcement:   { label: 'إعلان رسمي',             badge: 'type-badge-announcement', section: 'الإعلانات والبلاغات',              dataKey: 'announcements' },
+            dossier:        { label: 'ملف وتوجيه',             badge: 'type-badge-dossier',      section: 'الملفات والتوجيهات',              dataKey: 'dossiers' },
+            teacher_memo:   { label: 'فضاء الأساتذة',          badge: 'type-badge-teacher',      section: 'فضاء الأساتذة والتأطير التربوي', dataKey: 'teachers' }
+        };
+
+        const typeConfigTranslated = {
+            ar: typeConfig,
+            tz: {
+                activity: { label: 'Inaggaren', badge: 'type-badge-activity', section: 'Inaggaren', dataKey: 'activities' },
+                announcement: { label: 'Alɣu', badge: 'type-badge-announcement', section: 'Alɣu', dataKey: 'announcements' },
+                dossier: { label: 'Iwulef', badge: 'type-badge-dossier', section: 'Iwulef', dataKey: 'dossiers' },
+                teacher_memo: { label: 'Ismasen', badge: 'type-badge-teacher', section: 'Ismasen', dataKey: 'teachers' }
+            },
+            en: {
+                activity: { label: 'Educational Activity', badge: 'type-badge-activity', section: 'Educational Activities', dataKey: 'activities' },
+                announcement: { label: 'Official Announcement', badge: 'type-badge-announcement', section: 'Announcements', dataKey: 'announcements' },
+                dossier: { label: 'File & Guide', badge: 'type-badge-dossier', section: 'Files & Guides', dataKey: 'dossiers' },
+                teacher_memo: { label: 'Teachers Portal', badge: 'type-badge-teacher', section: 'Teachers & Staff', dataKey: 'teachers' }
+            }
+        };
+
+        async function loadAndRenderDetail() {
+            const binId     = settings.binId     || globalCfg.jsonbinId;
+            const masterKey = settings.masterKey || globalCfg.jsonbinMasterKey;
+
+            let data = siteData;
+
+            if (binId && masterKey) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 5000);
+                    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+                        headers: { 'X-Master-Key': masterKey },
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeout);
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.record) {
+                            data = json.record;
+                            localStorage.setItem('cem_site_data', JSON.stringify(data));
+                        }
+                    }
+                } catch (e) {
+                    console.warn('JSONbin fetch failed, using localStorage.', e);
+                }
+            }
+
+            renderDetail(data);
+
+            // Apply saved language after rendering
+            if (currentLang !== 'ar') {
+                switchLanguage(currentLang);
+            }
+        }
+
+        function renderDetail(data) {
+            const cfg = (typeConfigTranslated[currentLang] || typeConfigTranslated.ar)[itemType] || typeConfig[itemType];
+
+            if (!cfg || !itemId || !data[cfg.dataKey]) {
+                showError(); return;
+            }
+
+            const item = data[cfg.dataKey].find(i => i.id === itemId);
+            if (!item) { showError(); return; }
+
+            // Update page meta
+            document.getElementById('page-title').textContent = item.title + ' | ' + (data.settings?.institution || 'متوسطة بني جماتي');
+            document.getElementById('page-meta-desc').setAttribute('content', item.description || item.title);
+
+            // Breadcrumb
+            document.getElementById('breadcrumb-section').textContent = cfg.section;
+            document.getElementById('breadcrumb-section').setAttribute('data-translate-dynamic', cfg.section);
+            document.getElementById('breadcrumb-title').textContent   = item.title;
+            document.getElementById('breadcrumb-title').setAttribute('data-translate-dynamic', item.title);
+
+            // Badge
+            const badge = document.getElementById('detail-type-badge');
+            badge.textContent = cfg.label;
+            badge.className = cfg.badge + ' text-xs font-bold px-3 py-1 rounded-full';
+
+            // Date
+            const dateEl = document.getElementById('detail-date');
+            if (item.date) {
+                dateEl.querySelector('span').textContent = item.date;
+            } else {
+                dateEl.classList.add('hidden');
+            }
+
+            // Title
+            document.getElementById('detail-title').textContent = item.title;
+            document.getElementById('detail-title').setAttribute('data-translate-dynamic', item.title);
+
+            // Image
+            if (item.image) {
+                document.getElementById('detail-image').src = item.image;
+                document.getElementById('detail-image').alt = item.title;
+            } else {
+                document.getElementById('detail-image-wrapper').classList.add('hidden');
+            }
+
+            // File URL (for any item type with attached file)
+            if (item.fileUrl && item.fileUrl.trim() !== '') {
+                document.getElementById('detail-file-section').classList.remove('hidden');
+                document.getElementById('detail-file-url').href = item.fileUrl;
+            }
+
+            // Description
+            const descEl = document.getElementById('detail-description');
+            if (item.description && item.description.trim() !== '') {
+                descEl.textContent = item.description;
+                descEl.setAttribute('data-translate-dynamic', item.description);
+            } else {
+                descEl.innerHTML = `
+                    <div class="flex items-center gap-2 text-gray-400 bg-gray-50 p-4 rounded-lg">
+                        <i class="fa-solid fa-pen-to-square text-base"></i>
+                        <span>لم يتم إضافة وصف تفصيلي بعد لهذا المنشور.</span>
+                    </div>
+                `;
+            }
+
+            // Share links
+            const pageUrl = encodeURIComponent(window.location.href);
+            const pageTitle = encodeURIComponent(item.title);
+            document.getElementById('share-whatsapp').href = `https://wa.me/?text=${pageTitle}%20${pageUrl}`;
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+
+            // Update footer settings
+            if (data.settings?.logoUrl) {
+                document.getElementById('detail-logo').src = data.settings.logoUrl;
+                document.getElementById('footer-logo-detail').src = data.settings.logoUrl;
+            }
+            if (data.settings?.institution) {
+                document.getElementById('detail-institution').textContent = data.settings.institution;
+                document.getElementById('ft-inst').textContent = data.settings.institution;
+                document.getElementById('ft-copy-detail').textContent = data.settings.institution + ' © 2026 جميع الحقوق محفوظة';
+            }
+            if (data.settings?.ministry) {
+                document.getElementById('detail-ministry').textContent = data.settings.ministry;
+            }
+
+            // Show content, hide loading
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('detail-content').classList.remove('hidden');
+        }
+
+        function showError() {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+        }
+
+        function copyPageLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast('تم نسخ رابط الصفحة بنجاح!');
+            }).catch(() => {
+                // Fallback
+                const el = document.createElement('textarea');
+                el.value = window.location.href;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                showToast('تم نسخ الرابط!');
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+        }
+
+        // Initialize
+        loadAndRenderDetail();
+    </script>
+</body>
+</html>

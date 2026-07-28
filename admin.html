@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم الشاملة | متوسطة بني جماتي</title>
+    
+    <!-- Global Config File for Vercel & Cloud Hosting -->
+    <script src="config.js"></script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dzGreen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            600: '#007a3d',
+                            700: '#006633',
+                            800: '#004d26',
+                            900: '#003319',
+                        },
+                        dzGold: {
+                            400: '#c59d43',
+                            500: '#a88434',
+                        },
+                        dzDark: {
+                            800: '#2b3036',
+                            900: '#1e2227',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #f4f6f8; color: #1e2227; }
+        .logo-circular { border-radius: 50% !important; object-fit: cover !important; clip-path: circle(48.5% at 50% 50%) !important; }
+        .tab-btn.active { background-color: #006633; color: white; border-color: #006633; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="fixed inset-0 bg-dzDark-900/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl space-y-6 text-center border-t-4 border-dzGreen-700">
+            <div class="w-20 h-20 mx-auto rounded-full border-2 border-dzGreen-700 p-0.5 shadow-md overflow-hidden bg-white">
+                <img src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
+            </div>
+            <div>
+                <h2 class="text-2xl font-black text-dzDark-800">لوحة التحكم الإدارية</h2>
+                <p class="text-xs text-gray-500 font-bold mt-1">متوسطة بني جماتي - متصل بـ JSONbin.io السحابي</p>
+            </div>
+            
+            <form onsubmit="handleLogin(event)" class="space-y-4 text-right">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">كلمة المرور الإدارية</label>
+                    <div class="relative">
+                        <input type="password" id="login-password" placeholder="أدخل كلمة المرور..." required class="w-full border border-gray-300 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-dzGreen-700">
+                        <i class="fa-solid fa-lock absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold py-3 rounded-lg transition shadow-md flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>تسجيل الدخول للوحة التحكم</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN INTERFACE -->
+    <div id="admin-app" class="hidden min-h-screen flex-col">
+
+        <!-- ADMIN TOP NAV BAR -->
+        <header class="bg-dzDark-900 text-white border-b-4 border-dzGreen-700 py-3.5 px-4 sticky top-0 z-40 shadow-lg">
+            <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full border border-dzGold-400 bg-white p-0.5 overflow-hidden shrink-0">
+                        <img src="logo.png" alt="Logo" class="w-full h-full logo-circular">
+                    </div>
+                    <div>
+                        <h1 class="text-base font-extrabold text-white">لوحة تحكم متوسطة بني جماتي</h1>
+                        <p class="text-[11px] text-dzGold-400 font-bold">متصل بالسحابة JSONbin (Bin ID: 6a6890...)</p>
+                    </div>
+                </div>
+
+                <!-- Sync Controls & Actions -->
+                <div class="flex items-center gap-2">
+                    <button onclick="exportConfigFile()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-lg shadow flex items-center gap-1 transition" title="تنزيل ملف config.js">
+                        <i class="fa-solid fa-download"></i>
+                        <span>تصدير config.js</span>
+                    </button>
+                    <button onclick="saveAndSyncAll()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>حفظ ومزامنة مع JSONbin</span>
+                    </button>
+                    <a href="index.html" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold px-3 py-2 rounded-lg transition flex items-center gap-1">
+                        <i class="fa-solid fa-globe"></i>
+                        <span class="hidden sm:inline">معاينة الموقع</span>
+                    </a>
+                    <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition" title="تسجيل الخروج">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- STATUS NOTIFICATION BANNER -->
+        <div id="status-bar" class="bg-dzGreen-50 border-b border-dzGreen-200 py-2 px-4 text-xs font-bold text-dzGreen-800 flex justify-between items-center">
+            <div class="max-w-7xl mx-auto w-full flex justify-between items-center">
+                <span id="status-text"><i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم تفعيل الربط السحابي الرسمي مع JSONbin (Bin ID: 6a6890f8f5f4af5e29cc78fd)</span>
+                <span id="sync-badge" class="bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px] font-mono">JSONbin Connected</span>
+            </div>
+        </div>
+
+        <!-- MAIN DASHBOARD CONTENT GRID -->
+        <div class="max-w-7xl mx-auto px-4 py-6 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- SIDEBAR TABS NAV -->
+            <aside class="lg:col-span-3 space-y-2">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 space-y-1 text-xs font-bold">
+                    <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn active w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
+                        <span><i class="fa-solid fa-sliders ml-2"></i> الإعدادات والشعار</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('navbar')" id="tab-navbar" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-blue-700">
+                        <span><i class="fa-solid fa-bars ml-2 text-blue-600"></i> تخصيص القائمة الرئيسية</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('hero')" id="tab-hero" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
+                        <span><i class="fa-solid fa-image ml-2"></i> البنر والغلاف</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('activities')" id="tab-activities" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
+                        <span><i class="fa-solid fa-calendar-check ml-2"></i> النشاطات التربوية</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('announcements')" id="tab-announcements" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
+                        <span><i class="fa-solid fa-bullhorn ml-2"></i> البلاغات والإعلانات</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('dossiers')" id="tab-dossiers" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
+                        <span><i class="fa-solid fa-folder-open ml-2"></i> الملفات والتوجيهات</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('teachers')" id="tab-teachers" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-purple-700">
+                        <span><i class="fa-solid fa-chalkboard-user ml-2 text-purple-600"></i> فضاء الأساتذة والتأطير</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('videos')" id="tab-videos" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-red-700">
+                        <span><i class="fa-solid fa-video ml-2 text-red-600"></i> مكتبة الفيديوهات</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('featured')" id="tab-featured" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-yellow-600">
+                        <span><i class="fa-solid fa-star ml-2 text-yellow-500"></i> المنشور المميز</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('media-upload')" id="tab-media-upload" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-blue-700">
+                        <span><i class="fa-solid fa-cloud-arrow-up ml-2 text-blue-600"></i> مركز رفع الصور (ImgBB & GitHub)</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('jsonbin')" id="tab-jsonbin" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
+                        <span><i class="fa-solid fa-database ml-2"></i> إعدادات المفاتيح و JSONbin</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- MAIN PANEL CONTENT AREA -->
+            <main class="lg:col-span-9 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+
+                <!-- TAB 1: SETTINGS & BRANDING -->
+                <section id="panel-settings" class="space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-sliders text-dzGreen-700 ml-2"></i> الإعدادات العامة والترويسة</h3>
+                        <span class="text-xs text-gray-400">تعديل أسماء المؤسسة والشعار</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-bold">
+                        <div>
+                            <label class="block mb-1 text-gray-700">عنوان الدولة الرسمي</label>
+                            <input type="text" id="cfg-country" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">الوزارة والمديرية</label>
+                            <input type="text" id="cfg-ministry" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">اسم المؤسسة</label>
+                            <input type="text" id="cfg-institution" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">العنوان الفرعي وشعار التميز</label>
+                            <input type="text" id="cfg-subtitle" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط صورة الشعار (Logo URL)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="cfg-logo" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                                <button onclick="triggerQuickUpload('cfg-logo')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg shrink-0 text-xs font-bold flex items-center gap-1" title="رفع صورة من الجهاز إلى ImgBB">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <span>رفع ImgBB</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط صورة الغلاف (Cover URL)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="cfg-cover" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                                <button onclick="triggerQuickUpload('cfg-cover')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg shrink-0 text-xs font-bold flex items-center gap-1" title="رفع صورة من الجهاز إلى ImgBB">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <span>رفع ImgBB</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط فضاء الأولياء الرقمي</label>
+                            <input type="text" id="cfg-awliya" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+                    </div>
+
+                    <!-- قسم تغيير كلمة المرور -->
+                    <div class="border-t pt-5 mt-5 space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-lock text-red-600 ml-2"></i> تغيير كلمة مرور لوحة التحكم</h4>
+                            <span class="text-[11px] text-gray-400 font-bold">يُنصح بتغييرها دورياً</span>
+                        </div>
+                        
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-xs text-yellow-800 font-bold">
+                            <i class="fa-solid fa-triangle-exclamation ml-1"></i> تأكد من تذكر كلمة المرور الجديدة قبل الحفظ. سيتم مزامنتها مع السحابة (JSONbin).
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-bold">
+                            <div>
+                                <label class="block mb-1 text-gray-700">كلمة المرور الحالية</label>
+                                <input type="password" id="cfg-pass-current" placeholder="أدخل كلمة المرور الحالية..." class="w-full border rounded-lg p-2.5 focus:border-red-600 font-mono">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">كلمة المرور الجديدة</label>
+                                <input type="password" id="cfg-pass-new" placeholder="أدخل كلمة المرور الجديدة..." class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">تأكيد كلمة المرور الجديدة</label>
+                                <input type="password" id="cfg-pass-confirm" placeholder="أعد إدخال كلمة المرور الجديدة..." class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button onclick="changeAdminPassword()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-key"></i>
+                                <span>تغيير كلمة المرور وحفظها في السحابة</span>
+                            </button>
+                            <span id="pass-change-status" class="text-xs font-bold"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: HERO BANNER MANAGER -->
+                <section id="panel-hero" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-image text-dzGreen-700 ml-2"></i> إدارة البنر الرئيسي (Hero Section)</h3>
+                    </div>
+
+                    <div class="space-y-4 text-xs font-bold">
+                        <div>
+                            <label class="block mb-1 text-gray-700">فئة البنر الرئيسي</label>
+                            <input type="text" id="hero-cat" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">العنوان الترحيبي الرئيسي</label>
+                            <input type="text" id="hero-tit" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">الوصف الترحيبي</label>
+                            <textarea id="hero-des" rows="3" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700"></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1 text-gray-700">نص الزر الرئيسي</label>
+                                <input type="text" id="hero-btn-txt" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط التوجيه عند النقر</label>
+                                <input type="text" id="hero-btn-lnk" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB: NAVBAR CUSTOMIZATION -->
+                <section id="panel-navbar" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-bars text-blue-600 ml-2"></i> تخصيص القائمة الرئيسية (شريط التنقل)</h3>
+                        <span class="text-xs text-gray-400">تعديل عناصر القائمة وروابطها</span>
+                    </div>
+
+                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-xs text-blue-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> يمكنك إضافة أو حذف أو تعديل عناصر القائمة الرئيسية. اترك حقل "القائمة الفرعية" فارغاً إذا لم تكن هناك قائمة منسدلة.
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-gray-600">عناصر القائمة الرئيسية</span>
+                        <button onclick="addNavItem()" class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-blue-700 transition">+ إضافة عنصر جديد</button>
+                    </div>
+
+                    <div id="navbar-list-container" class="space-y-4">
+                        <!-- Dynamic Navbar Items -->
+                    </div>
+                </section>
+
+                <!-- TAB: FEATURED POST -->
+                <section id="panel-featured" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-star text-yellow-500 ml-2"></i> المنشور المميز (المتميزين والمناسبات)</h3>
+                        <span class="text-xs text-gray-400">منشور مميز يظهر في أعلى الصفحة</span>
+                    </div>
+
+                    <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-200 text-xs text-yellow-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> المنشور المميز يظهر كبانر في أعلى الصفحة الرئيسية. يمكنك استخدامه للإعلان عن المتميزين أو المناسبات الهامة.
+                    </div>
+
+                    <div class="space-y-4 text-xs font-bold">
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="featured-enabled" class="rounded" onchange="currentData.featuredPost = currentData.featuredPost || {}; currentData.featuredPost.enabled = this.checked">
+                                <span class="text-gray-700">تفعيل عرض المنشور المميز</span>
+                            </label>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">نوع المنشور</label>
+                            <select id="featured-type" onchange="currentData.featuredPost = currentData.featuredPost || {}; currentData.featuredPost.type = this.value" class="w-full border rounded-lg p-2.5 focus:border-yellow-500">
+                                <option value="toppers">🏆 المتميزون الأوائل</option>
+                                <option value="event">🎉 مناسبة هامة</option>
+                                <option value="exam">📝 نتائج الامتحانات</option>
+                                <option value="announcement">📢 إعلان عاجل</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">العنوان الرئيسي</label>
+                            <input type="text" id="featured-title" placeholder="مثال: نتائج شهادة التعليم المتوسط 2026" class="w-full border rounded-lg p-2.5 focus:border-yellow-500">
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">العنوان الفرعي / الوصف المختصر</label>
+                            <input type="text" id="featured-subtitle" placeholder="مثال: نتائج التلاميذ المتميزين" class="w-full border rounded-lg p-2.5 focus:border-yellow-500">
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">المحتوى التفصيلي</label>
+                            <textarea id="featured-content" rows="4" placeholder="تفاصيل المنشور المميز..." class="w-full border rounded-lg p-2.5 focus:border-yellow-500"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">صورة المنشور (اختياري)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="featured-image" placeholder="رابط الصورة..." class="w-full border rounded-lg p-2.5 focus:border-yellow-500">
+                                <button onclick="triggerQuickUpload('featured-image')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg shrink-0 text-xs font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-upload"></i> ImgBB
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط الزر (اختياري)</label>
+                            <input type="text" id="featured-btn-link" placeholder="مثال: #toppers أو رابط خارجي" class="w-full border rounded-lg p-2.5 focus:border-yellow-500">
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">نص الزر</label>
+                            <input type="text" id="featured-btn-text" placeholder="مثال: عرض النتائج" class="w-full border rounded-lg p-2.5 focus:border-yellow-500">
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">لون الخلفية</label>
+                            <select id="featured-color" onchange="currentData.featuredPost = currentData.featuredPost || {}; currentData.featuredPost.color = this.value" class="w-full border rounded-lg p-2.5 focus:border-yellow-500">
+                                <option value="gold">ذهبي (افتراضي)</option>
+                                <option value="green">أخضر</option>
+                                <option value="red">أحمر</option>
+                                <option value="blue">أزرق</option>
+                                <option value="purple">بنفسجي</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: ACTIVITIES MANAGER -->
+                <section id="panel-activities" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-calendar-check text-dzGreen-700 ml-2"></i> إدارة النشاطات التربوية</h3>
+                        <button onclick="addActivityItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-dzGreen-800 transition">+ إضافة نشاط جديد</button>
+                    </div>
+
+                    <div id="activities-list-container" class="space-y-4">
+                        <!-- Dynamic Activity Cards -->
+                    </div>
+                </section>
+
+                <!-- TAB 4: ANNOUNCEMENTS MANAGER -->
+                <section id="panel-announcements" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-bullhorn text-dzGreen-700 ml-2"></i> إدارة البلاغات والإعلانات الرسمية</h3>
+                        <button onclick="addAnnouncementItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-dzGreen-800 transition">+ إضافة إعلان جديد</button>
+                    </div>
+
+                    <div id="announcements-list-container" class="space-y-3">
+                        <!-- Dynamic Announcements -->
+                    </div>
+                </section>
+
+                <!-- TAB 5: DOSSIERS MANAGER -->
+                <section id="panel-dossiers" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-folder-open text-dzGreen-700 ml-2"></i> إدارة الملفات والتوجيهات</h3>
+                        <button onclick="addDossierItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-dzGreen-800 transition">+ إضافة ملف جديد</button>
+                    </div>
+
+                    <div id="dossiers-list-container" class="space-y-4">
+                        <!-- Dynamic Dossiers -->
+                    </div>
+                </section>
+
+                <!-- TAB: TEACHERS SPACE -->
+                <section id="panel-teachers" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-chalkboard-user text-purple-600 ml-2"></i> فضاء الأساتذة والتأطير التربوي</h3>
+                        <button onclick="addTeacherItem()" class="bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-purple-700 transition">+ إضافة مستند/جدول جديد</button>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-lg border border-purple-200 text-xs text-purple-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> أضف هنا جداول استعمال الزمن، جداول الحراسة، المناشير الوزارية للأсадلة. يمكنك إرفاق رابط ملف PDF أو صورة.
+                    </div>
+                    <div id="teachers-list-container" class="space-y-4">
+                        <!-- Dynamic Teacher Items -->
+                    </div>
+                </section>
+
+                <!-- TAB: VIDEOS LIBRARY -->
+                <section id="panel-videos" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-video text-red-600 ml-2"></i> مكتبة الفيديوهات والتغطيات المصورة</h3>
+                        <button onclick="addVideoItem()" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-red-700 transition">+ إضافة فيديو جديد</button>
+                    </div>
+                    <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-xs text-red-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> أضف رابط YouTube Embed (مثلاً: https://www.youtube.com/embed/VIDEO_ID) أو رابط تخزين مباشر.
+                    </div>
+                    <div id="videos-list-container" class="space-y-4">
+                        <!-- Dynamic Video Items -->
+                    </div>
+                </section>
+
+                <!-- TAB 6: MEDIA CENTER -->
+                <section id="panel-media-upload" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-cloud-arrow-up text-blue-600 ml-2"></i> مركز رفع واستضافة الصور والملفات (ImgBB & GitHub)</h3>
+                    </div>
+
+                    <!-- BOX 1: ImgBB -->
+                    <div class="bg-blue-50/60 p-5 rounded-xl border border-blue-200 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-sm font-extrabold text-blue-900 flex items-center gap-2">
+                                <i class="fa-solid fa-image text-blue-600"></i>
+                                <span>1. رفع الصور عبر ImgBB API</span>
+                            </h4>
+                            <span class="text-[11px] bg-blue-200 text-blue-800 font-mono px-2 py-0.5 rounded">Free CDN Storage</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-bold">
+                            <div>
+                                <label class="block mb-1 text-gray-700">مفتاح ImgBB API Key</label>
+                                <input type="text" id="imgbb-api-key" placeholder="أدخل مفتاح ImgBB API..." class="w-full border rounded-lg p-2.5 focus:border-blue-600 font-mono">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">اختر صورة من جهازك للرفع</label>
+                                <input type="file" id="imgbb-file-select" accept="image/*" class="w-full bg-white border rounded-lg p-2 text-xs">
+                            </div>
+                        </div>
+
+                        <button onclick="uploadToImgBB()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            <span>رفع الصورة الفوري والحصول على الرابط</span>
+                        </button>
+
+                        <div id="imgbb-result-box" class="hidden p-3 bg-white border border-blue-200 rounded-lg text-xs space-y-2">
+                            <span class="text-dzGreen-700 font-bold block"><i class="fa-solid fa-check-circle ml-1"></i> تم رفع الصورة بنجاح:</span>
+                            <div class="flex gap-2">
+                                <input type="text" id="imgbb-result-url" readonly class="w-full border rounded p-2 font-mono text-[11px] bg-gray-50">
+                                <button onclick="copyImgBBUrl()" class="bg-gray-800 text-white px-3 py-1 rounded text-xs font-bold shrink-0">نسخ الرابط</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOX 2: Cloudinary File & Image Hosting (بديل GitHub) -->
+                    <div class="bg-orange-50 p-5 rounded-xl border border-orange-200 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-sm font-extrabold text-orange-900 flex items-center gap-2">
+                                <i class="fa-solid fa-cloud text-orange-500 text-lg"></i>
+                                <span>2. استضافة الصور والملفات عبر Cloudinary (بديل GitHub)</span>
+                            </h4>
+                            <span class="text-[11px] bg-orange-200 text-orange-900 font-mono px-2 py-0.5 rounded">25GB مجاني</span>
+                        </div>
+
+                        <!-- Info box -->
+                        <div class="bg-white border border-orange-100 rounded-lg p-3 text-xs text-gray-600 leading-relaxed space-y-1">
+                            <p class="font-bold text-orange-800"><i class="fa-solid fa-circle-info ml-1"></i> كيف تحصل على بيانات Cloudinary؟</p>
+                            <p>1. سجّل في <a href="https://cloudinary.com/users/register_free" target="_blank" class="text-orange-600 underline font-bold">cloudinary.com</a> (مجاني 100%)</p>
+                            <p>2. من Dashboard انسخ <strong>Cloud Name</strong></p>
+                            <p>3. من Settings → Upload أنشئ <strong>Upload Preset</strong> (اضبطه على Unsigned)</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-bold">
+                            <div>
+                                <label class="block mb-1 text-gray-700">Cloud Name</label>
+                                <input type="text" id="cld-cloud-name" placeholder="مثال: dxyz123abc" class="w-full border rounded-lg p-2.5 font-mono focus:border-orange-500">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">Upload Preset (Unsigned)</label>
+                                <input type="text" id="cld-upload-preset" placeholder="مثال: cem_preset" class="w-full border rounded-lg p-2.5 font-mono focus:border-orange-500">
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-bold">
+                            <label class="block mb-1 text-gray-700">اختر صورة أو ملف PDF من جهازك</label>
+                            <input type="file" id="cld-file-select" accept="image/*,.pdf,.doc,.docx" class="w-full bg-white border rounded-lg p-2">
+                        </div>
+
+                        <button onclick="uploadToCloudinary()" class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>رفع الملف إلى Cloudinary والحصول على الرابط</span>
+                        </button>
+
+                        <div id="cld-result-box" class="hidden p-3 bg-white border border-orange-200 rounded-lg text-xs space-y-2">
+                            <span class="text-dzGreen-700 font-bold block"><i class="fa-solid fa-check-circle ml-1"></i> تم رفع الملف بنجاح عبر Cloudinary:</span>
+                            <div class="flex gap-2">
+                                <input type="text" id="cld-result-url" readonly class="w-full border rounded p-2 font-mono text-[11px] bg-gray-50">
+                                <button onclick="copyCloudinaryUrl()" class="bg-gray-800 text-white px-3 py-1 rounded text-xs font-bold shrink-0">نسخ الرابط</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 7: JSONBIN INTEGRATION & VERCEL CONFIG EXPORT -->
+                <section id="panel-jsonbin" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-database text-dzGreen-700 ml-2"></i> إعدادات المفاتيح والربط السحابي مع JSONbin</h3>
+                    </div>
+
+                    <div class="bg-dzGreen-50 p-4 rounded-lg border border-dzGreen-200 text-xs space-y-2 leading-relaxed">
+                        <p class="font-bold text-dzGreen-900"><i class="fa-solid fa-circle-check ml-1"></i> تم تفعيل وتأكيد الربط مع JSONbin.io بنجاح:</p>
+                        <p class="text-gray-700">المفاتيح الحالية متصلة ومحفوظة سحابياً ومحلياً على Bin ID: <strong class="font-mono text-dzGreen-800">6a6890f8f5f4af5e29cc78fd</strong>.</p>
+                    </div>
+
+                    <div class="space-y-4 text-xs font-bold">
+                        <div>
+                            <label class="block mb-1 text-gray-700">معرف الحاوية (Bin ID)</label>
+                            <input type="text" id="cfg-binid" placeholder="مثال: 6a6890f8f5f4af5e29cc78fd" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">المفتاح الرئيسي (Master Key / API Key)</label>
+                            <input type="password" id="cfg-masterkey" placeholder="$2a$10$..." class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                        </div>
+
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="testJSONbinConnection()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition">
+                                <i class="fa-solid fa-plug ml-1"></i> اختبار الاتصال بـ JSONbin
+                            </button>
+                            <button onclick="exportConfigFile()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold py-2.5 px-4 rounded-lg transition">
+                                <i class="fa-solid fa-file-code ml-1"></i> تنزيل ملف config.js المحدث لـ Vercel
+                            </button>
+                            <button onclick="resetDefaultData()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2.5 px-4 rounded-lg transition">
+                                <i class="fa-solid fa-rotate-left ml-1"></i> استعادة البيانات الافتراضية
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SAVE BUTTON BOTTOM BAR -->
+                <div class="border-t pt-5 mt-6 flex justify-between items-center">
+                    <span class="text-xs text-gray-400 font-bold" id="last-saved-time">آخر حفظ: اليوم</span>
+                    <button onclick="saveAndSyncAll()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-6 py-3 rounded-lg shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>حفظ التعديلات والمزامنة</span>
+                    </button>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- QUICK UPLOAD MODAL FILE PICKER -->
+    <input type="file" id="quick-file-input" accept="image/*" class="hidden" onchange="handleQuickUpload(event)">
+
+    <!-- SCRIPT FOR ADMIN PANEL & DATA MANAGEMENT -->
+    <script>
+        const globalCfg = window.CEM_CONFIG || {};
+
+        const defaultCemData = {
+            settings: {
+                country: "الجمهورية الجزائرية الديمقراطية الشعبية",
+                ministry: "وزارة التربية الوطنية - مديرية التربية",
+                institution: "متوسطة بني جماتي",
+                subtitle: "Ayerbaz Alemmas n It Jmatti • تعلم - تربية - تفوق",
+                logoUrl: "logo.png",
+                coverUrl: "cover.png",
+                awliyaUrl: globalCfg.awliyaUrl || "https://awlyaa.education.dz/",
+                adminPassword: globalCfg.adminPassword || "admin123",
+                binId: globalCfg.jsonbinId || "6a6890f8f5f4af5e29cc78fd",
+                masterKey: globalCfg.jsonbinMasterKey || "$2a$10$2.qnwRQfkI8MtHWCv4hS2.tV7V2H1Z62sMA.7mFGp0A24x3ptEJp2",
+                imgbbKey: globalCfg.imgbbApiKey || "9e1ce2595a4aaec35807c37067f327ba",
+                cloudinaryName: globalCfg.cloudinaryName || "dindawysv",
+                cloudinaryPreset: globalCfg.cloudinaryPreset || "cem_preset"
+            },
+            hero: {
+                category: "البوابة الرقمية الرسمية • وزارة التربية الوطنية",
+                title: "متوسطة بني جماتي • صرح التربية والتعليم والتفوق",
+                desc: "مرحباً بكم في الفضاء الرقمي التفاعلي لمتوسطة بني جماتي (Ayerbaz Alemmas n It Jmatti). نرافق أبناءنا التلاميذ ونخدم الأولياء والطاقم التربوي عبر منصة تعليمية وإعلامية متكاملة تسعى لبناء جيل واعد، متميز علمياً وخلقياً، ومواكب للتطور الرقمي في ظل قيم وطننا العزيز.",
+                btnText: "استكشف الأنشطة والإعلانات الرسمية",
+                btnLink: "#activities"
+            },
+            featuredPost: {
+                enabled: false,
+                type: "toppers",
+                title: "تهانينا للتلاميذ المتميزين - sesson 2026",
+                subtitle: "ن flashedBy Proudly恭喜 نتائج متميزة في شهادة التعليم المتوسط",
+                content: "يشرف إدارة مؤسسة متوسطة بني جماتي أن تهنئ التلاميذ المتميزين على نتائجهم المشرفة في الامتحانات الرسمية. نفخر بجهودكم ون souhaitez لكم التوفيق والنجاح في مسيرةكم العلمية.",
+                image: "",
+                btnLink: "#toppers",
+                btnText: "عرض النتائج",
+                color: "gold"
+            },
+            activities: [
+                { id: 1, date: "14-07-2026", title: "حفل تكريم التلاميذ المتفوقين في الفصل الدراسي بالمؤسسة", image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80" },
+                { id: 2, date: "08-07-2026", title: "افتتاح المعرض العلمي والنوادي الثقافية لمتوسطة بني جماتي", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80" }
+            ],
+            dossiers: [
+                { id: 1, title: "دليل التسجيل والاطلاع على النتائج عبر فضاء الأولياء الرقمي", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80" },
+                { id: 2, title: "البرنامج الأسبوعي للدعم والمراجعة المحروسة لتلاميذ شهادة التعليم المتوسط", image: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80" }
+            ],
+            announcements: [
+                { id: 1, date: "23-07-2026", title: "إعلان للأولياء حول إعادة تأكيد المعلومات بالفضاء الرقمي" },
+                { id: 2, date: "14-07-2026", title: "برنامج اختبارات الفصل وتوزيع القاعات المدرسية" },
+                { id: 3, date: "08-07-2026", title: "اجتماع جمعية أولياء التلاميذ لمناقشة النتائج" },
+                { id: 4, date: "01-07-2026", title: "برنامج الرحلات الميدانية والأنشطة الرياضية بالمؤسسة" }
+            ],
+            teachers: [
+                { id: 1, type: "timetable", date: "2026-2027", title: "استعمال الزمن الأسبوعي الرسمي للأساتذة", icon: "fa-calendar-week", category: "جدول استعمال الزمن", description: "جدول توزيع الحصص الأسبوعية لكافة الأفواج والسنوات الدراسية لمتوسطة بني جماتي." },
+                { id: 2, type: "invigilation", date: "فروض واختبارات 2026", title: "جدول حراسة الامتحانات والفروض الرسمية", icon: "fa-clipboard-check", category: "جدول الحراسة", description: "توزيع الأساتذة والمؤطرين التربويين على حراسة القاعات وقاعات الامتحانات الرسمية بالمؤسسة." },
+                { id: 3, type: "circular", date: "منشور وزاري 2026", title: "المناشير والتعليمات الوزارية الخاصة بالتأطير التربوي", icon: "fa-file-shield", category: "مناشير وزارية", description: "مجموعة المناشير والتعليمات البيداغوجية والتنظيمية الصادرة عن وزارة التربية الوطنية." }
+            ],
+            videos: [
+                { id: 1, title: "التغطية الخاصة لفعاليات اليوم العلمي والنوادي الثقافية بمؤسسة بني جماتي", date: "14-07-2026", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", thumbnail: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80", category: "تغطية خاصة" },
+                { id: 2, title: "حفل تكريم المتفوقين في الامتحان وتوزيع الجوائز والميداليات", date: "08-07-2026", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", thumbnail: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80", category: "حفل التكريم" }
+            ],
+            navbar: [
+                { id: 1, label: "الرئيسية", link: "#", icon: "", dropdown: [], isActive: true, visible: true },
+                { id: 2, label: "عن المتوسطة", link: "#about", icon: "fa-caret-down", dropdown: [
+                    { id: 21, label: "بطاقة فنية عن المؤسسة", link: "#about" },
+                    { id: 22, label: "الطاقم الإداري والتربوي", link: "#staff" },
+                    { id: 23, label: "النظام الداخلي للمؤسسة", link: "#rules" }
+                ], isActive: false, visible: true },
+                { id: 3, label: "النشاطات التربوية", link: "#activities", icon: "fa-caret-down", dropdown: [
+                    { id: 31, label: "التظاهرات العلمية والتكريمات", link: "#activities" },
+                    { id: 32, label: "النوادي العلمية والرياضية", link: "#clubs" },
+                    { id: 33, label: "معارض الأنشطة الثقافية", link: "#exhibitions" }
+                ], isActive: false, visible: true },
+                { id: 4, label: "الإعلانات والبلاغات", link: "#press", icon: "fa-caret-down", dropdown: [
+                    { id: 41, label: "جدول الامتحانات والفروض", link: "#press" },
+                    { id: 42, label: "إعلانات أولياء التلاميذ", link: "#parents-news" },
+                    { id: 43, label: "رزنامة العطل المدرسية", link: "#holidays" }
+                ], isActive: false, visible: true },
+                { id: 5, label: "الفضاء الرقمي", link: "#", icon: "fa-caret-down", dropdown: [
+                    { id: 51, label: "فضاء الأولياء الرقمي", link: "https://awlyaa.education.dz/", isExternal: true },
+                    { id: 52, label: "حاسبة معدل شهادة BEM", link: "#calculator" }
+                ], isActive: false, visible: true },
+                { id: 6, label: "فضاء الأساتذة", link: "#teachers", icon: "", dropdown: [], isActive: false, visible: true, color: "text-dzGold-300" },
+                { id: 7, label: "معرض الفيديوهات", link: "#videos", icon: "", dropdown: [], isActive: false, visible: true },
+                { id: 8, label: "اتصل بنا", link: "#contact", icon: "", dropdown: [], isActive: false, visible: true }
+            ]
+        };
+
+        let currentData = JSON.parse(localStorage.getItem('cem_site_data')) || defaultCemData;
+
+        if (!currentData.settings.binId || currentData.settings.binId === "") currentData.settings.binId = globalCfg.jsonbinId;
+        if (!currentData.settings.masterKey || currentData.settings.masterKey === "") currentData.settings.masterKey = globalCfg.jsonbinMasterKey;
+
+        let activeTargetInputId = null;
+        let activeArrayIndex = null;
+        let activeArrayType = null;
+
+        // حماية ضد محاولات الدخول المتكررة
+        let loginAttempts = parseInt(localStorage.getItem('cem_login_attempts')) || 0;
+        let lockoutUntil = parseInt(localStorage.getItem('cem_lockout_until')) || 0;
+
+        // Check for existing login session on page load
+        function checkLoginSession() {
+            const isLoggedIn = localStorage.getItem('cem_admin_session');
+            if (isLoggedIn === 'true') {
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-app').classList.remove('hidden');
+                document.getElementById('admin-app').classList.add('flex');
+                initAdminForms();
+            }
+        }
+
+        function updateLoginButton() {
+            const btn = document.querySelector('#login-modal button[type="submit"]');
+            const passInput = document.getElementById('login-password');
+            const now = Date.now();
+
+            if (lockoutUntil > now) {
+                const remaining = Math.ceil((lockoutUntil - now) / 1000);
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-lock"></i> محظور لمدة ${remaining} ثانية`;
+                btn.className = 'w-full bg-gray-400 text-white font-bold py-3 rounded-lg cursor-not-allowed';
+                passInput.disabled = true;
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> <span>تسجيل الدخول للوحة التحكم</span>';
+                btn.className = 'w-full bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold py-3 rounded-lg transition shadow-md flex items-center justify-center gap-2 text-sm';
+                passInput.disabled = false;
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const passInput = document.getElementById('login-password').value;
+            const validPass = currentData.settings.adminPassword || globalCfg.adminPassword || "admin123";
+            const now = Date.now();
+
+            // التحقق من الحظر
+            if (lockoutUntil > now) {
+                const remaining = Math.ceil((lockoutUntil - now) / 1000);
+                alert(`تم حظرك مؤقتاً due to محاولات كثيرة. حاول بعد ${remaining} ثانية.`);
+                return;
+            }
+
+            if (passInput === validPass) {
+                // نجاح تسجيل الدخول - إعادة تعيين العداد
+                loginAttempts = 0;
+                localStorage.setItem('cem_login_attempts', '0');
+                localStorage.removeItem('cem_lockout_until');
+                
+                // Save login session to localStorage
+                localStorage.setItem('cem_admin_session', 'true');
+                
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-app').classList.remove('hidden');
+                document.getElementById('admin-app').classList.add('flex');
+                
+                // Populate forms immediately with local/default data
+                initAdminForms();
+
+                // Background Cloud Sync on Login
+                const binId = currentData.settings.binId || globalCfg.jsonbinId;
+                const masterKey = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
+                if (binId && masterKey) {
+                    try {
+                        const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+                            headers: { 'X-Master-Key': masterKey }
+                        });
+                        if (res.ok) {
+                            const json = await res.json();
+                            if (json.record) {
+                                currentData = json.record;
+                                ensureHeroDefaults();
+                                localStorage.setItem('cem_site_data', JSON.stringify(currentData));
+                                initAdminForms();
+                            }
+                        }
+                    } catch (err) {
+                        console.warn("Could not sync from cloud on login, using local data.");
+                    }
+                }
+            } else {
+                // فشل تسجيل الدخول - زيادة العداد
+                loginAttempts++;
+                localStorage.setItem('cem_login_attempts', loginAttempts.toString());
+
+                // الحظر بعد 5 محاولات فاشلة
+                if (loginAttempts >= 5) {
+                    lockoutUntil = Date.now() + (5 * 60 * 1000); // 5 دقائق حظر
+                    localStorage.setItem('cem_lockout_until', lockoutUntil.toString());
+                    alert('تم حظرك لمدة 5 دقائق due to محاولات دخول كثيرة فاشلة!');
+                    updateLoginButton();
+                } else {
+                    const remaining = 5 - loginAttempts;
+                    alert(`كلمة المرور غير صحيحة! متبقي ${remaining} محاولات قبل الحظر.`);
+                }
+            }
+        }
+
+        function ensureHeroDefaults() {
+            if (!currentData.hero) currentData.hero = {};
+            if (!currentData.hero.category || currentData.hero.category.trim() === "") currentData.hero.category = defaultCemData.hero.category;
+            if (!currentData.hero.title || currentData.hero.title.trim() === "") currentData.hero.title = defaultCemData.hero.title;
+            if (!currentData.hero.desc || currentData.hero.desc.trim() === "") currentData.hero.desc = defaultCemData.hero.desc;
+            if (!currentData.hero.btnText || currentData.hero.btnText.trim() === "") currentData.hero.btnText = defaultCemData.hero.btnText;
+            if (!currentData.hero.btnLink || currentData.hero.btnLink.trim() === "") currentData.hero.btnLink = defaultCemData.hero.btnLink;
+            if (!currentData.navbar || !Array.isArray(currentData.navbar) || currentData.navbar.length === 0) {
+                currentData.navbar = JSON.parse(JSON.stringify(defaultCemData.navbar));
+            }
+            if (!currentData.activities || !Array.isArray(currentData.activities)) currentData.activities = [];
+            if (!currentData.announcements || !Array.isArray(currentData.announcements)) currentData.announcements = [];
+            if (!currentData.dossiers || !Array.isArray(currentData.dossiers)) currentData.dossiers = [];
+            if (!currentData.teachers || !Array.isArray(currentData.teachers)) currentData.teachers = [];
+            if (!currentData.videos || !Array.isArray(currentData.videos)) currentData.videos = [];
+        }
+
+        function logoutAdmin() {
+            // Clear login session from localStorage
+            localStorage.removeItem('cem_admin_session');
+            document.getElementById('admin-app').classList.add('hidden');
+            document.getElementById('admin-app').classList.remove('flex');
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-password').value = '';
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            const sections = ['settings', 'hero', 'navbar', 'featured', 'activities', 'announcements', 'dossiers', 'teachers', 'videos', 'media-upload', 'jsonbin'];
+            sections.forEach(sec => {
+                document.getElementById('panel-' + sec).classList.add('hidden');
+            });
+            document.getElementById('panel-' + tabId).classList.remove('hidden');
+        }
+
+        function initAdminForms() {
+            ensureHeroDefaults();
+
+            document.getElementById('cfg-country').value = currentData.settings.country || '';
+            document.getElementById('cfg-ministry').value = currentData.settings.ministry || '';
+            document.getElementById('cfg-institution').value = currentData.settings.institution || '';
+            document.getElementById('cfg-subtitle').value = currentData.settings.subtitle || '';
+            document.getElementById('cfg-logo').value = currentData.settings.logoUrl || '';
+            document.getElementById('cfg-cover').value = currentData.settings.coverUrl || '';
+            document.getElementById('cfg-awliya').value = currentData.settings.awliyaUrl || '';
+            document.getElementById('cfg-binid').value = currentData.settings.binId || globalCfg.jsonbinId;
+            document.getElementById('cfg-masterkey').value = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
+            document.getElementById('imgbb-api-key').value = currentData.settings.imgbbKey || globalCfg.imgbbApiKey;
+            document.getElementById('cld-cloud-name').value = currentData.settings.cloudinaryName || globalCfg.cloudinaryName || '';
+            document.getElementById('cld-upload-preset').value = currentData.settings.cloudinaryPreset || globalCfg.cloudinaryPreset || '';
+
+            // Clear password change fields
+            document.getElementById('cfg-pass-current').value = '';
+            document.getElementById('cfg-pass-new').value = '';
+            document.getElementById('cfg-pass-confirm').value = '';
+            document.getElementById('pass-change-status').innerHTML = '';
+
+            document.getElementById('hero-cat').value = currentData.hero.category;
+            document.getElementById('hero-tit').value = currentData.hero.title;
+            document.getElementById('hero-des').value = currentData.hero.desc;
+            document.getElementById('hero-btn-txt').value = currentData.hero.btnText;
+            document.getElementById('hero-btn-lnk').value = currentData.hero.btnLink;
+
+            renderActivitiesForm();
+            renderAnnouncementsForm();
+            renderDossiersForm();
+            renderTeachersForm();
+            renderVideosForm();
+            renderNavbarForm();
+
+            // Featured Post
+            const fp = currentData.featuredPost || {};
+            document.getElementById('featured-enabled').checked = fp.enabled || false;
+            document.getElementById('featured-type').value = fp.type || 'toppers';
+            document.getElementById('featured-title').value = fp.title || '';
+            document.getElementById('featured-subtitle').value = fp.subtitle || '';
+            document.getElementById('featured-content').value = fp.content || '';
+            document.getElementById('featured-image').value = fp.image || '';
+            document.getElementById('featured-btn-link').value = fp.btnLink || '';
+            document.getElementById('featured-btn-text').value = fp.btnText || '';
+            document.getElementById('featured-color').value = fp.color || 'gold';
+        }
+
+        function renderNavbarForm() {
+            const container = document.getElementById('navbar-list-container');
+            container.innerHTML = '';
+
+            const navbarList = currentData.navbar || defaultCemData.navbar;
+            if (!navbarList) return;
+
+            navbarList.forEach((item, index) => {
+                const hasDropdown = item.dropdown && item.dropdown.length > 0;
+                let dropdownHtml = '';
+                
+                if (hasDropdown) {
+                    dropdownHtml = `
+                        <div class="mt-3 p-3 bg-gray-100 rounded-lg space-y-2">
+                            <label class="block mb-1 text-gray-600 text-[11px]">القائمة الفرعية (${item.dropdown.length} عناصر)</label>
+                            <div class="space-y-2" id="dropdown-container-${index}">
+                                ${item.dropdown.map((sub, subIndex) => `
+                                    <div class="flex gap-2 items-center">
+                                        <input type="text" value="${sub.label || ''}" 
+                                            onchange="currentData.navbar[${index}].dropdown[${subIndex}].label = this.value" 
+                                            placeholder="اسم العنصر الفرعي" 
+                                            class="flex-1 border rounded p-1.5 text-[11px] focus:border-blue-600">
+                                        <input type="text" value="${sub.link || ''}" 
+                                            onchange="currentData.navbar[${index}].dropdown[${subIndex}].link = this.value" 
+                                            placeholder="الرابط" 
+                                            class="flex-1 border rounded p-1.5 text-[11px] font-mono focus:border-blue-600">
+                                        <button onclick="removeNavItem(${index}, ${subIndex})" class="text-red-500 hover:text-red-700 p-1">
+                                            <i class="fa-solid fa-trash text-[10px]"></i>
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button onclick="addSubNavItem(${index})" class="text-blue-600 hover:text-blue-800 text-[11px] font-bold flex items-center gap-1 mt-2">
+                                <i class="fa-solid fa-plus text-[9px]"></i> إضافة عنصر فرعي
+                            </button>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML += `
+                    <div class="border rounded-lg p-4 bg-gray-50 relative space-y-3 text-xs font-bold">
+                        <div class="flex justify-between items-center">
+                            <span class="inline-block ${item.color || 'bg-blue-600'} text-white px-2 py-0.5 rounded text-[10px]">عنصر #${index + 1}</span>
+                            <div class="flex items-center gap-2">
+                                <label class="flex items-center gap-1 text-[11px]">
+                                    <input type="checkbox" ${item.visible ? 'checked' : ''} 
+                                        onchange="currentData.navbar[${index}].visible = this.checked" 
+                                        class="rounded">
+                                    <span>مرئي</span>
+                                </label>
+                                <button onclick="removeNavItem(${index})" class="text-red-600 hover:text-red-800" title="حذف">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">اسم العنصر</label>
+                                <input type="text" value="${item.label || ''}" 
+                                    onchange="currentData.navbar[${index}].label = this.value" 
+                                    placeholder="مثال: الرئيسية" 
+                                    class="w-full border rounded p-2 focus:border-blue-600">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">الرابط</label>
+                                <input type="text" value="${item.link || ''}" 
+                                    onchange="currentData.navbar[${index}].link = this.value" 
+                                    placeholder="مثال: #activities" 
+                                    class="w-full border rounded p-2 font-mono focus:border-blue-600">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">أيقونة (اختياري)</label>
+                                <input type="text" value="${item.icon || ''}" 
+                                    onchange="currentData.navbar[${index}].icon = this.value" 
+                                    placeholder="مثال: fa-caret-down" 
+                                    class="w-full border rounded p-2 font-mono focus:border-blue-600">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">لون النص (CSS class)</label>
+                                <select onchange="currentData.navbar[${index}].color = this.value" class="w-full border rounded p-2 focus:border-blue-600">
+                                    <option value="" ${!item.color ? 'selected' : ''}>افتراضي (أبيض)</option>
+                                    <option value="text-dzGold-300" ${item.color === 'text-dzGold-300' ? 'selected' : ''}>ذهبي</option>
+                                    <option value="text-red-400" ${item.color === 'text-red-400' ? 'selected' : ''}>أحمر</option>
+                                    <option value="text-yellow-300" ${item.color === 'text-yellow-300' ? 'selected' : ''}>أصفر</option>
+                                    <option value="text-green-300" ${item.color === 'text-green-300' ? 'selected' : ''}>أخضر فاتح</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">مفعل (Active)</label>
+                                <select onchange="currentData.navbar[${index}].isActive = this.value === 'true'" class="w-full border rounded p-2 focus:border-blue-600">
+                                    <option value="false" ${!item.isActive ? 'selected' : ''}>لا</option>
+                                    <option value="true" ${item.isActive ? 'selected' : ''}>نعم</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        ${dropdownHtml}
+                        
+                        ${!hasDropdown ? `
+                            <button onclick="convertToDropdown(${index})" class="text-blue-600 hover:text-blue-800 text-[11px] font-bold flex items-center gap-1 mt-2">
+                                <i class="fa-solid fa-list text-[9px]"></i> تحويل إلى قائمة منسدلة
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        function addNavItem() {
+            if (!currentData.navbar) currentData.navbar = [];
+            currentData.navbar.push({
+                id: Date.now(),
+                label: "عنصر جديد",
+                link: "#",
+                icon: "",
+                dropdown: [],
+                isActive: false,
+                visible: true
+            });
+            renderNavbarForm();
+        }
+
+        function removeNavItem(index) {
+            if (confirm('هل أنت متأكد من حذف هذا العنصر من القائمة؟')) {
+                currentData.navbar.splice(index, 1);
+                renderNavbarForm();
+            }
+        }
+
+        function addSubNavItem(parentIndex) {
+            if (!currentData.navbar[parentIndex].dropdown) {
+                currentData.navbar[parentIndex].dropdown = [];
+            }
+            currentData.navbar[parentIndex].dropdown.push({
+                id: Date.now(),
+                label: "عنصر فرعي جديد",
+                link: "#"
+            });
+            renderNavbarForm();
+        }
+
+        function removeNavItem(parentIndex, subIndex) {
+            currentData.navbar[parentIndex].dropdown.splice(subIndex, 1);
+            renderNavbarForm();
+        }
+
+        function convertToDropdown(index) {
+            if (!currentData.navbar[index].dropdown) {
+                currentData.navbar[index].dropdown = [];
+            }
+            currentData.navbar[index].icon = "fa-caret-down";
+            if (currentData.navbar[index].dropdown.length === 0) {
+                currentData.navbar[index].dropdown.push({
+                    id: Date.now(),
+                    label: "عنصر فرعي 1",
+                    link: currentData.navbar[index].link || "#"
+                });
+            }
+            renderNavbarForm();
+        }
+
+        async function changeAdminPassword() {
+            const currentPass = document.getElementById('cfg-pass-current').value.trim();
+            const newPass = document.getElementById('cfg-pass-new').value.trim();
+            const confirmPass = document.getElementById('cfg-pass-confirm').value.trim();
+            const statusEl = document.getElementById('pass-change-status');
+
+            // Validation
+            if (!currentPass || !newPass || !confirmPass) {
+                statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> يرجى ملء جميع الحقول';
+                statusEl.className = 'text-xs font-bold text-red-600';
+                return;
+            }
+
+            const validCurrentPass = currentData.settings.adminPassword || globalCfg.adminPassword || "admin123";
+            if (currentPass !== validCurrentPass) {
+                statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> كلمة المرور الحالية غير صحيحة';
+                statusEl.className = 'text-xs font-bold text-red-600';
+                return;
+            }
+
+            if (newPass.length < 6) {
+                statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل';
+                statusEl.className = 'text-xs font-bold text-red-600';
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> كلمة المرور الجديدة وتأكيدها غير متطابقين';
+                statusEl.className = 'text-xs font-bold text-red-600';
+                return;
+            }
+
+            // Update password in data
+            currentData.settings.adminPassword = newPass;
+
+            // Save to localStorage
+            localStorage.setItem('cem_site_data', JSON.stringify(currentData));
+
+            // Sync with JSONbin
+            const binId = currentData.settings.binId || globalCfg.jsonbinId;
+            const masterKey = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
+
+            if (binId && masterKey) {
+                statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-600 ml-1"></i> جاري حفظ كلمة المرور الجديدة في السحابة...';
+                statusEl.className = 'text-xs font-bold text-blue-600';
+
+                try {
+                    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': masterKey
+                        },
+                        body: JSON.stringify(currentData)
+                    });
+
+                    if (res.ok) {
+                        statusEl.innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم تغيير كلمة المرور بنجاح ومزامنتها مع السحابة!';
+                        statusEl.className = 'text-xs font-bold text-dzGreen-600';
+                    } else {
+                        statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. فشل المزامنة السحابية';
+                        statusEl.className = 'text-xs font-bold text-yellow-600';
+                    }
+                } catch (err) {
+                    statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. تعذر الاتصال بالشبكة';
+                    statusEl.className = 'text-xs font-bold text-yellow-600';
+                }
+            } else {
+                statusEl.innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم تغيير كلمة المرور بنجاح (محلياً فقط)';
+                statusEl.className = 'text-xs font-bold text-dzGreen-600';
+            }
+
+            // Clear password fields
+            document.getElementById('cfg-pass-current').value = '';
+            document.getElementById('cfg-pass-new').value = '';
+            document.getElementById('cfg-pass-confirm').value = '';
+
+            // Update the login password field in defaultCemData for future logins
+            defaultCemData.settings.adminPassword = newPass;
+        }
+
+        function renderActivitiesForm() {
+            const container = document.getElementById('activities-list-container');
+            container.innerHTML = '';
+
+            currentData.activities.forEach((act, index) => {
+                container.innerHTML += `
+                    <div class="border rounded-lg p-4 bg-gray-50 relative space-y-3 text-xs font-bold">
+                        <button onclick="removeActivity(${index})" class="absolute left-3 top-3 text-red-600 hover:text-red-800" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">نشاط #${index + 1}</span>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">تاريخ النشاط</label>
+                                <input type="text" value="${act.date}" onchange="currentData.activities[${index}].date = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">عنوان النشاط</label>
+                                <input type="text" value="${act.title}" onchange="currentData.activities[${index}].title = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط صورة النشاط</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="act-img-${index}" value="${act.image || ''}" onchange="currentData.activities[${index}].image = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                <button onclick="triggerQuickUpload('act-img-${index}', ${index})" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                    <i class="fa-solid fa-upload"></i> ImgBB
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط ملف/مستند النشاط (PDF / Word - اختياري)</label>
+                            <input type="text" value="${act.fileUrl || ''}" onchange="currentData.activities[${index}].fileUrl = this.value" placeholder="رابط الملف المرفق مع النشاط..." class="w-full border rounded p-2 font-mono focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">الوصف التفصيلي للنشاط (يظهر في صفحة التفاصيل المنفصلة)</label>
+                            <textarea rows="3" onchange="currentData.activities[${index}].description = this.value" placeholder="اكتب تفاصيل وملخص النشاط هنا..." class="w-full border rounded p-2 focus:border-dzGreen-700">${act.description || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addActivityItem() {
+            currentData.activities.push({
+                id: Date.now(),
+                date: "28-07-2026",
+                title: "نشاط تربوي جديد لمؤسسة بني جماتي",
+                image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80"
+            });
+            renderActivitiesForm();
+        }
+
+        function removeActivity(index) {
+            if(confirm('هل أنت متأكد من حذف هذا النشاط؟')) {
+                currentData.activities.splice(index, 1);
+                renderActivitiesForm();
+            }
+        }
+
+        function renderAnnouncementsForm() {
+            const container = document.getElementById('announcements-list-container');
+            container.innerHTML = '';
+
+            currentData.announcements.forEach((ann, index) => {
+                container.innerHTML += `
+                    <div class="border rounded-lg p-3.5 bg-gray-50 space-y-2.5 text-xs font-bold">
+                        <div class="flex justify-between items-center">
+                            <span class="text-dzGreen-700">إعلان #${index + 1}</span>
+                            <button onclick="removeAnnouncement(${index})" class="text-red-600 hover:text-red-800 p-1"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <input type="text" value="${ann.date || ''}" onchange="currentData.announcements[${index}].date = this.value" placeholder="التاريخ" class="border rounded p-2 focus:border-dzGreen-700">
+                            <input type="text" value="${ann.title || ''}" onchange="currentData.announcements[${index}].title = this.value" placeholder="عنوان الإعلان" class="sm:col-span-2 border rounded p-2 focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط صورة الإعلان (مرفق)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="ann-img-${index}" value="${ann.image || ''}" onchange="currentData.announcements[${index}].image = this.value" placeholder="رابط الصورة..." class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                <button onclick="triggerQuickUpload('ann-img-${index}', ${index}, 'announcement')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                    <i class="fa-solid fa-upload"></i> ImgBB
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط ملف/مستند الإعلان (PDF / Word)</label>
+                            <input type="text" value="${ann.fileUrl || ''}" onchange="currentData.announcements[${index}].fileUrl = this.value" placeholder="رابط الملف المرفق..." class="w-full border rounded p-2 font-mono focus:border-dzGreen-700">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">المحتوى التفصيلي للإعلان</label>
+                            <textarea rows="3" onchange="currentData.announcements[${index}].description = this.value" placeholder="تفاصيل الإعلان الكاملة..." class="w-full border rounded p-2 focus:border-dzGreen-700">${ann.description || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addAnnouncementItem() {
+            currentData.announcements.push({ id: Date.now(), date: "28-07-2026", title: "إعلان جديد من الإدارة" });
+            renderAnnouncementsForm();
+        }
+
+        function removeAnnouncement(index) {
+            currentData.announcements.splice(index, 1);
+            renderAnnouncementsForm();
+        }
+
+        function renderDossiersForm() {
+            const container = document.getElementById('dossiers-list-container');
+            container.innerHTML = '';
+
+            currentData.dossiers.forEach((dos, index) => {
+                container.innerHTML += `
+                    <div class="border rounded-lg p-3 bg-gray-50 space-y-2 text-xs font-bold">
+                        <div class="flex justify-between items-center">
+                            <span class="text-dzGreen-700">ملف #${index + 1}</span>
+                            <button onclick="removeDossier(${index})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <input type="text" value="${dos.title || ''}" onchange="currentData.dossiers[${index}].title = this.value" placeholder="عنوان الملف" class="w-full border rounded p-2">
+                        <div class="flex gap-2">
+                            <input type="text" id="dos-img-${index}" value="${dos.image || ''}" onchange="currentData.dossiers[${index}].image = this.value" placeholder="رابط الصورة" class="w-full border rounded p-2">
+                            <button onclick="triggerQuickUpload('dos-img-${index}', ${index}, 'dossier')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                <i class="fa-solid fa-upload"></i> ImgBB
+                            </button>
+                        </div>
+                        <div>
+                            <input type="text" value="${dos.fileUrl || ''}" onchange="currentData.dossiers[${index}].fileUrl = this.value" placeholder="رابط تحميل الملف (PDF / Word)" class="w-full border rounded p-2 font-mono">
+                        </div>
+                        <div>
+                            <textarea rows="2" onchange="currentData.dossiers[${index}].description = this.value" placeholder="الوصف التفصيلي للملف..." class="w-full border rounded p-2">${dos.description || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addDossierItem() {
+            currentData.dossiers.push({ id: Date.now(), title: "دليل تربوي جديد", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80" });
+            renderDossiersForm();
+        }
+
+        function removeDossier(index) {
+            currentData.dossiers.splice(index, 1);
+            renderDossiersForm();
+        }
+
+        function renderTeachersForm() {
+            const container = document.getElementById('teachers-list-container');
+            container.innerHTML = '';
+
+            const teachersList = currentData.teachers || defaultCemData.teachers;
+            if (!teachersList) return;
+
+            teachersList.forEach((tch, index) => {
+                container.innerHTML += `
+                    <div class="border rounded-lg p-4 bg-purple-50 relative space-y-3 text-xs font-bold">
+                        <button onclick="removeTeacher(${index})" class="absolute left-3 top-3 text-red-600 hover:text-red-800" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        <span class="inline-block bg-purple-600 text-white px-2 py-0.5 rounded text-[10px]">أستاذ #${index + 1}</span>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">نوع المستند</label>
+                                <select onchange="currentData.teachers[${index}].type = this.value" class="w-full border rounded p-2 focus:border-purple-600">
+                                    <option value="timetable" ${tch.type === 'timetable' ? 'selected' : ''}>جدول استعمال الزمن</option>
+                                    <option value="invigilation" ${tch.type === 'invigilation' ? 'selected' : ''}>جدول الحراسة</option>
+                                    <option value="circular" ${tch.type === 'circular' ? 'selected' : ''}>مناشير وزارية</option>
+                                    <option value="other" ${tch.type === 'other' ? 'selected' : ''}>مستند آخر</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">الفئة / التسمية</label>
+                                <input type="text" value="${tch.category || ''}" onchange="currentData.teachers[${index}].category = this.value" placeholder="مثال: جدول استعمال الزمن" class="w-full border rounded p-2 focus:border-purple-600">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">السنة الدراسية / التاريخ</label>
+                                <input type="text" value="${tch.date || ''}" onchange="currentData.teachers[${index}].date = this.value" placeholder="مثال: 2026-2027" class="w-full border rounded p-2 focus:border-purple-600">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">عنوان المستند</label>
+                                <input type="text" value="${tch.title || ''}" onchange="currentData.teachers[${index}].title = this.value" placeholder="عنوان المستند" class="w-full border rounded p-2 focus:border-purple-600">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">الأيقونة (FontAwesome class)</label>
+                            <input type="text" value="${tch.icon || ''}" onchange="currentData.teachers[${index}].icon = this.value" placeholder="مثال: fa-calendar-week" class="w-full border rounded p-2 font-mono focus:border-purple-600">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط صورة المستند (اختياري)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="tch-img-${index}" value="${tch.image || ''}" onchange="currentData.teachers[${index}].image = this.value" placeholder="رابط الصورة..." class="w-full border rounded p-2 focus:border-purple-600">
+                                <button onclick="triggerQuickUpload('tch-img-${index}', ${index}, 'teacher')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                    <i class="fa-solid fa-upload"></i> ImgBB
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط الملف المرفق (PDF / Word)</label>
+                            <input type="text" value="${tch.fileUrl || ''}" onchange="currentData.teachers[${index}].fileUrl = this.value" placeholder="رابط تحميل الملف..." class="w-full border rounded p-2 font-mono focus:border-purple-600">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">الوصف التفصيلي</label>
+                            <textarea rows="2" onchange="currentData.teachers[${index}].description = this.value" placeholder="وصف المستند..." class="w-full border rounded p-2 focus:border-purple-600">${tch.description || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addTeacherItem() {
+            if (!currentData.teachers) currentData.teachers = [];
+            currentData.teachers.push({
+                id: Date.now(),
+                type: "timetable",
+                date: "2026-2027",
+                title: "مستند أساتذة جديد",
+                icon: "fa-file-lines",
+                category: "فضاء الأساتذة",
+                description: "وصف المستند الجديد..."
+            });
+            renderTeachersForm();
+        }
+
+        function removeTeacher(index) {
+            if (confirm('هل أنت متأكد من حذف هذا المستند؟')) {
+                currentData.teachers.splice(index, 1);
+                renderTeachersForm();
+            }
+        }
+
+        function renderVideosForm() {
+            const container = document.getElementById('videos-list-container');
+            container.innerHTML = '';
+
+            const videosList = currentData.videos || defaultCemData.videos;
+            if (!videosList) return;
+
+            videosList.forEach((vid, index) => {
+                container.innerHTML += `
+                    <div class="border rounded-lg p-4 bg-red-50 relative space-y-3 text-xs font-bold">
+                        <button onclick="removeVideo(${index})" class="absolute left-3 top-3 text-red-600 hover:text-red-800" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        <span class="inline-block bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">فيديو #${index + 1}</span>
+                        
+                        <div>
+                            <label class="block mb-1 text-gray-700">عنوان الفيديو</label>
+                            <input type="text" value="${vid.title || ''}" onchange="currentData.videos[${index}].title = this.value" placeholder="عنوان الفيديو" class="w-full border rounded p-2 focus:border-red-600">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">التاريخ</label>
+                                <input type="text" value="${vid.date || ''}" onchange="currentData.videos[${index}].date = this.value" placeholder="مثال: 14-07-2026" class="w-full border rounded p-2 focus:border-red-600">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">الفئة</label>
+                                <input type="text" value="${vid.category || ''}" onchange="currentData.videos[${index}].category = this.value" placeholder="مثال: تغطية خاصة" class="w-full border rounded p-2 focus:border-red-600">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط فيديو يوتيوب</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="vid-url-${index}" value="${vid.videoUrl || ''}" 
+                                    onchange="handleVideoUrlChange(${index}, this.value)" 
+                                    oninput="handleVideoUrlInput(${index}, this.value)"
+                                    placeholder="الصق رابط يوتيوب هنا (Watch أو Share أو Embed)" 
+                                    class="w-full border rounded p-2 font-mono focus:border-red-600">
+                                <button onclick="fetchYouTubeThumbnail(${index})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1" title="جلب الصورة المصغرة تلقائياً">
+                                    <i class="fa-brands fa-youtube"></i> جلب
+                                </button>
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">يدعم: youtube.com/watch, youtu.be, youtube.com/embed</p>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط صورة المصغرة (Thumbnail)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="vid-img-${index}" value="${vid.thumbnail || ''}" onchange="currentData.videos[${index}].thumbnail = this.value" placeholder="رابط الصورة المصغرة..." class="w-full border rounded p-2 focus:border-red-600">
+                                <button onclick="triggerQuickUpload('vid-img-${index}', ${index}, 'video')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                    <i class="fa-solid fa-upload"></i> ImgBB
+                                </button>
+                            </div>
+                            ${vid.thumbnail ? `<img src="${vid.thumbnail}" class="mt-2 w-32 h-20 object-cover rounded border" alt="معاينة">` : ''}
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">وصف الفيديو (اختياري)</label>
+                            <textarea rows="2" onchange="currentData.videos[${index}].description = this.value" placeholder="وصف مختصر للفيديو..." class="w-full border rounded p-2 focus:border-red-600">${vid.description || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            url = url.trim();
+            
+            // youtube.com/watch?v=VIDEO_ID
+            let match = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+            if (match) return match[1];
+            
+            // youtu.be/VIDEO_ID
+            match = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+            if (match) return match[1];
+            
+            // youtube.com/embed/VIDEO_ID
+            match = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+            if (match) return match[1];
+            
+            // youtube.com/shorts/VIDEO_ID
+            match = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/);
+            if (match) return match[1];
+            
+            return null;
+        }
+
+        function handleVideoUrlInput(index, value) {
+            // Auto-fetch thumbnail after 1 second of no typing
+            clearTimeout(window._videoInputTimer);
+            window._videoInputTimer = setTimeout(() => {
+                handleVideoUrlChange(index, value);
+            }, 1500);
+        }
+
+        function handleVideoUrlChange(index, value) {
+            const videoId = extractYouTubeId(value);
+            if (videoId) {
+                const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
+                currentData.videos[index].videoUrl = embedUrl;
+                currentData.videos[index].youtubeWatchUrl = watchUrl;
+                document.getElementById(`vid-url-${index}`).value = embedUrl;
+                
+                // Auto-fetch thumbnail
+                fetchYouTubeThumbnail(index);
+            } else if (value.trim() !== '') {
+                currentData.videos[index].videoUrl = value;
+            }
+        }
+
+        function fetchYouTubeThumbnail(index) {
+            const url = currentData.videos[index].videoUrl || document.getElementById(`vid-url-${index}`)?.value || '';
+            const videoId = extractYouTubeId(url);
+            
+            if (videoId) {
+                const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                currentData.videos[index].thumbnail = thumbnailUrl;
+                currentData.videos[index].videoUrl = `https://www.youtube.com/embed/${videoId}`;
+                currentData.videos[index].youtubeWatchUrl = `https://www.youtube.com/watch?v=${videoId}`;
+                
+                const imgInput = document.getElementById(`vid-img-${index}`);
+                if (imgInput) imgInput.value = thumbnailUrl;
+                
+                renderVideosForm();
+            } else {
+                alert('رابط يوتيوب غير صالح. يرجى إدخال رابط فيديو يوتيوب صحيح.');
+            }
+        }
+
+        function addVideoItem() {
+            if (!currentData.videos) currentData.videos = [];
+            currentData.videos.push({
+                id: Date.now(),
+                title: "فيديو جديد للمؤسسة",
+                date: "28-07-2026",
+                category: "تغطية خاصة",
+                videoUrl: "https://www.youtube.com/embed/",
+                thumbnail: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
+                description: "وصف الفيديو الجديد..."
+            });
+            renderVideosForm();
+        }
+
+        function removeVideo(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الفيديو؟')) {
+                currentData.videos.splice(index, 1);
+                renderVideosForm();
+            }
+        }
+
+        function triggerQuickUpload(targetInputId, arrayIndex = null, type = 'activity') {
+            activeTargetInputId = targetInputId;
+            activeArrayIndex = arrayIndex;
+            activeArrayType = type;
+            document.getElementById('quick-file-input').click();
+        }
+
+        async function handleQuickUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const apiKey = document.getElementById('imgbb-api-key').value || globalCfg.imgbbApiKey || 'c8c4ef5e9e03d7e7e600570b55ed99ab';
+            const formData = new FormData();
+            formData.append('image', file);
+
+            document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-600 ml-1"></i> جاري رفع الصورة إلى ImgBB...';
+
+            try {
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+
+                if (json.success && json.data && json.data.url) {
+                    const uploadedUrl = json.data.url;
+                    if (activeTargetInputId) {
+                        const targetEl = document.getElementById(activeTargetInputId);
+                        if (targetEl) targetEl.value = uploadedUrl;
+
+                        if (activeTargetInputId === 'cfg-logo') currentData.settings.logoUrl = uploadedUrl;
+                        if (activeTargetInputId === 'cfg-cover') currentData.settings.coverUrl = uploadedUrl;
+
+                        if (activeArrayType === 'activity' && activeArrayIndex !== null) {
+                            currentData.activities[activeArrayIndex].image = uploadedUrl;
+                        }
+                        if (activeArrayType === 'announcement' && activeArrayIndex !== null) {
+                            currentData.announcements[activeArrayIndex].image = uploadedUrl;
+                        }
+                        if (activeArrayType === 'dossier' && activeArrayIndex !== null) {
+                            currentData.dossiers[activeArrayIndex].image = uploadedUrl;
+                        }
+                        if (activeArrayType === 'teacher' && activeArrayIndex !== null) {
+                            if (!currentData.teachers) currentData.teachers = defaultCemData.teachers;
+                            currentData.teachers[activeArrayIndex].image = uploadedUrl;
+                        }
+                        if (activeArrayType === 'video' && activeArrayIndex !== null) {
+                            if (!currentData.videos) currentData.videos = defaultCemData.videos;
+                            currentData.videos[activeArrayIndex].thumbnail = uploadedUrl;
+                        }
+                    }
+                    document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم رفع الصورة إلى ImgBB وربطها بنجاح!';
+                    alert('تم رفع الصورة إلى ImgBB بنجاح ورابطها هو:\n' + uploadedUrl);
+                } else {
+                    alert('فشل الرفع عبر ImgBB: ' + (json.error ? json.error.message : 'خطأ غير معروف'));
+                }
+            } catch (err) {
+                alert('خطأ في الاتصال بالسيرفر لرفع الصورة: ' + err.message);
+            }
+            event.target.value = '';
+        }
+
+        async function uploadToImgBB() {
+            const fileInput = document.getElementById('imgbb-file-select');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('يرجى اختيار صورة من جهازك أولاً.');
+                return;
+            }
+
+            const apiKey = document.getElementById('imgbb-api-key').value || globalCfg.imgbbApiKey || 'c8c4ef5e9e03d7e7e600570b55ed99ab';
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+
+                if (json.success && json.data && json.data.url) {
+                    document.getElementById('imgbb-result-box').classList.remove('hidden');
+                    document.getElementById('imgbb-result-url').value = json.data.url;
+                    alert('تم رفع الصورة بنجاح وتوليد الرابط المباشر!');
+                } else {
+                    alert('خطأ في الرفع: ' + (json.error ? json.error.message : 'تأكد من المفتاح'));
+                }
+            } catch (e) {
+                alert('خطأ في الاتصال لرفع الصورة: ' + e.message);
+            }
+        }
+
+        function copyImgBBUrl() {
+            const input = document.getElementById('imgbb-result-url');
+            input.select();
+            document.execCommand('copy');
+            alert('تم نسخ رابط ImgBB المباشر بنجاح!');
+        }
+
+        async function uploadToCloudinary() {
+            const cloudName = document.getElementById('cld-cloud-name').value.trim() || globalCfg.cloudinaryName || '';
+            const uploadPreset = document.getElementById('cld-upload-preset').value.trim() || globalCfg.cloudinaryPreset || '';
+            const fileInput = document.getElementById('cld-file-select');
+            const file = fileInput.files[0];
+
+            if (!cloudName || !uploadPreset) {
+                alert('يرجى إدخال Cloud Name و Upload Preset الخاص بحسابك على Cloudinary.');
+                return;
+            }
+            if (!file) {
+                alert('يرجى اختيار ملف أو صورة من جهازك أولاً.');
+                return;
+            }
+
+            document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-orange-500 ml-1"></i> جاري رفع الملف إلى Cloudinary...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', uploadPreset);
+
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+
+                if (json.secure_url) {
+                    document.getElementById('cld-result-box').classList.remove('hidden');
+                    document.getElementById('cld-result-url').value = json.secure_url;
+                    document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم رفع الملف إلى Cloudinary بنجاح!';
+                    alert('تم رفع الملف بنجاح! الرابط المباشر جاهز للنسخ.');
+                } else {
+                    alert('خطأ في الرفع: ' + (json.error ? json.error.message : 'تحقق من Cloud Name و Upload Preset'));
+                    document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> فشل الرفع إلى Cloudinary.';
+                }
+            } catch (err) {
+                alert('خطأ في الاتصال بـ Cloudinary: ' + err.message);
+            }
+        }
+
+        function copyCloudinaryUrl() {
+            const input = document.getElementById('cld-result-url');
+            input.select();
+            document.execCommand('copy');
+            alert('تم نسخ رابط Cloudinary المباشر بنجاح!');
+        }
+
+        function exportConfigFile() {
+            const cfgContent = `window.CEM_CONFIG = {
+    jsonbinId: "${document.getElementById('cfg-binid').value.trim() || globalCfg.jsonbinId}",
+    jsonbinMasterKey: "${document.getElementById('cfg-masterkey').value.trim() || globalCfg.jsonbinMasterKey}",
+    imgbbApiKey: "${document.getElementById('imgbb-api-key').value.trim() || globalCfg.imgbbApiKey}",
+    cloudinaryName: "${document.getElementById('cld-cloud-name').value.trim() || globalCfg.cloudinaryName || ''}",
+    cloudinaryPreset: "${document.getElementById('cld-upload-preset').value.trim() || globalCfg.cloudinaryPreset || ''}",
+    adminPassword: "${currentData.settings.adminPassword || globalCfg.adminPassword}",
+    awliyaUrl: "${document.getElementById('cfg-awliya').value.trim() || globalCfg.awliyaUrl}"
+};`;
+
+            const blob = new Blob([cfgContent], { type: 'text/javascript' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'config.js';
+            a.click();
+            alert('تم تنزيل ملف config.js المحدث! يمكنك رفعه إلى مجلد المشروع على Vercel.');
+        }
+
+        async function saveAndSyncAll() {
+            currentData.settings.country = document.getElementById('cfg-country').value;
+            currentData.settings.ministry = document.getElementById('cfg-ministry').value;
+            currentData.settings.institution = document.getElementById('cfg-institution').value;
+            currentData.settings.subtitle = document.getElementById('cfg-subtitle').value;
+            currentData.settings.logoUrl = document.getElementById('cfg-logo').value;
+            currentData.settings.coverUrl = document.getElementById('cfg-cover').value;
+            currentData.settings.awliyaUrl = document.getElementById('cfg-awliya').value;
+            currentData.settings.binId = document.getElementById('cfg-binid').value.trim();
+            currentData.settings.masterKey = document.getElementById('cfg-masterkey').value.trim();
+            currentData.settings.imgbbKey = document.getElementById('imgbb-api-key').value.trim();
+            currentData.settings.cloudinaryName = document.getElementById('cld-cloud-name').value.trim();
+            currentData.settings.cloudinaryPreset = document.getElementById('cld-upload-preset').value.trim();
+
+            currentData.hero.category = document.getElementById('hero-cat').value;
+            currentData.hero.title = document.getElementById('hero-tit').value;
+            currentData.hero.desc = document.getElementById('hero-des').value;
+            currentData.hero.btnText = document.getElementById('hero-btn-txt').value;
+            currentData.hero.btnLink = document.getElementById('hero-btn-lnk').value;
+
+            // Featured Post
+            currentData.featuredPost = currentData.featuredPost || {};
+            currentData.featuredPost.enabled = document.getElementById('featured-enabled').checked;
+            currentData.featuredPost.type = document.getElementById('featured-type').value;
+            currentData.featuredPost.title = document.getElementById('featured-title').value;
+            currentData.featuredPost.subtitle = document.getElementById('featured-subtitle').value;
+            currentData.featuredPost.content = document.getElementById('featured-content').value;
+            currentData.featuredPost.image = document.getElementById('featured-image').value;
+            currentData.featuredPost.btnLink = document.getElementById('featured-btn-link').value;
+            currentData.featuredPost.btnText = document.getElementById('featured-btn-text').value;
+            currentData.featuredPost.color = document.getElementById('featured-color').value;
+
+            localStorage.setItem('cem_site_data', JSON.stringify(currentData));
+            document.getElementById('last-saved-time').textContent = 'آخر حفظ: ' + new Date().toLocaleTimeString('ar-DZ');
+
+            const binId = currentData.settings.binId || globalCfg.jsonbinId;
+            const masterKey = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
+
+            if (binId && masterKey) {
+                document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-600 ml-1"></i> جاري المزامنة مع JSONbin.io...';
+                try {
+                    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': masterKey
+                        },
+                        body: JSON.stringify(currentData)
+                    });
+                    if (res.ok) {
+                        document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم الحفظ في التخزين المحلي والسحابي (JSONbin) بنجاح وبشكل متزامن!';
+                        alert('تم الحفظ في التخزين المحلي وفي السحابة (JSONbin.io) بنجاح وفي الوقت نفسه!');
+                    } else {
+                        alert('تم الحفظ في التخزين المحلي. يرجى التحقق من صحة Bin ID و Master Key للمزامنة السحابية.');
+                    }
+                } catch (err) {
+                    alert('تم الحفظ في التخزين المحلي (تعذر الاتصال بالشبكة للمزامنة السحابية).');
+                }
+            } else {
+                alert('تم حفظ التغييرات في التخزين المحلي بنجاح!');
+            }
+        }
+
+        async function testJSONbinConnection() {
+            const binId = document.getElementById('cfg-binid').value.trim() || globalCfg.jsonbinId;
+            const masterKey = document.getElementById('cfg-masterkey').value.trim() || globalCfg.jsonbinMasterKey;
+
+            if (!binId || !masterKey) {
+                alert('يرجى إدخال Bin ID و Master Key أولاً قبل اختبار الاتصال.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                    headers: { 'X-Master-Key': masterKey }
+                });
+                if (res.ok) {
+                    alert('الاتصال بـ JSONbin.io ناجح ومطابق 100%!');
+                } else {
+                    alert('فشل الاتصال: يرجى التأكد من الـ Bin ID والـ Master Key الخاص بحسابك.');
+                }
+            } catch (e) {
+                alert('خطأ في الاتصال بالسيرفر: ' + e.message);
+            }
+        }
+
+        function resetDefaultData() {
+            if (confirm('هل أنت متأكد من استعادة البيانات والأنشطة الافتراضية؟')) {
+                currentData = JSON.parse(JSON.stringify(defaultCemData));
+                localStorage.setItem('cem_site_data', JSON.stringify(currentData));
+                initAdminForms();
+                alert('تم استعادة البيانات الافتراضية بنجاح!');
+            }
+        }
+
+        // Check for existing login session on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginSession();
+            updateLoginButton();
+        });
+    </script>
+</body>
+</html>
