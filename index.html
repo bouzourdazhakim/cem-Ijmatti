@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="doc-title">متوسطة بني جماتي | البوابة الرسمية للمؤسسة - وزارة التربية الوطنية</title>
-    <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
-
-
+<link rel="shortcut icon" href="logo1.png" type="image/x-icon">
     <!-- Global Config File for Vercel & Cloud Hosting -->
     <script src="config.js"></script>
 
@@ -71,6 +69,13 @@
             background-color: #ffffff;
             color: #2b3036;
             overflow-x: hidden;
+        }
+
+        body.no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         /* Top navigation bar background */
@@ -491,7 +496,7 @@
 
             <!-- روابط شبكات التواصل الاجتماعي والفضاء الرقمي -->
             <div class="flex items-center space-x-2 rtl:space-x-reverse flex-wrap gap-y-1">
-                            <a href="https://web.facebook.com/hbouzourdaz121" id="social-fb" target="_blank" aria-label="Facebook"
+                <a href="https://web.facebook.com/hbouzourdaz121" id="social-fb" target="_blank" aria-label="Facebook"
                     class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center hover:opacity-90 transition">
                     <i class="fa-brands fa-facebook-f text-xs"></i>
                 </a>
@@ -508,7 +513,7 @@
                  <a href="https://mowadaf.education.dz/" id="social-mowadaf" target="_blank" title="منصة الموظف"
                     class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold text-[11px] px-3 py-1 rounded transition flex items-center gap-1 shadow-sm">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <span>منصة الموظف - بوابة الخدمات الرقمية</span>
+                    <span>منصة الموظف</span>
                 </a>
             </div>
 
@@ -1394,7 +1399,7 @@
                                 <div class="rounded-lg overflow-hidden h-40 sm:h-44 border border-gray-100">
                                     <img src="${act.image}" alt="${act.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer" onclick="event.preventDefault(); openPhotoModal('${act.image}')">
                                 </div>
-                                <a href="detail.html?type=activity&id=${act.id}" class="flex items-center justify-center gap-2 text-xs font-bold text-white bg-dzGreen-700 hover:bg-dzGreen-800 transition py-2 px-3 rounded-lg shadow-sm">
+                                <a href="detail?type=activity&id=${act.id}" class="flex items-center justify-center gap-2 text-xs font-bold text-white bg-dzGreen-700 hover:bg-dzGreen-800 transition py-2 px-3 rounded-lg shadow-sm">
                                     <span>${t('readMore')}</span>
                                     <i class="fa-solid fa-arrow-left text-[10px]"></i>
                                 </a>
@@ -1417,7 +1422,7 @@
                                 <h4 class="text-xs md:text-sm font-bold text-dzGreen-700 leading-snug line-clamp-2">
                                     ${dos.title}
                                 </h4>
-                                <a href="detail.html?type=dossier&id=${dos.id}" class="flex items-center justify-center gap-2 text-xs font-bold text-white bg-dzGreen-700 hover:bg-dzGreen-800 transition py-2 px-3 rounded-lg shadow-sm">
+                                <a href="detail?type=dossier&id=${dos.id}" class="flex items-center justify-center gap-2 text-xs font-bold text-white bg-dzGreen-700 hover:bg-dzGreen-800 transition py-2 px-3 rounded-lg shadow-sm">
                                     <span>${t('viewDetails')}</span>
                                     <i class="fa-solid fa-arrow-left text-[10px]"></i>
                                 </a>
@@ -1433,7 +1438,7 @@
                 siteData.announcements.forEach(ann => {
                     annContainer.innerHTML += `
                         <li class="hover:bg-dzGreen-50/50 transition">
-                            <a href="detail.html?type=announcement&id=${ann.id}" class="flex items-start gap-2.5 text-dzGreen-700 hover:text-dzGreen-800 p-3 block">
+                            <a href="detail?type=announcement&id=${ann.id}" class="flex items-start gap-2.5 text-dzGreen-700 hover:text-dzGreen-800 p-3 block">
                                 <i class="fa-regular fa-file-lines text-base shrink-0 mt-0.5"></i>
                                 <span class="leading-relaxed">
                                     <span class="hover:underline">${ann.title}</span>
@@ -1470,7 +1475,7 @@
                                 </h4>
                                 <p class="text-[11px] text-gray-500 leading-relaxed line-clamp-2">${tch.description || ''}</p>
                             </div>
-                            <a href="detail.html?type=teacher_memo&id=${tch.id}" class="inline-flex items-center justify-between bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold text-xs px-3 py-2 rounded-lg transition shadow-sm w-full">
+                            <a href="detail?type=teacher_memo&id=${tch.id}" class="inline-flex items-center justify-between bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold text-xs px-3 py-2 rounded-lg transition shadow-sm w-full">
                                 <span>${t('viewDoc')}</span>
                                 <i class="fa-solid fa-arrow-left text-[10px]"></i>
                             </a>
@@ -1643,22 +1648,22 @@
 
             (data.activities || []).forEach(item => {
                 if (item.title && item.title.toLowerCase().includes(query)) {
-                    results.push({ type: 'activity', icon: 'fa-calendar-star', color: 'text-blue-600', bg: 'bg-blue-50', label: currentLang === 'en' ? 'Activity' : 'نشاط تربوي', title: item.title, date: item.date, link: `detail.html?type=activity&id=${item.id}` });
+                    results.push({ type: 'activity', icon: 'fa-calendar-star', color: 'text-blue-600', bg: 'bg-blue-50', label: currentLang === 'en' ? 'Activity' : 'نشاط تربوي', title: item.title, date: item.date, link: `detail?type=activity&id=${item.id}` });
                 }
             });
             (data.announcements || []).forEach(item => {
                 if (item.title && item.title.toLowerCase().includes(query)) {
-                    results.push({ type: 'announcement', icon: 'fa-bullhorn', color: 'text-red-600', bg: 'bg-red-50', label: currentLang === 'en' ? 'Announcement' : 'إعلان رسمي', title: item.title, date: item.date, link: `detail.html?type=announcement&id=${item.id}` });
+                    results.push({ type: 'announcement', icon: 'fa-bullhorn', color: 'text-red-600', bg: 'bg-red-50', label: currentLang === 'en' ? 'Announcement' : 'إعلان رسمي', title: item.title, date: item.date, link: `detail?type=announcement&id=${item.id}` });
                 }
             });
             (data.dossiers || []).forEach(item => {
                 if (item.title && item.title.toLowerCase().includes(query)) {
-                    results.push({ type: 'dossier', icon: 'fa-folder-open', color: 'text-purple-600', bg: 'bg-purple-50', label: currentLang === 'en' ? 'Dossier' : 'ملف وتوجيه', title: item.title, date: '', link: `detail.html?type=dossier&id=${item.id}` });
+                    results.push({ type: 'dossier', icon: 'fa-folder-open', color: 'text-purple-600', bg: 'bg-purple-50', label: currentLang === 'en' ? 'Dossier' : 'ملف وتوجيه', title: item.title, date: '', link: `detail?type=dossier&id=${item.id}` });
                 }
             });
             (data.teachers || []).forEach(item => {
                 if ((item.title && item.title.toLowerCase().includes(query)) || (item.description && item.description.toLowerCase().includes(query))) {
-                    results.push({ type: 'teacher', icon: 'fa-chalkboard-teacher', color: 'text-green-600', bg: 'bg-green-50', label: currentLang === 'en' ? 'Teacher Space' : 'فضاء الأساتذة', title: item.title, date: item.date, link: `detail.html?type=teacher_memo&id=${item.id}` });
+                    results.push({ type: 'teacher', icon: 'fa-chalkboard-teacher', color: 'text-green-600', bg: 'bg-green-50', label: currentLang === 'en' ? 'Teacher Space' : 'فضاء الأساتذة', title: item.title, date: item.date, link: `detail?type=teacher_memo&id=${item.id}` });
                 }
             });
             (data.videos || []).forEach(item => {
@@ -1871,7 +1876,7 @@
             // إنشاء عنصر إشعار سري
             const notification = document.createElement('div');
             notification.className = 'fixed top-4 left-1/2 -translate-x-1/2 bg-dzGreen-700 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-bounce';
-            notification.innerHTML = '<i class="fa-solid fa-lock ml-2"></i> تم فتح الدخول السري! <a href="admin.html" class="underline font-bold mr-2">ادخل لوحة التحكم</a>';
+            notification.innerHTML = '<i class="fa-solid fa-lock ml-2"></i> تم فتح الدخول السري! <a href="admin" class="underline font-bold mr-2">ادخل لوحة التحكم</a>';
             document.body.appendChild(notification);
 
             // إزالة الإشعار بعد 5 ثوانٍ
@@ -1884,7 +1889,7 @@
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.shiftKey && e.key === 'A') {
                 e.preventDefault();
-                window.location.href = 'admin.html';
+                window.location.href = 'admin';
             }
         });
 
@@ -1913,6 +1918,24 @@
                 showToast('هذا الرابط غير متوفر حالياً');
             }
         });
+
+        // === حماية الموقع من النسخ والسرقة (قابل للتفعيل من لوحة التحكم) ===
+        if (siteData.settings?.antiCopy !== false) {
+            document.body.classList.add('no-select');
+            document.addEventListener('contextmenu', e => { e.preventDefault(); showToast('النقر بالزرار الأيمن معطّل'); });
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); }
+                if (e.ctrlKey && (e.key === 's' || e.key === 'S')) { e.preventDefault(); }
+                if (e.ctrlKey && (e.key === 'p' || e.key === 'P')) { e.preventDefault(); }
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); }
+                if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); }
+                if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); }
+                if (e.key === 'F12') { e.preventDefault(); }
+            });
+            document.addEventListener('copy', e => { e.preventDefault(); showToast('النسخ معطّل'); });
+            document.addEventListener('cut', e => { e.preventDefault(); });
+            document.addEventListener('dragstart', e => { e.preventDefault(); });
+        }
     </script>
 </body>
 
