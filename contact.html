@@ -36,7 +36,6 @@
     <style>
         body { font-family: 'Cairo', 'Tajawal', sans-serif; background-color: #ffffff; color: #2b3036; overflow-x: hidden; }
         .dz-nav-bg { background-color: #006633; }
-        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         .logo-circular { border-radius: 50% !important; object-fit: cover !important; clip-path: circle(48.5% at 50% 50%) !important; overflow: hidden !important; }
         .accent-bar-dual { width: 4px; background: linear-gradient(to bottom, #006633 50%, #d9251d 50%); border-radius: 2px; }
     </style>
@@ -48,7 +47,7 @@
     <header class="bg-white border-b border-gray-100 py-3 px-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                <a href="index" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center">
+                <a href="index.html" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center">
                     <img src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
                 </a>
                 <div>
@@ -65,7 +64,7 @@
     <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
             <div class="flex items-center text-sm font-bold">
-                <a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2">
+                <a href="index.html" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2">
                     <i class="fa-solid fa-house text-xs"></i>
                     <span>الرئيسية</span>
                 </a>
@@ -83,7 +82,7 @@
 
         <!-- BREADCRUMB -->
         <nav class="text-xs text-gray-400">
-            <a href="index" class="hover:text-dzGreen-700 transition">الرئيسية</a>
+            <a href="index.html" class="hover:text-dzGreen-700 transition">الرئيسية</a>
             <span class="mx-1">/</span>
             <span class="text-gray-600 font-bold">اتصل بنا</span>
         </nav>
@@ -250,7 +249,7 @@
                         <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
                         <span>الديوان الوطني للامتحانات (ONEC)</span>
                     </a>
-                    <a href="index" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
+                    <a href="index.html" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
                         <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
                         <span>العودة للرئيسية</span>
                     </a>
@@ -301,24 +300,6 @@ document.addEventListener('click', function(e) {
         showToast('هذا الرابط غير متوفر حالياً');
     }
 });
-
-// === حماية الموقع من النسخ والسرقة (قابل للتفعيل من لوحة التحكم) ===
-if (siteData.settings?.antiCopy !== false) {
-    document.body.classList.add('no-select');
-    document.addEventListener('contextmenu', e => { e.preventDefault(); showToast('النقر بالزرار الأيمن معطّل'); });
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); }
-        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) { e.preventDefault(); }
-        if (e.ctrlKey && (e.key === 'p' || e.key === 'P')) { e.preventDefault(); }
-        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); }
-        if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); }
-        if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); }
-        if (e.key === 'F12') { e.preventDefault(); }
-    });
-    document.addEventListener('copy', e => { e.preventDefault(); showToast('النسخ معطّل'); });
-    document.addEventListener('cut', e => { e.preventDefault(); });
-    document.addEventListener('dragstart', e => { e.preventDefault(); });
-}
     </script>
 
 </body>

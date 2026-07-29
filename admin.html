@@ -271,25 +271,6 @@
                             </select>
                             <p class="text-[10px] text-gray-400 mt-1">سيتم تطبيق الخط على جميع صفحات الموقع</p>
                         </div>
-
-                        <!-- حماية من النسخ -->
-                        <div class="md:col-span-2">
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0">
-                                        <i class="fa-solid fa-shield-halved text-dzGreen-700"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-bold text-gray-800">حماية الموقع من النسخ</p>
-                                        <p class="text-[11px] text-gray-400">منع تحديد النص، النقر بالزرار الأيمن، واختصارات لوحة المفاتيح</p>
-                                    </div>
-                                </div>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="cfg-anti-copy" class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-300 peer-focus:ring-2 peer-focus:ring-dzGreen-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-dzGreen-700"></div>
-                                </label>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- قسم تغيير كلمة المرور -->
@@ -922,7 +903,6 @@
             document.getElementById('cfg-cover').value = currentData.settings.coverUrl || '';
             document.getElementById('cfg-awliya').value = currentData.settings.awliyaUrl || '';
             document.getElementById('cfg-font-family').value = currentData.settings.fontFamily || 'Cairo';
-            document.getElementById('cfg-anti-copy').checked = currentData.settings.antiCopy !== false;
             document.getElementById('cfg-binid').value = currentData.settings.binId || globalCfg.jsonbinId;
             document.getElementById('cfg-masterkey').value = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
             document.getElementById('imgbb-api-key').value = currentData.settings.imgbbKey || globalCfg.imgbbApiKey;
@@ -1861,7 +1841,6 @@
             currentData.settings.coverUrl = document.getElementById('cfg-cover').value;
             currentData.settings.awliyaUrl = document.getElementById('cfg-awliya').value;
             currentData.settings.fontFamily = document.getElementById('cfg-font-family').value;
-            currentData.settings.antiCopy = document.getElementById('cfg-anti-copy').checked;
             currentData.settings.binId = document.getElementById('cfg-binid').value.trim();
             currentData.settings.masterKey = document.getElementById('cfg-masterkey').value.trim();
             currentData.settings.imgbbKey = document.getElementById('imgbb-api-key').value.trim();
