@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الشاملة | متوسطة بني جماتي</title>
+    <link rel="icon" href="logo1.png" type="image/png">
     
     <!-- Global Config File for Vercel & Cloud Hosting -->
     <script src="config.js"></script>
@@ -151,6 +152,10 @@
                         <span><i class="fa-solid fa-calendar-check ml-2"></i> النشاطات التربوية</span>
                         <i class="fa-solid fa-chevron-left text-[10px]"></i>
                     </button>
+                    <button onclick="switchTab('clubs')" id="tab-clubs" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-teal-700">
+                        <span><i class="fa-solid fa-flask ml-2 text-teal-600"></i> النوادي والأنشطة</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
                     <button onclick="switchTab('announcements')" id="tab-announcements" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
                         <span><i class="fa-solid fa-bullhorn ml-2"></i> البلاغات والإعلانات</span>
                         <i class="fa-solid fa-chevron-left text-[10px]"></i>
@@ -169,6 +174,18 @@
                     </button>
                     <button onclick="switchTab('featured')" id="tab-featured" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-yellow-600">
                         <span><i class="fa-solid fa-star ml-2 text-yellow-500"></i> المنشور المميز</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-dzGreen-700">
+                        <span><i class="fa-solid fa-chart-line ml-2 text-dzGreen-600"></i> الإحصائيات والأرقام</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('students')" id="tab-students" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-blue-700">
+                        <span><i class="fa-solid fa-user-graduate ml-2 text-blue-600"></i> التلاميذ</span>
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button onclick="switchTab('about')" id="tab-about" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-purple-700">
+                        <span><i class="fa-solid fa-building-columns ml-2 text-purple-600"></i> عن المتوسطة</span>
                         <i class="fa-solid fa-chevron-left text-[10px]"></i>
                     </button>
                     <button onclick="switchTab('media-upload')" id="tab-media-upload" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-blue-700">
@@ -270,6 +287,24 @@
                                 </optgroup>
                             </select>
                             <p class="text-[10px] text-gray-400 mt-1">سيتم تطبيق الخط على جميع صفحات الموقع</p>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-gray-700">حجم الخط العام (Font Size)</label>
+                            <select id="cfg-font-size" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 bg-white">
+                                <option value="12">صغير جداً (12px)</option>
+                                <option value="13">صغير (13px)</option>
+                                <option value="14">أصغر قليلاً (14px)</option>
+                                <option value="15">أصغر (15px)</option>
+                                <option value="16" selected>عادي (16px)</option>
+                                <option value="17">متوسط (17px)</option>
+                                <option value="18">أكبر قليلاً (18px)</option>
+                                <option value="19">كبير (19px)</option>
+                                <option value="20">أكبر (20px)</option>
+                                <option value="22">كبير جداً (22px)</option>
+                                <option value="24">ضخم (24px)</option>
+                            </select>
+                            <p class="text-[10px] text-gray-400 mt-1">سيتم تطبيق حجم الخط على جميع صفحات الموقع</p>
                         </div>
 
                         <!-- حماية من النسخ -->
@@ -475,6 +510,37 @@
                     </div>
                 </section>
 
+                <!-- TAB: CLUBS MANAGER -->
+                <section id="panel-clubs" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-flask text-teal-600 ml-2"></i> إدارة النوادي والأنشطة اللامنهجية</h3>
+                        <button onclick="addClubItem()" class="bg-teal-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-teal-700 transition">+ إضافة نادي جديد</button>
+                    </div>
+
+                    <!-- Clubs Page Settings -->
+                    <div class="bg-teal-50 p-4 rounded-lg border border-teal-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-teal-900"><i class="fa-solid fa-gear ml-1"></i> إعدادات صفحة النوادي</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700 text-[11px] font-bold">عنوان الصفحة</label>
+                                <input type="text" id="clubs-page-title" class="w-full border rounded p-2 focus:border-teal-600 text-xs" placeholder="النوادي والأنشطة">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700 text-[11px] font-bold">الوصف الفرعي</label>
+                                <input type="text" id="clubs-page-subtitle" class="w-full border rounded p-2 focus:border-teal-600 text-xs" placeholder="أنشطة علمية ورياضية">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700 text-[11px] font-bold">فئة الصفحة</label>
+                                <input type="text" id="clubs-page-category" class="w-full border rounded p-2 focus:border-teal-600 text-xs" placeholder="النوادي العلمية">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="clubs-list-container" class="space-y-4">
+                        <!-- Dynamic Club Cards -->
+                    </div>
+                </section>
+
                 <!-- TAB 4: ANNOUNCEMENTS MANAGER -->
                 <section id="panel-announcements" class="hidden space-y-6">
                     <div class="border-b pb-3 flex justify-between items-center">
@@ -505,6 +571,26 @@
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-chalkboard-user text-purple-600 ml-2"></i> فضاء الأساتذة والتأطير التربوي</h3>
                         <button onclick="addTeacherItem()" class="bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-purple-700 transition">+ إضافة مستند/جدول جديد</button>
                     </div>
+
+                    <!-- Teachers Page Settings -->
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-purple-900"><i class="fa-solid fa-gear ml-1"></i> إعدادات صفحة الأساتذة</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700 text-[11px] font-bold">عنوان الصفحة</label>
+                                <input type="text" id="tch-page-title" class="w-full border rounded p-2 focus:border-dzGreen-700 text-xs" placeholder="فضاء الأساتذة">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700 text-[11px] font-bold">الوصف الفرعي</label>
+                                <input type="text" id="tch-page-subtitle" class="w-full border rounded p-2 focus:border-dzGreen-700 text-xs" placeholder="استعمال الزمن • الحراسة">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700 text-[11px] font-bold">فئة الصفحة</label>
+                                <input type="text" id="tch-page-category" class="w-full border rounded p-2 focus:border-dzGreen-700 text-xs" placeholder="التأطير التربوي">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="bg-purple-50 p-3 rounded-lg border border-purple-200 text-xs text-purple-800 font-bold">
                         <i class="fa-solid fa-circle-info ml-1"></i> أضف هنا جداول استعمال الزمن، جداول الحراسة، المناشير الوزارية للأсадلة. يمكنك إرفاق رابط ملف PDF أو صورة.
                     </div>
@@ -527,7 +613,141 @@
                     </div>
                 </section>
 
-                <!-- TAB 6: MEDIA CENTER -->
+                <!-- TAB: STATISTICS MANAGEMENT -->
+                <section id="panel-stats" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-chart-line text-dzGreen-700 ml-2"></i> إدارة الإحصائيات والأرقام</h3>
+                        <span class="text-xs text-gray-400">تخصيص الأرقام والعدادات الظاهرة في الصفحة الرئيسية</span>
+                    </div>
+                    <div class="bg-dzGreen-50 p-3 rounded-lg border border-dzGreen-200 text-xs text-dzGreen-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> يمكنك تعديل قيم الإحصائيات الأربعة الظاهرة في الصفحة الرئيسية. العداد سيتحرك تلقائياً عند التمرير.
+                    </div>
+                    <div id="stats-list-container" class="space-y-4">
+                        <!-- Dynamic Stats Items -->
+                    </div>
+                    <button onclick="addStatItem()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-3 py-1.5 rounded transition flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> إضافة إحصائية جديدة
+                    </button>
+                </section>
+
+                <!-- TAB: STUDENTS MANAGEMENT -->
+                <section id="panel-students" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-user-graduate text-blue-600 ml-2"></i> إدارة بيانات التلاميذ</h3>
+                        <span class="text-xs text-gray-400">تعديل إحصائيات التلاميذ وال niveaux والأقسام</span>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-xs text-blue-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> يمكنك تعديل بيانات التلاميذ التي تظهر في صفحة التلاميذ (students.html).
+                    </div>
+
+                    <!-- General Stats -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block mb-1 text-gray-700 text-xs font-bold">إجمالي التلاميذ</label>
+                            <input type="number" id="st-total" class="w-full border rounded p-2 focus:border-dzGreen-700 text-sm" placeholder="850">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700 text-xs font-bold">إناث</label>
+                            <input type="number" id="st-female" class="w-full border rounded p-2 focus:border-dzGreen-700 text-sm" placeholder="420">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700 text-xs font-bold">ذكور</label>
+                            <input type="number" id="st-male" class="w-full border rounded p-2 focus:border-dzGreen-700 text-sm" placeholder="430">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700 text-xs font-bold">متفوقون</label>
+                            <input type="number" id="st-excellent" class="w-full border rounded p-2 focus:border-dzGreen-700 text-sm" placeholder="85">
+                        </div>
+                    </div>
+
+                    <!-- Levels -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-layer-group text-dzGreen-700 ml-1"></i> المستويات</h4>
+                            <button onclick="addStudentLevel()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-[11px] font-bold px-2 py-1 rounded transition"><i class="fa-solid fa-plus ml-1"></i>إضافة</button>
+                        </div>
+                        <div id="st-levels-container" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Sections -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-table-cells text-dzGreen-700 ml-1"></i> الأقسام</h4>
+                            <button onclick="addStudentSection()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-[11px] font-bold px-2 py-1 rounded transition"><i class="fa-solid fa-plus ml-1"></i>إضافة</button>
+                        </div>
+                        <div id="st-sections-container" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Info Items -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-circle-info text-dzGreen-700 ml-1"></i> معلومات إضافية</h4>
+                            <button onclick="addStudentInfo()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-[11px] font-bold px-2 py-1 rounded transition"><i class="fa-solid fa-plus ml-1"></i>إضافة</button>
+                        </div>
+                        <div id="st-info-container" class="space-y-2"></div>
+                    </div>
+                </section>
+
+                <!-- TAB: ABOUT PAGE -->
+                <section id="panel-about" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-building-columns text-purple-600 ml-2"></i> إدارة صفحة "عن المتوسطة"</h3>
+                        <span class="text-xs text-gray-400">تعديل جميع بيانات صفحة about.html</span>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-lg border border-purple-200 text-xs text-purple-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> يمكنك تعديل جميع أقسام صفحة "عن المتوسطة": البطاقة الفنية، الرسالة، الرؤية، التاريخ، الأهداف، والإحصائيات.
+                    </div>
+
+                    <!-- Mission & Vision -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-1 text-gray-700 text-xs font-bold">رسالة المؤسسة</label>
+                            <textarea id="about-mission" rows="4" class="w-full border rounded p-2 focus:border-dzGreen-700 text-xs" placeholder="رسالة المؤسسة..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700 text-xs font-bold">رؤية المؤسسة</label>
+                            <textarea id="about-vision" rows="4" class="w-full border rounded p-2 focus:border-dzGreen-700 text-xs" placeholder="رؤية المؤسسة..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Identity Cards -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-id-card text-dzGreen-700 ml-1"></i> البطاقة الفنية</h4>
+                            <button onclick="addAboutIdentity()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-[11px] font-bold px-2 py-1 rounded transition"><i class="fa-solid fa-plus ml-1"></i>إضافة</button>
+                        </div>
+                        <div id="about-identity-container" class="space-y-2"></div>
+                    </div>
+
+                    <!-- History Timeline -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-clock-rotate-left text-dzGreen-700 ml-1"></i> تاريخ المؤسسة</h4>
+                            <button onclick="addAboutHistory()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-[11px] font-bold px-2 py-1 rounded transition"><i class="fa-solid fa-plus ml-1"></i>إضافة</button>
+                        </div>
+                        <div id="about-history-container" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Goals -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-bullseye text-dzGreen-700 ml-1"></i> الأهداف الاستراتيجية</h4>
+                            <button onclick="addAboutGoal()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-[11px] font-bold px-2 py-1 rounded transition"><i class="fa-solid fa-plus ml-1"></i>إضافة</button>
+                        </div>
+                        <div id="about-goals-container" class="space-y-2"></div>
+                    </div>
+
+                    <!-- About Stats -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-chart-simple text-dzGreen-700 ml-1"></i> إحصائيات الصفحة</h4>
+                            <button onclick="addAboutStat()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-[11px] font-bold px-2 py-1 rounded transition"><i class="fa-solid fa-plus ml-1"></i>إضافة</button>
+                        </div>
+                        <div id="about-stats-container" class="space-y-2"></div>
+                    </div>
+                </section>
+
+                <!-- TAB: MEDIA CENTER -->
                 <section id="panel-media-upload" class="hidden space-y-6">
                     <div class="border-b pb-3 flex justify-between items-center">
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-cloud-arrow-up text-blue-600 ml-2"></i> مركز رفع واستضافة الصور والملفات (ImgBB & GitHub)</h3>
@@ -713,6 +933,82 @@
                 btnText: "",
                 color: "red"
             },
+            stats: [
+                { id: 1, icon: "fa-user-graduate", value: 850, label: "التلاميذ المسجلون", suffix: "+", link: "students.html" },
+                { id: 2, icon: "fa-chalkboard-user", value: 52, label: "الأساتذة والمؤطرون", suffix: "", link: "" },
+                { id: 3, icon: "fa-calendar-alt", value: 45, label: "سنوات الخبرة والعطاء", suffix: "+", link: "" },
+                { id: 4, icon: "fa-flask", value: 15, label: "النوادي والأنشطة", suffix: "", link: "clubs.html" }
+            ],
+            students: {
+                total: 850,
+                female: 420,
+                male: 430,
+                excellent: 85,
+                levels: [
+                    { name: "السنة الأولى متوسط", count: 290, icon: "fa-book-open" },
+                    { name: "السنة الثانية متوسط", count: 280, icon: "fa-book" },
+                    { name: "السنة الثالثة متوسط", count: 280, icon: "fa-graduation-cap" }
+                ],
+                sections: [
+                    { name: "شعبة علوم تجريبية", count: 120, icon: "fa-flask" },
+                    { name: "شعبة رياضيات", count: 95, icon: "fa-square-root-variable" },
+                    { name: "شعبة تقني رياضي", count: 85, icon: "fa-gears" },
+                    { name: "شعبة لغات أجنبي", count: 110, icon: "fa-language" },
+                    { name: "شعبة آداب وفلسفة", count: 90, icon: "fa-book-open" },
+                    { name: "شعبة تسيير واقتصاد", count: 80, icon: "fa-chart-line" }
+                ],
+                info: [
+                    { title: "نسبة الإنجاح", description: "تم تسجيل نسبة إنجاح مرتفعة هذا الموسم", icon: "fa-circle-check" },
+                    { title: "المتفوقون", description: "عدد المتفوقين في الفصل الأول", icon: "fa-trophy" },
+                    { title: "الانتقاء", description: "تلاميذ منخرطون في برامج الترقية", icon: "fa-graduation-cap" },
+                    { title: "التأطير", description: "نسبة التأطير التربوي والأخلاقي", icon: "fa-shield-halved" }
+                ]
+            },
+            about: {
+                identity: [
+                    { icon: "fa-landmark", label: "اسم المؤسسة", value: "متوسطة إسغيد علي - بني جماتي" },
+                    { icon: "fa-map-location-dot", label: "الولاية / البلدية", value: "سطيف - عين الكبيرة" },
+                    { icon: "fa-calendar-check", label: "تاريخ التأسيس", value: "2003 / 2004" },
+                    { icon: "fa-users", label: "الطاقة الاستيعابية", value: "أكثر من 600 تلميذ" },
+                    { icon: "fa-chalkboard-user", label: "الطاقم التربوي", value: "أكثر من 40 أستاذاً" },
+                    { icon: "fa-graduation-cap", label: "الشعب التعليمية", value: "3 أقسام / سنة" }
+                ],
+                mission: "تقديم تعليم متميز يرتكز على القيم الأخلاقية والوطنية، وتنمية قدرات التلاميذ علمياً ورياضياً وثقافياً، ومواكبة المستجدات التربوية والتقنية، مع توفير بيئة تعليمية آمنة ومحفزة للإبداع والابتكار.",
+                vision: "أن نكون مؤسسة تعليمية مرجعية في المنطقة، تُخرج جيلاً واعياً ومتمكناً من المهارات، قادر على المساهمة في بناء الجزائر الجديدة، من خلال تعليم عصري يجمع بين العلم والمعرفة والأخلاق.",
+                history: [
+                    { year: "2003 - 2004", title: "تأسيس المؤسسة", description: "تأسست متوسطة إسغيد علي بني جماتي بموجب القرار الوزاري لسنة 2003، لتكون إطاراً تعليمياً يخدم تلاميذ المنطقة.", color: "green" },
+                    { year: "2010 - 2015", title: "مرحلة التوسع والتحديث", description: "إنشاء فضاءات جديدة تشمل المختبرات العلمية، قاعة المعلوماتية، والمكتبة مع أحدث الوسائل التعليمية.", color: "gold" },
+                    { year: "2016 - 2020", title: "التحوّل الرقمي", description: "إطلاق البوابة الرقمية الرسمية وتطبيق نظام التعليم المساند بالتكنولوجيا وإنشاء فضاء الأولياء الرقمي.", color: "red" },
+                    { year: "2021 - 2026", title: "التميّز والريادة", description: "تحقيق نتائج متميّزة في الامتحانات الرسمية وتنظيم معارض علمية وأنشطة ثقافية ورياضية.", color: "green" }
+                ],
+                goals: [
+                    { icon: "fa-book-open", title: "التحصيل العلمي", description: "رفع مستوى التحصيل العلمي وضمان اجتياز الامتحانات بنسبة نجاح مرتفعة." },
+                    { icon: "fa-heart", title: "التربيّة والأخلاق", description: "غرس القيم الوطنية والأخلاقية وتكوين مواطنين صالحين محبّين لوطنهم." },
+                    { icon: "fa-laptop-code", title: "المهارات الرقمية", description: "تطوير مهارات التلاميذ في تكنولوجيا المعلومات واستعمال الأدوات الرقمية." },
+                    { icon: "fa-trophy", title: "التفوق الرياضي", description: "تشجيع ممارسة الرياضة والمشاركة في التظاهرات الرياضية." },
+                    { icon: "fa-people-group", title: "الشراكات المجتمعية", description: "تعزيز التكامل بين المؤسسة والأسرة والمجتمع المحلي." },
+                    { icon: "fa-shield-halved", title: "الأمن المدرسي", description: "ضمان بيئة مدرسية آمنة وصحية لجميع التلاميذ والطاقم." }
+                ],
+                stats: [
+                    { icon: "fa-users", value: "600+", label: "تلميذ" },
+                    { icon: "fa-chalkboard-user", value: "40+", label: "أستاذ" },
+                    { icon: "fa-door-open", value: "18", label: "قاعة" },
+                    { icon: "fa-award", value: "20+", label: "سنة خبرة" }
+                ]
+            },
+            clubsPage: {
+                title: "النوادي والأنشطة اللامنهجية",
+                subtitle: "أنشطة علمية ورياضية وثقافية لتطوير مهارات التلاميذ",
+                category: "النوادي العلمية والرياضية"
+            },
+            clubs: [
+                { id: 1, name: "النادي العلمي", description: "اكتشاف عالم العلوم والتجارب العملية لتطوير الحس العلمي لدى التلاميذ", category: "علوم", supervisor: "أ. محمد بن عمر", schedule: "الثلاثاء 14:00", status: "active", icon: "fa-flask", image: "", joinLink: "#" },
+                { id: 2, name: "النادي الرياضي", description: "التمارين الرياضية والمسابقات الرياضية المختلفة للياقة البدنية", category: "رياضة", supervisor: "أ. كريم بوزيد", schedule: "الأربعاء 14:00", status: "active", icon: "fa-futbol", image: "", joinLink: "#" },
+                { id: 3, name: "النادي الثقافي", description: "القراءة والنقاش الثقافي والأنشطة الأدبية لتنمية المعرفة", category: "ثقافة", supervisor: "أ. فاطمة الزهراء", schedule: "الخميس 14:00", status: "active", icon: "fa-book-open", image: "", joinLink: "#" },
+                { id: 4, name: "نادي المعلوماتية", description: "تعلم البرمجة وتقنية المعلومات والأدوات الرقمية", category: "تكنولوجيا", supervisor: "أ. حكيم بوزورداز", schedule: "الاثنين 14:00", status: "active", icon: "fa-laptop-code", image: "", joinLink: "#" },
+                { id: 5, name: "النادي الفني", description: "الرسم والتصميم والأنشطة الفنية لتنمية الإبداع", category: "فنون", supervisor: "أ. نادية بن علي", schedule: "الثلاثاء 15:00", status: "active", icon: "fa-palette", image: "", joinLink: "#" },
+                { id: 6, name: "نادي الإبداع", description: "الكتابة الإبداعية والشعر والأدب لتنمية الموهبة الأدبية", category: "أدب", supervisor: "أ. سعيد مرابط", schedule: "الأحد 14:00", status: "active", icon: "fa-feather-pointed", image: "", joinLink: "#" }
+            ],
             activities: [
                 { id: 1, date: "14-07-2026", title: "حفل تكريم التلاميذ المتفوقين في الفصل الدراسي بالمؤسسة", image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80" },
                 { id: 2, date: "08-07-2026", title: "افتتاح المعرض العلمي والنوادي الثقافية لمتوسطة بني جماتي", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80" }
@@ -727,6 +1023,11 @@
                 { id: 3, date: "08-07-2026", title: "اجتماع جمعية أولياء التلاميذ لمناقشة النتائج" },
                 { id: 4, date: "01-07-2026", title: "برنامج الرحلات الميدانية والأنشطة الرياضية بالمؤسسة" }
             ],
+            teachersPage: {
+                title: "فضاء الأساتذة والتأطير التربوي",
+                subtitle: "استعمال الزمن • الحراسة • المناشير الرسمية",
+                category: "التأطير التربوي"
+            },
             teachers: [
                 { id: 1, type: "timetable", date: "2026-2027", title: "استعمال الزمن الأسبوعي الرسمي للأساتذة", icon: "fa-calendar-week", category: "جدول استعمال الزمن", description: "جدول توزيع الحصص الأسبوعية لكافة الأفواج والسنوات الدراسية لمتوسطة بني جماتي." },
                 { id: 2, type: "invigilation", date: "فروض واختبارات 2026", title: "جدول حراسة الامتحانات والفروض الرسمية", icon: "fa-clipboard-check", category: "جدول الحراسة", description: "توزيع الأساتذة والمؤطرين التربويين على حراسة القاعات وقاعات الامتحانات الرسمية بالمؤسسة." },
@@ -889,6 +1190,24 @@
             if (!currentData.dossiers || !Array.isArray(currentData.dossiers)) currentData.dossiers = [];
             if (!currentData.teachers || !Array.isArray(currentData.teachers)) currentData.teachers = [];
             if (!currentData.videos || !Array.isArray(currentData.videos)) currentData.videos = [];
+            if (!currentData.stats || !Array.isArray(currentData.stats) || currentData.stats.length === 0) {
+                currentData.stats = JSON.parse(JSON.stringify(defaultCemData.stats));
+            }
+            if (!currentData.students) {
+                currentData.students = JSON.parse(JSON.stringify(defaultCemData.students));
+            }
+            if (!currentData.about) {
+                currentData.about = JSON.parse(JSON.stringify(defaultCemData.about));
+            }
+            if (!currentData.teachersPage) {
+                currentData.teachersPage = JSON.parse(JSON.stringify(defaultCemData.teachersPage));
+            }
+            if (!currentData.clubs) {
+                currentData.clubs = JSON.parse(JSON.stringify(defaultCemData.clubs));
+            }
+            if (!currentData.clubsPage) {
+                currentData.clubsPage = JSON.parse(JSON.stringify(defaultCemData.clubsPage));
+            }
         }
 
         function logoutAdmin() {
@@ -904,7 +1223,7 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
 
-            const sections = ['settings', 'hero', 'navbar', 'featured', 'activities', 'announcements', 'dossiers', 'teachers', 'videos', 'media-upload', 'jsonbin'];
+            const sections = ['settings', 'hero', 'navbar', 'featured', 'stats', 'students', 'about', 'activities', 'clubs', 'announcements', 'dossiers', 'teachers', 'videos', 'media-upload', 'jsonbin'];
             sections.forEach(sec => {
                 document.getElementById('panel-' + sec).classList.add('hidden');
             });
@@ -922,6 +1241,7 @@
             document.getElementById('cfg-cover').value = currentData.settings.coverUrl || '';
             document.getElementById('cfg-awliya').value = currentData.settings.awliyaUrl || '';
             document.getElementById('cfg-font-family').value = currentData.settings.fontFamily || 'Cairo';
+            document.getElementById('cfg-font-size').value = currentData.settings.fontSize || '16';
             document.getElementById('cfg-anti-copy').checked = currentData.settings.antiCopy !== false;
             document.getElementById('cfg-binid').value = currentData.settings.binId || globalCfg.jsonbinId;
             document.getElementById('cfg-masterkey').value = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
@@ -935,6 +1255,16 @@
             document.getElementById('cfg-pass-confirm').value = '';
             document.getElementById('pass-change-status').innerHTML = '';
 
+            // Apply font size from settings
+            if (currentData.settings.fontSize) {
+                document.documentElement.style.fontSize = currentData.settings.fontSize + 'px';
+            }
+            // Apply font family from settings
+            if (currentData.settings.fontFamily) {
+                document.documentElement.style.setProperty('font-family', currentData.settings.fontFamily + ', sans-serif', 'important');
+                document.body.style.setProperty('font-family', currentData.settings.fontFamily + ', sans-serif', 'important');
+            }
+
             document.getElementById('hero-cat').value = currentData.hero.category;
             document.getElementById('hero-tit').value = currentData.hero.title;
             document.getElementById('hero-des').value = currentData.hero.desc;
@@ -946,6 +1276,10 @@
             renderDossiersForm();
             renderTeachersForm();
             renderVideosForm();
+            renderStatsForm();
+            renderStudentsForm();
+            renderAboutForm();
+            renderClubsForm();
             renderNavbarForm();
 
             // Featured Post
@@ -1453,6 +1787,12 @@
         }
 
         function renderTeachersForm() {
+            // Render teachersPage settings
+            const page = currentData.teachersPage || defaultCemData.teachersPage || {};
+            document.getElementById('tch-page-title').value = page.title || '';
+            document.getElementById('tch-page-subtitle').value = page.subtitle || '';
+            document.getElementById('tch-page-category').value = page.category || '';
+
             const container = document.getElementById('teachers-list-container');
             container.innerHTML = '';
 
@@ -1684,6 +2024,376 @@
             }
         }
 
+        function renderStatsForm() {
+            const container = document.getElementById('stats-list-container');
+            container.innerHTML = '';
+
+            const statsList = currentData.stats || defaultCemData.stats;
+            statsList.forEach((stat, index) => {
+                const iconOptions = [
+                    'fa-user-graduate', 'fa-chalkboard-user', 'fa-calendar-alt', 'fa-flask',
+                    'fa-book-open', 'fa-school', 'fa-trophy', 'fa-medal', 'fa-graduation-cap',
+                    'fa-users', 'fa-building', 'fa-leaf', 'fa-hand-holding-heart', 'fa-chart-simple',
+                    'fa-microscope', 'fa-palette', 'fa-music', 'fa-laptop-code', 'fa-globe', 'fa-star'
+                ];
+                const iconOptsHtml = iconOptions.map(ico =>
+                    `<option value="${ico}" ${stat.icon === ico ? 'selected' : ''}>${ico}</option>`
+                ).join('');
+
+                container.innerHTML += `
+                    <div class="border rounded-lg p-4 bg-gray-50 relative space-y-3 text-xs font-bold">
+                        <div class="flex justify-between items-center">
+                            <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">إحصائية #${index + 1}</span>
+                            <button onclick="removeStatItem(${index})" class="text-red-600 hover:text-red-800 p-1" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">الأيقونة</label>
+                                <select onchange="currentData.stats[${index}].icon = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700 font-mono text-[11px]">
+                                    ${iconOptsHtml}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">القيمة الرقمية</label>
+                                <input type="number" value="${stat.value}" onchange="currentData.stats[${index}].value = parseInt(this.value) || 0" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">النص/التسمية</label>
+                                <input type="text" value="${stat.label}" onchange="currentData.stats[${index}].label = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">اللاحقة (مثال: +)</label>
+                                <input type="text" value="${stat.suffix || ''}" onchange="currentData.stats[${index}].suffix = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700" maxlength="5" style="width:80px">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط البطاقة</label>
+                                <input type="text" value="${stat.link || ''}" onchange="currentData.stats[${index}].link = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700" placeholder="مثلاً: activities.html">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addStatItem() {
+            if (!currentData.stats) currentData.stats = [];
+            currentData.stats.push({
+                id: Date.now(),
+                icon: "fa-star",
+                value: 0,
+                label: "إحصائية جديدة",
+                suffix: "",
+                link: ""
+            });
+            renderStatsForm();
+        }
+
+        function removeStatItem(index) {
+            if (confirm('هل أنت متأكد من حذف هذه الإحصائية؟')) {
+                currentData.stats.splice(index, 1);
+                renderStatsForm();
+            }
+        }
+
+        // Students Management Functions
+        function renderStudentsForm() {
+            const data = currentData.students || defaultCemData.students;
+            document.getElementById('st-total').value = data.total || '';
+            document.getElementById('st-female').value = data.female || '';
+            document.getElementById('st-male').value = data.male || '';
+            document.getElementById('st-excellent').value = data.excellent || '';
+            renderStudentLevels(data.levels || []);
+            renderStudentSections(data.sections || []);
+            renderStudentInfo(data.info || []);
+        }
+
+        function saveStudentsData() {
+            if (!currentData.students) currentData.students = {};
+            currentData.students.total = parseInt(document.getElementById('st-total').value) || 0;
+            currentData.students.female = parseInt(document.getElementById('st-female').value) || 0;
+            currentData.students.male = parseInt(document.getElementById('st-male').value) || 0;
+            currentData.students.excellent = parseInt(document.getElementById('st-excellent').value) || 0;
+        }
+
+        function renderStudentLevels(levels) {
+            const container = document.getElementById('st-levels-container');
+            container.innerHTML = levels.map((l, i) => `
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+                    <input type="text" value="${l.name || ''}" onchange="currentData.students.levels[${i}].name=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="اسم المستوى">
+                    <input type="number" value="${l.count || ''}" onchange="currentData.students.levels[${i}].count=parseInt(this.value)||0" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العدد">
+                    <button onclick="removeStudentLevel(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addStudentLevel() {
+            if (!currentData.students) currentData.students = {};
+            if (!currentData.students.levels) currentData.students.levels = [];
+            currentData.students.levels.push({ name: "", count: 0, icon: "fa-book" });
+            renderStudentLevels(currentData.students.levels);
+        }
+
+        function removeStudentLevel(index) {
+            currentData.students.levels.splice(index, 1);
+            renderStudentLevels(currentData.students.levels);
+        }
+
+        function renderStudentSections(sections) {
+            const container = document.getElementById('st-sections-container');
+            container.innerHTML = sections.map((s, i) => `
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+                    <input type="text" value="${s.name || ''}" onchange="currentData.students.sections[${i}].name=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="اسم الشعبة">
+                    <input type="number" value="${s.count || ''}" onchange="currentData.students.sections[${i}].count=parseInt(this.value)||0" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العدد">
+                    <button onclick="removeStudentSection(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addStudentSection() {
+            if (!currentData.students) currentData.students = {};
+            if (!currentData.students.sections) currentData.students.sections = [];
+            currentData.students.sections.push({ name: "", count: 0, icon: "fa-chalkboard" });
+            renderStudentSections(currentData.students.sections);
+        }
+
+        function removeStudentSection(index) {
+            currentData.students.sections.splice(index, 1);
+            renderStudentSections(currentData.students.sections);
+        }
+
+        function renderStudentInfo(info) {
+            const container = document.getElementById('st-info-container');
+            container.innerHTML = info.map((item, i) => `
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+                    <input type="text" value="${item.title || ''}" onchange="currentData.students.info[${i}].title=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
+                    <input type="text" value="${item.description || ''}" onchange="currentData.students.info[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
+                    <button onclick="removeStudentInfo(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addStudentInfo() {
+            if (!currentData.students) currentData.students = {};
+            if (!currentData.students.info) currentData.students.info = [];
+            currentData.students.info.push({ title: "", description: "", icon: "fa-circle-check" });
+            renderStudentInfo(currentData.students.info);
+        }
+
+        function removeStudentInfo(index) {
+            currentData.students.info.splice(index, 1);
+            renderStudentInfo(currentData.students.info);
+        }
+
+        // About Page Management Functions
+        function renderAboutForm() {
+            const about = currentData.about || {};
+            document.getElementById('about-mission').value = about.mission || '';
+            document.getElementById('about-vision').value = about.vision || '';
+            renderAboutIdentity(about.identity || []);
+            renderAboutHistory(about.history || []);
+            renderAboutGoals(about.goals || []);
+            renderAboutStatsForm(about.stats || []);
+        }
+
+        function saveAboutData() {
+            if (!currentData.about) currentData.about = {};
+            currentData.about.mission = document.getElementById('about-mission').value;
+            currentData.about.vision = document.getElementById('about-vision').value;
+        }
+
+        function renderAboutIdentity(items) {
+            const container = document.getElementById('about-identity-container');
+            container.innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+                    <input type="text" value="${item.label || ''}" onchange="currentData.about.identity[${i}].label=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="التسمية">
+                    <input type="text" value="${item.value || ''}" onchange="currentData.about.identity[${i}].value=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="القيمة">
+                    <button onclick="removeAboutIdentity(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addAboutIdentity() {
+            if (!currentData.about) currentData.about = {};
+            if (!currentData.about.identity) currentData.about.identity = [];
+            currentData.about.identity.push({ icon: "fa-info-circle", label: "", value: "" });
+            renderAboutIdentity(currentData.about.identity);
+        }
+
+        function removeAboutIdentity(index) {
+            currentData.about.identity.splice(index, 1);
+            renderAboutIdentity(currentData.about.identity);
+        }
+
+        function renderAboutHistory(items) {
+            const container = document.getElementById('about-history-container');
+            container.innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+                    <input type="text" value="${item.year || ''}" onchange="currentData.about.history[${i}].year=this.value" class="w-28 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الفترة">
+                    <input type="text" value="${item.title || ''}" onchange="currentData.about.history[${i}].title=this.value" class="w-40 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
+                    <input type="text" value="${item.description || ''}" onchange="currentData.about.history[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
+                    <button onclick="removeAboutHistory(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addAboutHistory() {
+            if (!currentData.about) currentData.about = {};
+            if (!currentData.about.history) currentData.about.history = [];
+            currentData.about.history.push({ year: "", title: "", description: "", color: "green" });
+            renderAboutHistory(currentData.about.history);
+        }
+
+        function removeAboutHistory(index) {
+            currentData.about.history.splice(index, 1);
+            renderAboutHistory(currentData.about.history);
+        }
+
+        function renderAboutGoals(items) {
+            const container = document.getElementById('about-goals-container');
+            container.innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+                    <input type="text" value="${item.title || ''}" onchange="currentData.about.goals[${i}].title=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
+                    <input type="text" value="${item.description || ''}" onchange="currentData.about.goals[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
+                    <button onclick="removeAboutGoal(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addAboutGoal() {
+            if (!currentData.about) currentData.about = {};
+            if (!currentData.about.goals) currentData.about.goals = [];
+            currentData.about.goals.push({ icon: "fa-bullseye", title: "", description: "" });
+            renderAboutGoals(currentData.about.goals);
+        }
+
+        function removeAboutGoal(index) {
+            currentData.about.goals.splice(index, 1);
+            renderAboutGoals(currentData.about.goals);
+        }
+
+        function renderAboutStatsForm(items) {
+            const container = document.getElementById('about-stats-container');
+            container.innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+                    <input type="text" value="${item.value || ''}" onchange="currentData.about.stats[${i}].value=this.value" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="القيمة">
+                    <input type="text" value="${item.label || ''}" onchange="currentData.about.stats[${i}].label=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="التسمية">
+                    <button onclick="removeAboutStat(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addAboutStat() {
+            if (!currentData.about) currentData.about = {};
+            if (!currentData.about.stats) currentData.about.stats = [];
+            currentData.about.stats.push({ icon: "fa-chart-simple", value: "", label: "" });
+            renderAboutStatsForm(currentData.about.stats);
+        }
+
+        function removeAboutStat(index) {
+            currentData.about.stats.splice(index, 1);
+            renderAboutStatsForm(currentData.about.stats);
+        }
+
+        // Clubs Management Functions
+        function renderClubsForm() {
+            const page = currentData.clubsPage || defaultCemData.clubsPage || {};
+            document.getElementById('clubs-page-title').value = page.title || '';
+            document.getElementById('clubs-page-subtitle').value = page.subtitle || '';
+            document.getElementById('clubs-page-category').value = page.category || '';
+
+            const container = document.getElementById('clubs-list-container');
+            container.innerHTML = '';
+            const clubsList = currentData.clubs || [];
+            if (clubsList.length === 0) { container.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">لا توجد نوادي حالياً</p>'; return; }
+
+            clubsList.forEach((club, index) => {
+                container.innerHTML += `
+                    <div class="border rounded-lg p-4 bg-teal-50 relative space-y-3 text-xs font-bold">
+                        <div class="flex justify-between items-center">
+                            <span class="inline-block bg-teal-600 text-white px-2 py-0.5 rounded text-[10px]">نادي #${index + 1}</span>
+                            <button onclick="removeClubItem(${index})" class="text-red-600 hover:text-red-800 p-1" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">اسم النادي</label>
+                                <input type="text" value="${club.name || ''}" onchange="currentData.clubs[${index}].name=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="اسم النادي">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">الفئة</label>
+                                <input type="text" value="${club.category || ''}" onchange="currentData.clubs[${index}].category=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="علوم، رياضة، ثقافة...">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">المؤطّر</label>
+                                <input type="text" value="${club.supervisor || ''}" onchange="currentData.clubs[${index}].supervisor=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="أ. محمد بن عمر">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">الموعد</label>
+                                <input type="text" value="${club.schedule || ''}" onchange="currentData.clubs[${index}].schedule=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="الثلاثاء 14:00">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">الوصف</label>
+                            <textarea rows="2" onchange="currentData.clubs[${index}].description=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="وصف النادي...">${club.description || ''}</textarea>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1 text-gray-700">الحالة</label>
+                                <select onchange="currentData.clubs[${index}].status=this.value" class="w-full border rounded p-2 focus:border-teal-600">
+                                    <option value="active" ${club.status === 'active' ? 'selected' : ''}>نشط</option>
+                                    <option value="inactive" ${club.status === 'inactive' ? 'selected' : ''}>غير نشط</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط الصورة</label>
+                                <input type="text" value="${club.image || ''}" onchange="currentData.clubs[${index}].image=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="رابط صورة النادي...">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-700">رابط الانضمام للنادي</label>
+                            <input type="text" value="${club.joinLink || ''}" onchange="currentData.clubs[${index}].joinLink=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="رابط نموذج Google Form أو رقم واتساب...">
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function saveClubsData() {
+            if (!currentData.clubsPage) currentData.clubsPage = {};
+            currentData.clubsPage.title = document.getElementById('clubs-page-title').value;
+            currentData.clubsPage.subtitle = document.getElementById('clubs-page-subtitle').value;
+            currentData.clubsPage.category = document.getElementById('clubs-page-category').value;
+        }
+
+        function addClubItem() {
+            if (!currentData.clubs) currentData.clubs = [];
+            currentData.clubs.push({
+                id: Date.now(),
+                name: "نادي جديد",
+                description: "",
+                category: "",
+                supervisor: "",
+                schedule: "",
+                status: "active",
+                icon: "fa-flask",
+                image: "",
+                joinLink: ""
+            });
+            renderClubsForm();
+        }
+
+        function removeClubItem(index) {
+            if (confirm('هل أنت متأكد من حذف هذا النادي؟')) {
+                currentData.clubs.splice(index, 1);
+                renderClubsForm();
+            }
+        }
+
         function triggerQuickUpload(targetInputId, arrayIndex = null, type = 'activity') {
             activeTargetInputId = targetInputId;
             activeArrayIndex = arrayIndex;
@@ -1861,6 +2571,7 @@
             currentData.settings.coverUrl = document.getElementById('cfg-cover').value;
             currentData.settings.awliyaUrl = document.getElementById('cfg-awliya').value;
             currentData.settings.fontFamily = document.getElementById('cfg-font-family').value;
+            currentData.settings.fontSize = document.getElementById('cfg-font-size').value;
             currentData.settings.antiCopy = document.getElementById('cfg-anti-copy').checked;
             currentData.settings.binId = document.getElementById('cfg-binid').value.trim();
             currentData.settings.masterKey = document.getElementById('cfg-masterkey').value.trim();
@@ -1873,6 +2584,40 @@
             currentData.hero.desc = document.getElementById('hero-des').value;
             currentData.hero.btnText = document.getElementById('hero-btn-txt').value;
             currentData.hero.btnLink = document.getElementById('hero-btn-lnk').value;
+
+            // Stats
+            const statsRows = document.querySelectorAll('#stats-list-container > div');
+            currentData.stats = Array.from(statsRows).map((row, idx) => {
+                const iconSelect = row.querySelector('select');
+                const valueInput = row.querySelector('input[type="number"]');
+                const allInputs = row.querySelectorAll('input[type="text"]');
+                const labelInput = allInputs.length > 0 ? allInputs[0] : null;
+                const suffixInput = allInputs.length > 1 ? allInputs[1] : null;
+                const linkInput = allInputs.length > 2 ? allInputs[2] : null;
+                return {
+                    id: (currentData.stats && currentData.stats[idx]) ? currentData.stats[idx].id : Date.now() + idx,
+                    icon: iconSelect ? iconSelect.value : 'fa-star',
+                    value: valueInput ? (parseInt(valueInput.value, 10) || 0) : 0,
+                    label: labelInput ? labelInput.value : 'إحصائية',
+                    suffix: suffixInput ? suffixInput.value : '',
+                    link: linkInput ? linkInput.value : ''
+                };
+            }).filter(s => s.label.trim() !== '');
+
+            // Students
+            saveStudentsData();
+
+            // About
+            saveAboutData();
+
+            // Clubs
+            saveClubsData();
+
+            // Teachers Page
+            if (!currentData.teachersPage) currentData.teachersPage = {};
+            currentData.teachersPage.title = document.getElementById('tch-page-title').value;
+            currentData.teachersPage.subtitle = document.getElementById('tch-page-subtitle').value;
+            currentData.teachersPage.category = document.getElementById('tch-page-category').value;
 
             // Featured Post
             currentData.featuredPost = currentData.featuredPost || {};
@@ -1966,6 +2711,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkLoginSession();
             updateLoginButton();
+            // Live preview: font size
+            var fsSelect = document.getElementById('cfg-font-size');
+            if (fsSelect) fsSelect.addEventListener('change', function() {
+                document.documentElement.style.fontSize = this.value + 'px';
+            });
+            // Live preview: font family
+            var ffSelect = document.getElementById('cfg-font-family');
+            if (ffSelect) ffSelect.addEventListener('change', function() {
+                document.documentElement.style.setProperty('font-family', this.value + ', sans-serif', 'important');
+                document.body.style.setProperty('font-family', this.value + ', sans-serif', 'important');
+            });
         });
     </script>
 </body>

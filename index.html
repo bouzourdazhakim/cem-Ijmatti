@@ -180,6 +180,155 @@
             font-weight: 700;
         }
 
+        /* ===== Stats Section - Modern Glassmorphism ===== */
+        .stats-section {
+            scroll-margin-top: 2rem;
+            background: linear-gradient(135deg, #006633 0%, #004d26 50%, #003319 100%);
+            border-radius: 16px;
+            padding: 1rem 0.75rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 51, 25, 0.25);
+        }
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(226,197,120,0.08) 0%, transparent 70%);
+        }
+        .stats-section::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+        }
+        .stats-section-inner {
+            position: relative;
+            z-index: 1;
+        }
+        .stats-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: rgba(255,255,255,0.95);
+            text-align: center;
+            margin-bottom: 0.625rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            letter-spacing: 0.3px;
+        }
+        .stats-title i {
+            color: #e2c578;
+            font-size: 0.8rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.625rem 0.375rem;
+            text-align: center;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: statFadeIn 0.5s ease forwards;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+        }
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        @keyframes statFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.13);
+            border-color: rgba(226, 197, 120, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        .stat-card .click-hint {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: rgba(255, 255, 255, 0.12);
+            font-size: 9px;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .stat-card:hover .click-hint {
+            color: rgba(226, 197, 120, 0.7);
+        }
+        .stat-icon-wrapper {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(226,197,120,0.12) 0%, rgba(226,197,120,0.06) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 4px auto;
+            color: #e2c578;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover .stat-icon-wrapper {
+            background: rgba(226, 197, 120, 0.22);
+            transform: scale(1.1);
+        }
+        .stat-number {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.1;
+            font-family: 'Cairo', sans-serif;
+        }
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.55rem;
+            font-weight: 600;
+            margin-top: 2px;
+            line-height: 1.2;
+            letter-spacing: -0.2px;
+        }
+        @media (min-width: 640px) {
+            .stats-section { padding: 1.25rem 1rem; }
+            .stats-title { font-size: 0.95rem; margin-bottom: 0.75rem; }
+            .stats-grid { gap: 8px; }
+            .stat-card { padding: 0.75rem 0.5rem; }
+            .stat-icon-wrapper { width: 36px; height: 36px; font-size: 15px; margin-bottom: 6px; }
+            .stat-number { font-size: 1.6rem; }
+            .stat-label { font-size: 0.65rem; margin-top: 3px; }
+        }
+        @media (min-width: 768px) {
+            .stats-section { padding: 1.75rem 1.5rem; border-radius: 18px; }
+            .stats-title { font-size: 1.05rem; margin-bottom: 1rem; }
+            .stats-grid { gap: 10px; }
+            .stat-card { padding: 1rem 0.625rem; border-radius: 14px; }
+            .stat-icon-wrapper { width: 40px; height: 40px; font-size: 17px; margin-bottom: 8px; }
+            .stat-number { font-size: 1.85rem; }
+            .stat-label { font-size: 0.7rem; margin-top: 4px; }
+        }
+        /* end media queries ticker */
         /* Sidebar Communique Box */
         .press-box {
             border: 1px solid #d4c185;
@@ -485,6 +634,8 @@
             .dz-ticker-label-row { display: none !important; }
             .dz-ticker-scroll-row { display: contents; }
         }
+        /* end media queries ticker */
+
     </style>
 </head>
 
@@ -653,6 +804,17 @@
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- قسم الإحصائيات التفاعلية -->
+        <section id="stats-section" class="stats-section">
+            <div class="stats-section-inner">
+                <div class="stats-title">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span id="stats-heading">المؤسسة بالأرقام</span>
+                </div>
+                <div id="stats-container" class="stats-grid"></div>
             </div>
         </section>
 
@@ -825,16 +987,7 @@
             class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
             <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
             <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
-            <p class="text-gray-500 text-center mt-1">
-                <i class="fa-solid fa-code text-dzGreen-700 ml-1"></i>
-                <span id="ft-developer-label">تم التطوير بواسطة</span>
-                <a href="https://hbouzourdaz.space"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="font-bold text-dzGreen-700 hover:underline">
-                    الأستاذ حكيم بوزورداز
-                </a>
-            </p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
             <button onclick="scrollToTop()"
                 class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2"
                 aria-label="العودة للأعلى">
@@ -930,6 +1083,82 @@
                 btnText: "",
                 color: "red"
             },
+            stats: [
+                { id: 1, icon: "fa-user-graduate", value: 850, label: "التلاميذ المسجلون", suffix: "+", link: "students.html" },
+                { id: 2, icon: "fa-chalkboard-user", value: 52, label: "الأساتذة والمؤطرون", suffix: "", link: "" },
+                { id: 3, icon: "fa-calendar-alt", value: 45, label: "سنوات الخبرة والعطاء", suffix: "+", link: "" },
+                { id: 4, icon: "fa-flask", value: 15, label: "النوادي والأنشطة", suffix: "", link: "clubs.html" }
+            ],
+            students: {
+                total: 850,
+                female: 420,
+                male: 430,
+                excellent: 85,
+                levels: [
+                    { name: "السنة الأولى متوسط", count: 290, icon: "fa-book-open" },
+                    { name: "السنة الثانية متوسط", count: 280, icon: "fa-book" },
+                    { name: "السنة الثالثة متوسط", count: 280, icon: "fa-graduation-cap" }
+                ],
+                sections: [
+                    { name: "شعبة علوم تجريبية", count: 120, icon: "fa-flask" },
+                    { name: "شعبة رياضيات", count: 95, icon: "fa-square-root-variable" },
+                    { name: "شعبة تقني رياضي", count: 85, icon: "fa-gears" },
+                    { name: "شعبة لغات أجنبي", count: 110, icon: "fa-language" },
+                    { name: "شعبة آداب وفلسفة", count: 90, icon: "fa-book-open" },
+                    { name: "شعبة تسيير واقتصاد", count: 80, icon: "fa-chart-line" }
+                ],
+                info: [
+                    { title: "نسبة الإنجاح", description: "تم تسجيل نسبة إنجاح مرتفعة هذا الموسم", icon: "fa-circle-check" },
+                    { title: "المتفوقون", description: "عدد المتفوقين في الفصل الأول", icon: "fa-trophy" },
+                    { title: "الrciyclage", description: "تلاميذ منخرطون في برامج الترقية", icon: "fa-graduation-cap" },
+                    { title: "التأطير", description: "نسبة التأطير التربوي والأخلاقي", icon: "fa-shield-halved" }
+                ]
+            },
+            about: {
+                identity: [
+                    { icon: "fa-landmark", label: "اسم المؤسسة", value: "متوسطة إسغيد علي - بني جماتي" },
+                    { icon: "fa-map-location-dot", label: "الولاية / البلدية", value: "سطيف - عين الكبيرة" },
+                    { icon: "fa-calendar-check", label: "تاريخ التأسيس", value: "2003 / 2004" },
+                    { icon: "fa-users", label: "الطاقة الاستيعابية", value: "أكثر من 600 تلميذ" },
+                    { icon: "fa-chalkboard-user", label: "الطاقم التربوي", value: "أكثر من 40 أستاذاً" },
+                    { icon: "fa-graduation-cap", label: "الشعب التعليمية", value: "3 أقسام / سنة" }
+                ],
+                mission: "تقديم تعليم متميز يرتكز على القيم الأخلاقية والوطنية، وتنمية قدرات التلاميذ علمياً ورياضياً وثقافياً، ومواكبة المستجدات التربوية والتقنية، مع توفير بيئة تعليمية آمنة ومحفزة للإبداع والابتكار.",
+                vision: "أن نكون مؤسسة تعليمية مرجعية في المنطقة، تُخرج جيلاً واعياً ومتمكناً من المهارات، قادر على المساهمة في بناء الجزائر الجديدة، من خلال تعليم عصري يجمع بين العلم والمعرفة والأخلاق.",
+                history: [
+                    { year: "2003 - 2004", title: "تأسيس المؤسسة", description: "تأسست متوسطة إسغيد علي بني جماتي بموجب القرار الوزاري لسنة 2003، لتكون إطاراً تعليمياً يخدم تلاميذ المنطقة.", color: "green" },
+                    { year: "2010 - 2015", title: "مرحلة التوسع والتحديث", description: "إنشاء فضاءات جديدة تشمل المختبرات العلمية، قاعة المعلوماتية، والمكتبة مع أحدث الوسائل التعليمية.", color: "gold" },
+                    { year: "2016 - 2020", title: "التحوّل الرقمي", description: "إطلاق البوابة الرقمية الرسمية وتطبيق نظام التعليم المساند بالتكنولوجيا وإنشاء فضاء الأولياء الرقمي.", color: "red" },
+                    { year: "2021 - 2026", title: "التميّز والريادة", description: "تحقيق نتائج متميّزة في الامتحانات الرسمية وتنظيم معارض علمية وأنشطة ثقافية ورياضية.", color: "green" }
+                ],
+                goals: [
+                    { icon: "fa-book-open", title: "التحصيل العلمي", description: "رفع مستوى التحصيل العلمي وضمان اجتياز الامتحانات بنسبة نجاح مرتفعة." },
+                    { icon: "fa-heart", title: "التربيّة والأخلاق", description: "غرس القيم الوطنية والأخلاقية وتكوين مواطنين صالحين محبّين لوطنهم." },
+                    { icon: "fa-laptop-code", title: "المهارات الرقمية", description: "تطوير مهارات التلاميذ في تكنولوجيا المعلومات واستعمال الأدوات الرقمية." },
+                    { icon: "fa-trophy", title: "التفوق الرياضي", description: "تشجيع ممارسة الرياضة والمشاركة في التظاهرات الرياضية." },
+                    { icon: "fa-people-group", title: "الشراكات المجتمعية", description: "تعزيز التكامل بين المؤسسة والأسرة والمجتمع المحلي." },
+                    { icon: "fa-shield-halved", title: "الأمن المدرسي", description: "ضمان بيئة مدرسية آمنة وصحية لجميع التلاميذ والطاقم." }
+                ],
+                stats: [
+                    { icon: "fa-users", value: "600+", label: "تلميذ" },
+                    { icon: "fa-chalkboard-user", value: "40+", label: "أستاذ" },
+                    { icon: "fa-door-open", value: "18", label: "قاعة" },
+                    { icon: "fa-award", value: "20+", label: "سنة خبرة" }
+                ]
+            },
+            clubsPage: {
+                title: "النوادي والأنشطة اللامنهجية",
+                subtitle: "أنشطة علمية ورياضية وثقافية لتطوير مهارات التلاميذ",
+                category: "النوادي العلمية والرياضية"
+            },
+            clubs: [
+                { id: 1, name: "النادي العلمي", description: "اكتشاف عالم العلوم والتجارب العملية لتطوير الحس العلمي لدى التلاميذ", category: "علوم", supervisor: "أ. محمد بن عمر", schedule: "الثلاثاء 14:00", status: "active", icon: "fa-flask", image: "", joinLink: "#" },
+                { id: 2, name: "النادي الرياضي", description: "التمارين الرياضية والمسابقات الرياضية المختلفة للياقة البدنية", category: "رياضة", supervisor: "أ. كريم بوزيد", schedule: "الأربعاء 14:00", status: "active", icon: "fa-futbol", image: "", joinLink: "#" },
+                { id: 3, name: "النادي الثقافي", description: "القراءة والنقاش الثقافي والأنشطة الأدبية لتنمية المعرفة", category: "ثقافة", supervisor: "أ. فاطمة الزهراء", schedule: "الخميس 14:00", status: "active", icon: "fa-book-open", image: "", joinLink: "#" },
+                { id: 4, name: "نادي المعلوماتية", description: "تعلم البرمجة وتقنية المعلومات والأدوات الرقمية", category: "تكنولوجيا", supervisor: "أ. حكيم بوزورداز", schedule: "الاثنين 14:00", status: "active", icon: "fa-laptop-code", image: "", joinLink: "#" },
+                { id: 5, name: "النادي الفني", description: "الرسم والتصميم والأنشطة الفنية لتنمية الإبداع", category: "فنون", supervisor: "أ. نادية بن علي", schedule: "الثلاثاء 15:00", status: "active", icon: "fa-palette", image: "", joinLink: "#" },
+                { id: 6, name: "نادي الإبداع", description: "الكتابة الإبداعية والشعر والأدب لتنمية الموهبة الأدبية", category: "أدب", supervisor: "أ. سعيد مرابط", schedule: "الأحد 14:00", status: "active", icon: "fa-feather-pointed", image: "", joinLink: "#" }
+            ],
             activities: [
                 { id: 1, date: "14-07-2026", title: "حفل تكريم التلاميذ المتفوقين في الفصل الدراسي بالمؤسسة", image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80" },
                 { id: 2, date: "08-07-2026", title: "افتتاح المعرض العلمي والنوادي الثقافية لمتوسطة بني جماتي", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80" }
@@ -944,6 +1173,11 @@
                 { id: 3, date: "08-07-2026", title: "اجتماع جمعية أولياء التلاميذ لمناقشة النتائج" },
                 { id: 4, date: "01-07-2026", title: "برنامج الرحلات الميدانية والأنشطة الرياضية بالمؤسسة" }
             ],
+            teachersPage: {
+                title: "فضاء الأساتذة والتأطير التربوي",
+                subtitle: "استعمال الزمن • الحراسة • المناشير الرسمية",
+                category: "التأطير التربوي"
+            },
             teachers: [
                 { id: 1, type: "timetable", date: "2026-2027", title: "استعمال الزمن الأسبوعي الرسمي للأساتذة", icon: "fa-calendar-week", category: "جدول استعمال الزمن", description: "جدول распределение الحصص الأسبوعية لكافة الأفواج والسنوات الدراسية لمتوسطة بني جماتي." },
                 { id: 2, type: "invigilation", date: "فروض واختبارات 2026", title: "جدول حراسة الامتحانات والفروض الرسمية", icon: "fa-clipboard-check", category: "جدول الحراسة", description: "توزيع الأساتذة والمؤطرين التربويين على حراسة القاعات وقاعات الامتحانات الرسمية بالمؤسسة." },
@@ -958,7 +1192,7 @@
                 { id: 2, label: "عن المتوسطة", link: "#about", icon: "fa-caret-down", dropdown: [
                     { id: 21, label: "بطاقة فنية عن المؤسسة", link: "#about" },
                     { id: 22, label: "الطاقم الإداري والتربوي", link: "#staff" },
-                    { id: 23, label: "النظام الداخلي للمؤسسة", link: "#rules" }
+                    { id: 23, label: "النظام الداخلي للمؤسسة", link: "regulations.html" }
                 ], isActive: false, visible: true },
                 { id: 3, label: "النشاطات التربوية", link: "#activities", icon: "fa-caret-down", dropdown: [
                     { id: 31, label: "التظاهرات العلمية والتكريمات", link: "#activities" },
@@ -1031,7 +1265,12 @@
                 navBEM: 'حاسبة معدل شهادة BEM',
                 navTeachers: 'فضاء الأساتذة',
                 navVideos: 'معرض الفيديوهات',
-                navContact: 'اتصل بنا'
+                navContact: 'اتصل بنا',
+                statsTitle: 'المؤسسة بالأرقام',
+                statsStudents: 'التلاميذ المسجلون',
+                statsTeachers: 'الأساتذة والمؤطرون',
+                statsExperience: 'سنوات الخبرة والعطاء',
+                statsClubs: 'النوادي والأنشطة'
             },
             en: {
                 readMore: 'Read more',
@@ -1080,7 +1319,12 @@
                 navBEM: 'BEM Calculator',
                 navTeachers: 'Teachers Portal',
                 navVideos: 'Videos',
-                navContact: 'Contact Us'
+                navContact: 'Contact Us',
+                statsTitle: 'School by Numbers',
+                statsStudents: 'Enrolled Students',
+                statsTeachers: 'Teachers & Staff',
+                statsExperience: 'Years of Excellence',
+                statsClubs: 'Clubs & Activities'
             }
         };
 
@@ -1166,6 +1410,12 @@
                 if (translated.featuredPost.content) translated.featuredPost.content = await translateText(translated.featuredPost.content, targetLang);
                 if (translated.featuredPost.btnText) translated.featuredPost.btnText = await translateText(translated.featuredPost.btnText, targetLang);
             }
+            // Translate stats
+            if (translated.stats) {
+                for (let st of translated.stats) {
+                    if (st.label) st.label = await translateText(st.label, targetLang);
+                }
+            }
             // Translate navbar
             if (translated.navbar) {
                 for (let nav of translated.navbar) {
@@ -1232,6 +1482,24 @@
             if (!siteData.dossiers || !Array.isArray(siteData.dossiers)) siteData.dossiers = [];
             if (!siteData.teachers || !Array.isArray(siteData.teachers)) siteData.teachers = [];
             if (!siteData.videos || !Array.isArray(siteData.videos)) siteData.videos = [];
+            if (!siteData.stats || !Array.isArray(siteData.stats) || siteData.stats.length === 0) {
+                siteData.stats = JSON.parse(JSON.stringify(defaultCemData.stats));
+            }
+            if (!siteData.students) {
+                siteData.students = JSON.parse(JSON.stringify(defaultCemData.students));
+            }
+            if (!siteData.about) {
+                siteData.about = JSON.parse(JSON.stringify(defaultCemData.about));
+            }
+            if (!siteData.teachersPage) {
+                siteData.teachersPage = JSON.parse(JSON.stringify(defaultCemData.teachersPage));
+            }
+            if (!siteData.clubs) {
+                siteData.clubs = JSON.parse(JSON.stringify(defaultCemData.clubs));
+            }
+            if (!siteData.clubsPage) {
+                siteData.clubsPage = JSON.parse(JSON.stringify(defaultCemData.clubsPage));
+            }
         }
 
         function renderSiteData() {
@@ -1259,7 +1527,11 @@
                     document.getElementById('social-awliya').href = siteData.settings.awliyaUrl;
                 }
                 if (siteData.settings.fontFamily) {
-                    document.body.style.fontFamily = "'" + siteData.settings.fontFamily + "', sans-serif";
+                    document.documentElement.style.setProperty('font-family', siteData.settings.fontFamily + ', sans-serif', 'important');
+                    document.body.style.setProperty('font-family', siteData.settings.fontFamily + ', sans-serif', 'important');
+                }
+                if (siteData.settings.fontSize) {
+                    document.documentElement.style.fontSize = siteData.settings.fontSize + 'px';
                 }
             }
 
@@ -1526,6 +1798,9 @@
 
             // Render Navigation Bar (Dynamic)
             renderNavbar();
+
+            // Render Stats Counters
+            renderStats();
         }
 
         function renderNavbar() {
@@ -1617,10 +1892,69 @@
             });
         }
 
+        function renderStats() {
+            const container = document.getElementById('stats-container');
+            const section = document.getElementById('stats-section');
+            if (!container || !section) return;
+            const statsList = siteData.stats || defaultCemData.stats;
+            if (!statsList || statsList.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+            section.classList.remove('hidden');
+            container.innerHTML = statsList.map((stat, idx) => {
+                const link = stat.link || '#';
+                return `
+                <a href="${link}" class="stat-card">
+                    <span class="click-hint">↗</span>
+                    <div class="stat-icon-wrapper">
+                        <i class="fa-solid ${stat.icon}"></i>
+                    </div>
+                    <div class="stat-number" data-target="${stat.value}" data-suffix="${stat.suffix || ''}">${stat.value}</div>
+                    <div class="stat-label">${stat.label}</div>
+                </a>`;
+            }).join('');
+            initStatsAnimation();
+        }
+
+        let statsObserver = null;
+        function initStatsAnimation() {
+            const section = document.getElementById('stats-section');
+            if (!section) return;
+            const numbers = section.querySelectorAll('.stat-number');
+            if (numbers.length === 0) return;
+            const delay = [100, 200, 300, 400];
+            numbers.forEach((num, i) => {
+                const target = parseInt(num.dataset.target, 10) || 0;
+                const suffix = num.dataset.suffix || '';
+                if (num.dataset.counted) return;
+                num.dataset.counted = '1';
+                num.textContent = '0';
+                setTimeout(() => animateCounter(num, target, suffix), delay[i] || 400);
+            });
+        }
+
+        function animateCounter(el, target, suffix) {
+            const duration = 2000;
+            const startTime = performance.now();
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(eased * target);
+                el.textContent = current.toLocaleString() + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    el.textContent = target.toLocaleString() + suffix;
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             renderSiteData();
             fetchFromJSONbin();
-            // مزامنة تلقائية كل 30 ثانية
             setInterval(fetchFromJSONbin, 30000);
         });
 
@@ -1759,6 +2093,7 @@
                 document.getElementById('sec-supp-title').textContent = 'Official Announcements';
                 document.getElementById('sec-vid-sidebar-title').textContent = 'Video Library';
                 document.getElementById('wb-press-title').textContent = 'Administration News';
+                document.getElementById('stats-heading').textContent = 'School by Numbers';
                 // Footer
                 document.getElementById('ft-sec1-title').textContent = 'Beni Jmatti School';
                 document.getElementById('ft-subtitle').textContent = 'Ayerbaz Alemmas n It Jmatti';
@@ -1776,6 +2111,9 @@
                 document.getElementById('search-btn-label').textContent = 'Search';
                 document.getElementById('search-empty-text').textContent = 'Type a word then click search';
                 document.getElementById('video-modal-title').textContent = 'Video Library';
+                // Stats
+                document.getElementById('stats-title').textContent = 'School by Numbers';
+                document.getElementById('stats-badge').textContent = 'School Statistics';
                 // Social
                 document.getElementById('social-awliya').querySelector('span').textContent = 'Parents Digital Space';
                 document.getElementById('social-ostad').querySelector('span').textContent = 'Teachers Digital Space';
@@ -1808,6 +2146,7 @@
                 document.getElementById('sec-supp-title').textContent = 'البلاغات والإعلانات الرسمية';
                 document.getElementById('sec-vid-sidebar-title').textContent = 'مكتبة الفيديوهات';
                 document.getElementById('wb-press-title').textContent = 'إعلانات الإدارة';
+                document.getElementById('stats-heading').textContent = 'المؤسسة بالأرقام';
                 // Footer
                 document.getElementById('ft-sec1-title').textContent = 'متوسطة بني جماتي';
                 document.getElementById('ft-subtitle').textContent = 'Ayerbaz Alemmas n It Jmatti';
@@ -1825,6 +2164,9 @@
                 document.getElementById('search-btn-label').textContent = 'بحث';
                 document.getElementById('search-empty-text').textContent = 'اكتب كلمة ثم اضغط بحث';
                 document.getElementById('video-modal-title').textContent = 'مكتبة الفيديو للمؤسسة';
+                // Stats
+                document.getElementById('stats-title').textContent = 'المؤسسة بالأرقام';
+                document.getElementById('stats-badge').textContent = 'إحصائيات المؤسسة';
                 // Social
                 document.getElementById('social-awliya').querySelector('span').textContent = 'فضاء الأولياء الرقمي';
                 document.getElementById('social-ostad').querySelector('span').textContent = 'فضاء الأساتذة الرقمي';

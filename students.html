@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التلاميذ | متوسطة بني جماتي</title>
+    <link rel="icon" href="logo1.png" type="image/png">
+    <script src="config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26',900:'#003319'},dzRed:{600:'#d9251d',700:'#cc0000'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body{font-family:'Cairo','Tajawal',sans-serif;background:#fff;color:#2b3036;overflow-x:hidden}
+        .dz-nav-bg{background:#006633}
+        .no-select{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+        .logo-circular{border-radius:50%!important;object-fit:cover!important;clip-path:circle(48.5% at 50% 50%)!important}
+        .stat-card-detail{background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border:1px solid #dcfce7;border-radius:16px;padding:1.5rem;text-align:center;transition:all 0.3s ease}
+        .stat-card-detail:hover{transform:translateY(-4px);box-shadow:0 8px 25px rgba(0,102,51,0.15)}
+        .grade-bar{height:8px;border-radius:4px;background:#e5e7eb;overflow:hidden}
+        .grade-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#006633,#007a3d);transition:width 1s ease}
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+    <header class="bg-white border-b border-gray-100 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center gap-4">
+            <a href="index" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center"><img id="hdr-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular"></a>
+            <div><h3 id="hdr-country" class="text-xs md:text-sm font-bold text-gray-600">الجمهورية الجزائرية الديمقراطية الشعبية</h3><p id="hdr-ministry" class="text-xs md:text-sm font-extrabold text-dzGreen-700">وزارة التربية الوطنية - مديرية التربية</p><h1 id="hdr-title" class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800">متوسطة بني جماتي</h1><p id="hdr-sub" class="text-[11px] sm:text-xs font-bold text-dzGold-600 font-tajawal">Ayerbaz Alemmas n It Jmatti</p></div>
+        </div>
+    </header>
+    <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center text-sm font-bold"><a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2"><i class="fa-solid fa-house text-xs"></i><span>الرئيسية</span></a><span class="text-white/50 px-1">/</span><span class="py-3 px-2 text-dzGold-300" id="nav-page-title">التلاميذ</span></div>
+            <a href="index" class="py-3 px-4 hover:bg-white/10 transition text-sm"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-10 w-full">
+        <nav class="text-xs text-gray-400"><a href="index" class="hover:text-dzGreen-700 transition">الرئيسية</a><span class="mx-1">/</span><span class="text-gray-600 font-bold" id="breadcrumb-title">التلاميذ</span></nav>
+
+        <section class="text-center space-y-3">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-dzGreen-50 rounded-full border border-dzGreen-100"><i class="fa-solid fa-user-graduate text-dzGreen-600 text-sm"></i><span class="text-dzGreen-700 text-xs font-bold">التلاميذ المسجلون</span></div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-dzDark-800" id="page-title">إحصائيات التلاميذ</h1>
+            <p class="text-sm text-gray-500" id="page-subtitle">ملخص شامل لعدد التلاميذ المسجلين حسب الأقسام والمستويات</p>
+        </section>
+
+        <!-- Stats Overview -->
+        <section id="stats-overview" class="grid grid-cols-2 md:grid-cols-4 gap-4"></section>
+
+        <!-- Students by Level -->
+        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
+            <div class="space-y-2">
+                <h2 class="text-lg font-black text-dzDark-800 flex items-center gap-2"><i class="fa-solid fa-chart-bar text-dzGreen-700"></i> <span>التوزيع حسب المستوى</span></h2>
+                <div class="w-12 h-1 bg-dzGreen-700 rounded"></div>
+            </div>
+            <div id="levels-container" class="space-y-4"></div>
+        </section>
+
+        <!-- Students by Section -->
+        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
+            <div class="space-y-2">
+                <h2 class="text-lg font-black text-dzDark-800 flex items-center gap-2"><i class="fa-solid fa-table-cells text-dzGreen-700"></i> <span>الأقسام حسب الشعبة</span></h2>
+                <div class="w-12 h-1 bg-dzGreen-700 rounded"></div>
+            </div>
+            <div id="sections-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </section>
+
+        <!-- Additional Info -->
+        <section class="bg-gradient-to-br from-dzGreen-700 to-dzGreen-900 rounded-2xl p-6 sm:p-8 text-white space-y-4">
+            <h2 class="text-lg font-black flex items-center gap-2"><i class="fa-solid fa-circle-info text-dzGold-300"></i> <span id="info-title">معلومات إضافية</span></h2>
+            <div id="info-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </section>
+    </main>
+
+    <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+            <p id="ft-copy" class="text-center">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة</p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> تم التطوير بواسطة <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
+        </div>
+    </footer>
+
+    <script>
+        const globalCfg=window.CEM_CONFIG||{};
+        let siteData=JSON.parse(localStorage.getItem('cem_site_data'))||{};
+
+        async function fetchFromJSONbin(){
+            const binId=siteData.settings?.binId||globalCfg.jsonbinId;
+            const masterKey=siteData.settings?.masterKey||globalCfg.jsonbinMasterKey;
+            if(binId&&masterKey){try{const c=new AbortController();const t=setTimeout(()=>c.abort(),5000);const r=await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`,{headers:{'X-Master-Key':masterKey},signal:c.signal});clearTimeout(t);if(r.ok){const j=await r.json();if(j.record){siteData=j.record;localStorage.setItem('cem_site_data',JSON.stringify(siteData));render();}}}catch(e){console.error(e);}}
+        }
+
+        function render(){
+            const data=siteData.students||{total:850,levels:[],sections:[],info:[]};
+            renderOverviewStats(data);
+            renderLevels(data.levels,data.total);
+            renderSections(data.sections);
+            renderInfo(data.info);
+            if(siteData.settings?.institution){document.getElementById('hdr-title').textContent=siteData.settings.institution;document.getElementById('ft-copy').textContent=siteData.settings.institution+' © 2026 جميع الحقوق محفوظة';}
+        }
+
+        function renderOverviewStats(data){
+            const container=document.getElementById('stats-overview');
+            const stats=[
+                {icon:'fa-user-graduate',value:data.total||850,label:'إجمالي التلاميذ',color:'bg-dzGreen-50 text-dzGreen-700'},
+                {icon:'fa-venus',value:data.female||420,label:'إناث',color:'bg-pink-50 text-pink-700'},
+                {icon:'fa-mars',value:data.male||430,label:'ذكور',color:'bg-blue-50 text-blue-700'},
+                {icon:'fa-star',value:data.excellent||85,label:'متفوقون',color:'bg-amber-50 text-amber-700'}
+            ];
+            container.innerHTML=stats.map(s=>`
+                <div class="stat-card-detail">
+                    <div class="w-12 h-12 mx-auto rounded-xl ${s.color} flex items-center justify-center mb-3"><i class="fa-solid ${s.icon} text-lg"></i></div>
+                    <div class="text-2xl sm:text-3xl font-black text-dzDark-800">${s.value}</div>
+                    <div class="text-xs font-bold text-gray-500 mt-1">${s.label}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderLevels(levels,total){
+            const container=document.getElementById('levels-container');
+            if(!levels||levels.length===0){
+                container.innerHTML='<p class="text-sm text-gray-400 text-center py-4">لا توجد بيانات حالياً</p>';
+                return;
+            }
+            container.innerHTML=levels.map(l=>{
+                const pct=l.count&&total?Math.round(l.count/total*100):0;
+                return `
+                <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl">
+                    <div class="w-10 h-10 rounded-lg bg-dzGreen-50 flex items-center justify-center shrink-0"><i class="fa-solid ${l.icon||'fa-book'} text-dzGreen-700"></i></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-bold text-gray-800">${l.name||''}</span>
+                            <span class="text-xs font-bold text-dzGreen-700">${l.count||0} تلميذ</span>
+                        </div>
+                        <div class="grade-bar"><div class="grade-bar-fill" style="width:${pct}%"></div></div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderSections(sections){
+            const container=document.getElementById('sections-container');
+            if(!sections||sections.length===0){
+                container.innerHTML='<p class="text-sm text-gray-400 text-center py-4">لا توجد بيانات حالياً</p>';
+                return;
+            }
+            container.innerHTML=sections.map(s=>`
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-dzGreen-200 transition">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 rounded-lg bg-dzGreen-100 flex items-center justify-center"><i class="fa-solid ${s.icon||'fa-chalkboard'} text-dzGreen-700 text-xs"></i></div>
+                        <span class="text-sm font-bold text-gray-800">${s.name||''}</span>
+                    </div>
+                    <div class="text-2xl font-black text-dzGreen-700">${s.count||0}</div>
+                    <div class="text-[11px] text-gray-400 font-bold">${s.label||'تلميذ'}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderInfo(info){
+            const container=document.getElementById('info-list');
+            if(!info||info.length===0){
+                container.innerHTML='<p class="text-sm text-white/60">لا توجد معلومات إضافية حالياً</p>';
+                return;
+            }
+            container.innerHTML=info.map(i=>`
+                <div class="flex items-start gap-3 bg-white/10 rounded-xl p-4">
+                    <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center shrink-0"><i class="fa-solid ${i.icon||'fa-circle-check'} text-dzGold-300 text-xs"></i></div>
+                    <div>
+                        <p class="text-sm font-bold text-white">${i.title||''}</p>
+                        <p class="text-xs text-white/70 mt-1">${i.description||''}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        render();
+        fetchFromJSONbin();
+        setInterval(fetchFromJSONbin,30000);
+
+        function showToast(msg){
+            let t=document.getElementById('global-toast');
+            if(!t){t=document.createElement('div');t.id='global-toast';t.className='fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[999] text-sm font-bold flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none';document.body.appendChild(t);}
+            t.innerHTML='<i class="fa-solid fa-circle-exclamation text-dzGold-400"></i> '+msg;
+            t.classList.remove('opacity-0','translate-y-4','pointer-events-none');
+            t.classList.add('opacity-100','translate-y-0');
+            clearTimeout(t._timer);
+            t._timer=setTimeout(()=>{t.classList.add('opacity-0','translate-y-4','pointer-events-none');t.classList.remove('opacity-100','translate-y-0');},2500);
+        }
+
+        document.addEventListener('click',function(e){
+            const a=e.target.closest('a[href]');
+            if(!a)return;
+            const href=a.getAttribute('href').trim();
+            if(href==='#'||href===''||href==='javascript:void(0)'||href==='javascript:;'){e.preventDefault();showToast('هذا الرابط غير متوفر حالياً');}
+        });
+
+        if(siteData.settings?.antiCopy!==false){
+            document.body.classList.add('no-select');
+            document.addEventListener('contextmenu',e=>{e.preventDefault();showToast('النقر بالزرار الأيمن معطّل');});
+            document.addEventListener('keydown',function(e){
+                if(e.ctrlKey&&(e.key==='u'||e.key==='U')){e.preventDefault();}
+                if(e.ctrlKey&&(e.key==='s'||e.key==='S')){e.preventDefault();}
+                if(e.ctrlKey&&(e.key==='p'||e.key==='P')){e.preventDefault();}
+                if(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i')){e.preventDefault();}
+                if(e.ctrlKey&&e.shiftKey&&(e.key==='J'||e.key==='j')){e.preventDefault();}
+                if(e.ctrlKey&&e.shiftKey&&(e.key==='C'||e.key==='c')){e.preventDefault();}
+                if(e.key==='F12'){e.preventDefault();}
+            });
+            document.addEventListener('copy',e=>{e.preventDefault();showToast('النسخ معطّل');});
+            document.addEventListener('cut',e=>{e.preventDefault();});
+            document.addEventListener('dragstart',e=>{e.preventDefault();});
+        }
+
+        // Apply font size from settings
+        (function(){try{var sd=JSON.parse(localStorage.getItem('cem_site_data'))||{};var s=sd.settings||{};if(s.fontSize&&document.documentElement){document.documentElement.style.setProperty('font-size',s.fontSize+'px','important');}if(s.fontFamily){document.documentElement.style.setProperty('font-family',s.fontFamily+', sans-serif','important');document.body.style.setProperty('font-family',s.fontFamily+', sans-serif','important');}}catch(e){}})();
+    </script>
+</body>
+</html>

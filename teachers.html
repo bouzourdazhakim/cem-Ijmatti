@@ -1,12 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فضاء الأساتذة | متوسطة بني جماتي</title>
+    <link rel="icon" href="logo1.png" type="image/png">
     <script src="config.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26'},dzRed:{600:'#d9251d',700:'#cc0000'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}</script>
+    <script>tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26',900:'#003319'},dzRed:{600:'#d9251d',700:'#cc0000'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -16,22 +17,22 @@
     <header class="bg-white border-b border-gray-100 py-3 px-4">
         <div class="max-w-7xl mx-auto flex items-center gap-4">
             <a href="index" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center"><img id="hdr-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular"></a>
-            <div><h3 id="hdr-country" class="text-xs md:text-sm font-bold text-gray-600">الجمهورية الجزائرية الديمقراطية الشعبية</h3><p id="hdr-ministry" class="text-xs md:text-sm font-extrabold text-dzGreen-700">وزارة التربية الوطنية - مديرية التربية</p><h1 id="hdr-title" class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800">متوسطة بني جماتي</h1><p id="hdr-sub" class="text-[11px] sm:text-xs font-bold text-dzGold-600 font-tajawal">Ayerbaz Alemmas n It Jmatti</p></div>
+            <div><h3 id="hdr-country" class="text-xs md:text-sm font-bold text-gray-600"></h3><p id="hdr-ministry" class="text-xs md:text-sm font-extrabold text-dzGreen-700"></p><h1 id="hdr-title" class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800"></h1><p id="hdr-sub" class="text-[11px] sm:text-xs font-bold text-dzGold-600 font-tajawal"></p></div>
         </div>
     </header>
     <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <div class="flex items-center text-sm font-bold"><a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2"><i class="fa-solid fa-house text-xs"></i><span>الرئيسية</span></a><span class="text-white/50 px-1">/</span><span class="py-3 px-2 text-dzGold-300">فضاء الأساتذة</span></div>
+            <div class="flex items-center text-sm font-bold"><a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2"><i class="fa-solid fa-house text-xs"></i><span>الرئيسية</span></a><span class="text-white/50 px-1">/</span><span class="py-3 px-2 text-dzGold-300" id="nav-page-title">فضاء الأساتذة</span></div>
             <a href="index" class="py-3 px-4 hover:bg-white/10 transition text-sm"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-8 w-full">
-        <nav class="text-xs text-gray-400"><a href="index" class="hover:text-dzGreen-700 transition">الرئيسية</a><span class="mx-1">/</span><span class="text-gray-600 font-bold">فضاء الأساتذة</span></nav>
+        <nav class="text-xs text-gray-400"><a href="index" class="hover:text-dzGreen-700 transition">الرئيسية</a><span class="mx-1">/</span><span class="text-gray-600 font-bold" id="breadcrumb-title">فضاء الأساتذة</span></nav>
         <section class="text-center space-y-3">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-dzGold-300/20 rounded-full border border-dzGold-300/40"><i class="fa-solid fa-chalkboard-user text-dzGold-600 text-sm"></i><span class="text-dzGold-600 text-xs font-bold">التأطير التربوي</span></div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-dzDark-800">فضاء الأساتذة والتأطير التربوي</h1>
-            <p class="text-sm text-gray-500">استعمال الزمن • الحراسة • المناشير الرسمية</p>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-dzGold-300/20 rounded-full border border-dzGold-300/40"><i class="fa-solid fa-chalkboard-user text-dzGold-600 text-sm"></i><span class="text-dzGold-600 text-xs font-bold" id="page-category">التأطير التربوي</span></div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-dzDark-800" id="page-title">فضاء الأساتذة والتأطير التربوي</h1>
+            <p class="text-sm text-gray-500" id="page-subtitle">استعمال الزمن • الحراسة • المناشير الرسمية</p>
         </section>
         <div id="teachers-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         <div id="empty-state" class="hidden text-center py-16 text-gray-400"><i class="fa-solid fa-folder-open text-4xl mb-3 block"></i><p class="text-sm font-bold">لا توجد ملفات حالياً</p></div>
@@ -39,16 +40,53 @@
 
     <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
         <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
-            <p id="ft-copy" class="text-center">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة</p>
-            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> تم التطوير بواسطة <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
+            <p id="ft-copy" class="text-center"></p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
         </div>
     </footer>
 
     <script>
         const globalCfg=window.CEM_CONFIG||{};
         let siteData=JSON.parse(localStorage.getItem('cem_site_data'))||{teachers:[]};
-        async function fetchFromJSONbin(){const b=siteData.settings?.binId||globalCfg.jsonbinId;const m=siteData.settings?.masterKey||globalCfg.jsonbinMasterKey;if(b&&m){try{const c=new AbortController();const t=setTimeout(()=>c.abort(),5000);const r=await fetch(`https://api.jsonbin.io/v3/b/${b}/latest`,{headers:{'X-Master-Key':m},signal:c.signal});clearTimeout(t);if(r.ok){const j=await r.json();if(j.record){siteData=j.record;localStorage.setItem('cem_site_data',JSON.stringify(siteData));render();}}}catch(e){console.error(e);}}}
+
+        const defaultTeachersPage={
+            title:"فضاء الأساتذة والتأطير التربوي",
+            subtitle:"استعمال الزمن • الحراسة • المناشير الرسمية",
+            category:"التأطير التربوي"
+        };
+
+        async function fetchFromJSONbin(){
+            const binId=siteData.settings?.binId||globalCfg.jsonbinId;
+            const masterKey=siteData.settings?.masterKey||globalCfg.jsonbinMasterKey;
+            if(binId&&masterKey){try{const c=new AbortController();const t=setTimeout(()=>c.abort(),5000);const r=await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`,{headers:{'X-Master-Key':masterKey},signal:c.signal});clearTimeout(t);if(r.ok){const j=await r.json();if(j.record){siteData=j.record;localStorage.setItem('cem_site_data',JSON.stringify(siteData));render();}}}catch(e){console.error(e);}}
+        }
+
         function render(){
+            renderHeader();
+            renderTeachersPage();
+            renderTeachers();
+        }
+
+        function renderHeader(){
+            const s=siteData.settings||{};
+            if(s.country)document.getElementById('hdr-country').textContent=s.country;
+            if(s.ministry)document.getElementById('hdr-ministry').textContent=s.ministry;
+            if(s.institution)document.getElementById('hdr-title').textContent=s.institution;
+            if(s.subtitle)document.getElementById('hdr-sub').textContent=s.subtitle;
+            if(s.logoUrl)document.getElementById('hdr-logo').src=s.logoUrl;
+            if(s.institution)document.getElementById('ft-copy').textContent=s.institution+' - © 2026 جميع الحقوق محفوظة';
+        }
+
+        function renderTeachersPage(){
+            const page=siteData.teachersPage||defaultTeachersPage;
+            document.getElementById('page-title').textContent=page.title||defaultTeachersPage.title;
+            document.getElementById('page-subtitle').textContent=page.subtitle||defaultTeachersPage.subtitle;
+            document.getElementById('page-category').textContent=page.category||defaultTeachersPage.category;
+            document.getElementById('nav-page-title').textContent=page.title||'فضاء الأساتذة';
+            document.getElementById('breadcrumb-title').textContent=page.title||'فضاء الأساتذة';
+        }
+
+        function renderTeachers(){
             const container=document.getElementById('teachers-container');
             const items=siteData.teachers||[];
             if(items.length===0){container.innerHTML='';document.getElementById('empty-state').classList.remove('hidden');return;}
@@ -64,53 +102,18 @@
                     ${t.date?`<div class="flex items-center gap-1.5 text-[11px] text-gray-400"><i class="fa-solid fa-calendar text-dzGreen-600"></i><span>${t.date}</span></div>`:''}
                 </article>
             `).join('');
-            if(siteData.settings?.institution){document.getElementById('hdr-title').textContent=siteData.settings.institution;document.getElementById('ft-copy').textContent=siteData.settings.institution+' © 2026 جميع الحقوق محفوظة';}
         }
+
         render();fetchFromJSONbin();setInterval(fetchFromJSONbin,30000);
 
-// إشعار عند النقر على رابط فارغ
-function showToast(msg) {
-    let t = document.getElementById('global-toast');
-    if (!t) {
-        t = document.createElement('div');
-        t.id = 'global-toast';
-        t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[999] text-sm font-bold flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none';
-        document.body.appendChild(t);
-    }
-    t.innerHTML = '<i class="fa-solid fa-circle-exclamation text-dzGold-400"></i> ' + msg;
-    t.classList.remove('opacity-0','translate-y-4','pointer-events-none');
-    t.classList.add('opacity-100','translate-y-0');
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => { t.classList.add('opacity-0','translate-y-4','pointer-events-none'); t.classList.remove('opacity-100','translate-y-0'); }, 2500);
-}
+        function showToast(msg){let t=document.getElementById('global-toast');if(!t){t=document.createElement('div');t.id='global-toast';t.className='fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[999] text-sm font-bold flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none';document.body.appendChild(t);}t.innerHTML='<i class="fa-solid fa-circle-exclamation text-dzGold-400"></i> '+msg;t.classList.remove('opacity-0','translate-y-4','pointer-events-none');t.classList.add('opacity-100','translate-y-0');clearTimeout(t._timer);t._timer=setTimeout(()=>{t.classList.add('opacity-0','translate-y-4','pointer-events-none');t.classList.remove('opacity-100','translate-y-0');},2500);}
 
-document.addEventListener('click', function(e) {
-    const a = e.target.closest('a[href]');
-    if (!a) return;
-    const href = a.getAttribute('href').trim();
-    if (href === '#' || href === '' || href === 'javascript:void(0)' || href === 'javascript:;') {
-        e.preventDefault();
-        showToast('هذا الرابط غير متوفر حالياً');
-    }
-});
+        document.addEventListener('click',function(e){const a=e.target.closest('a[href]');if(!a)return;const href=a.getAttribute('href').trim();if(href==='#'||href===''||href==='javascript:void(0)'||href==='javascript:;'){e.preventDefault();showToast('هذا الرابط غير متوفر حالياً');}});
 
-// === حماية الموقع من النسخ والسرقة (قابل للتفعيل من لوحة التحكم) ===
-if (siteData.settings?.antiCopy !== false) {
-    document.body.classList.add('no-select');
-    document.addEventListener('contextmenu', e => { e.preventDefault(); showToast('النقر بالزرار الأيمن معطّل'); });
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); }
-        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) { e.preventDefault(); }
-        if (e.ctrlKey && (e.key === 'p' || e.key === 'P')) { e.preventDefault(); }
-        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); }
-        if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); }
-        if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); }
-        if (e.key === 'F12') { e.preventDefault(); }
-    });
-    document.addEventListener('copy', e => { e.preventDefault(); showToast('النسخ معطّل'); });
-    document.addEventListener('cut', e => { e.preventDefault(); });
-    document.addEventListener('dragstart', e => { e.preventDefault(); });
-}
+        if(siteData.settings?.antiCopy!==false){document.body.classList.add('no-select');document.addEventListener('contextmenu',e=>{e.preventDefault();showToast('النقر بالزرار الأيمن معطّل');});document.addEventListener('keydown',function(e){if(e.ctrlKey&&(e.key==='u'||e.key==='U')){e.preventDefault();}if(e.ctrlKey&&(e.key==='s'||e.key==='S')){e.preventDefault();}if(e.ctrlKey&&(e.key==='p'||e.key==='P')){e.preventDefault();}if(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i')){e.preventDefault();}if(e.ctrlKey&&e.shiftKey&&(e.key==='J'||e.key==='j')){e.preventDefault();}if(e.ctrlKey&&e.shiftKey&&(e.key==='C'||e.key==='c')){e.preventDefault();}if(e.key==='F12'){e.preventDefault();}});document.addEventListener('copy',e=>{e.preventDefault();showToast('النسخ معطّل');});document.addEventListener('cut',e=>{e.preventDefault();});document.addEventListener('dragstart',e=>{e.preventDefault();});}
+
+        // Apply font size from settings
+        (function(){try{var sd=JSON.parse(localStorage.getItem('cem_site_data'))||{};var s=sd.settings||{};if(s.fontSize&&document.documentElement){document.documentElement.style.setProperty('font-size',s.fontSize+'px','important');}if(s.fontFamily){document.documentElement.style.setProperty('font-family',s.fontFamily+', sans-serif','important');document.body.style.setProperty('font-family',s.fontFamily+', sans-serif','important');}}catch(e){}})();
     </script>
 </body>
 </html>

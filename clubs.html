@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النوادي والأنشطة | متوسطة بني جماتي</title>
+    <link rel="icon" href="logo1.png" type="image/png">
+    <script src="config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26',900:'#003319'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body{font-family:'Cairo','Tajawal',sans-serif;background:#f8fafc;color:#1e293b;overflow-x:hidden}
+        .dz-nav-bg{background:#006633}
+        .no-select{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+        .logo-circular{border-radius:50%!important;object-fit:cover!important;clip-path:circle(48.5% at 50% 50%)!important}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeUpHero{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+        .hero-fade{animation:fadeUpHero 0.6s ease forwards;opacity:0}
+        .hero-fade-d1{animation-delay:0.1s}
+        .hero-fade-d2{animation-delay:0.2s}
+        .scroll-reveal{opacity:0;transform:translateY(30px);transition:all 0.7s cubic-bezier(.4,0,.2,1)}
+        .scroll-reveal.visible{opacity:1;transform:translateY(0)}
+        .club-card{border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;background:#fff;transition:all 0.4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;opacity:0}
+        .club-card.visible{animation:fadeUp 0.5s ease forwards}
+        .club-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.08);border-color:#d1d5db}
+        .club-card .icon-wrap{transition:transform 0.5s cubic-bezier(.4,0,.2,1)}
+        .club-card:hover .icon-wrap{transform:scale(1.08)}
+        .club-card .icon-wrap .c1{transition:transform 0.6s ease}
+        .club-card:hover .icon-wrap .c1{transform:translate(10px,-10px)}
+        .club-card .icon-wrap .c2{transition:transform 0.6s ease}
+        .club-card:hover .icon-wrap .c2{transform:translate(-10px,10px)}
+        .club-card .join-btn{transition:all 0.3s ease}
+        .club-card:hover .join-btn{transform:scale(1.03)}
+        .filter-btn{transition:all 0.3s ease;cursor:pointer}
+        .filter-btn:hover{background:#006633;color:#fff}
+        .filter-btn.active{background:#006633;color:#fff;box-shadow:0 4px 12px rgba(0,102,51,0.3)}
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+    <header class="bg-white border-b border-gray-100 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center gap-4">
+            <a href="index" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center"><img id="hdr-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular"></a>
+            <div><h3 id="hdr-country" class="text-xs md:text-sm font-bold text-gray-600"></h3><p id="hdr-ministry" class="text-xs md:text-sm font-extrabold text-dzGreen-700"></p><h1 id="hdr-title" class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800"></h1><p id="hdr-sub" class="text-[11px] sm:text-xs font-bold text-dzGold-600 font-tajawal"></p></div>
+        </div>
+    </header>
+    <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center text-sm font-bold"><a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2"><i class="fa-solid fa-house text-xs"></i><span>الرئيسية</span></a><span class="text-white/50 px-1">/</span><span class="py-3 px-2 text-dzGold-300" id="nav-page-title">النوادي والأنشطة</span></div>
+            <a href="index" class="py-3 px-4 hover:bg-white/10 transition text-sm"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-8 w-full">
+        <nav class="text-xs text-gray-400"><a href="index" class="hover:text-dzGreen-700 transition">الرئيسية</a><span class="mx-1">/</span><span class="text-gray-600 font-bold" id="breadcrumb-title">النوادي والأنشطة</span></nav>
+        <section class="text-center space-y-3">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-dzGreen-50 rounded-full border border-dzGreen-100 hero-fade hero-fade-d1"><i class="fa-solid fa-flask text-dzGreen-600 text-sm"></i><span class="text-dzGreen-700 text-xs font-bold" id="page-category">النوادي العلمية والرياضية</span></div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-dzDark-800 hero-fade hero-fade-d1" id="page-title">النوادي والأنشطة اللامنهجية</h1>
+            <p class="text-sm text-gray-500 hero-fade hero-fade-d2" id="page-subtitle">أنشطة علمية ورياضية وثقافية لتطوير مهارات التلاميذ</p>
+        </section>
+
+        <!-- Category Filter -->
+        <div class="scroll-reveal flex flex-wrap items-center justify-center gap-2" id="filter-container"></div>
+
+        <!-- Club count -->
+        <div class="scroll-reveal text-center text-xs text-gray-400" id="club-count"></div>
+
+        <div id="clubs-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="empty-state" class="hidden text-center py-16 text-gray-400"><i class="fa-solid fa-folder-open text-4xl mb-3 block"></i><p class="text-sm font-bold">لا توجد نشاطات حالياً</p></div>
+    </main>
+
+    <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-gray-700">
+            <div class="md:col-span-4 space-y-4">
+                <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div class="w-14 h-14 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center"><img id="ft-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular"></div>
+                    <div><h4 class="text-sm font-bold text-white uppercase tracking-wider" id="ft-title"></h4><p class="text-[11px] text-dzGold-400 font-tajawal" id="ft-sub"></p></div>
+                </div>
+                <div class="text-xs text-gray-300 leading-relaxed space-y-1">
+                    <p class="font-semibold text-white" id="ft-ministry"></p>
+                    <p id="ft-entity"></p>
+                    <p id="ft-country"></p>
+                </div>
+            </div>
+            <div class="md:col-span-8 space-y-4">
+                <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-dzGold-500 pb-2 inline-block">منصات وروابط مفيدة</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
+                    <a href="https://awlyaa.education.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>فضاء الأولياء الرقمي</span></a>
+                    <a href="https://www.education.gov.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>بوابة وزارة التربية الوطنية</span></a>
+                    <a href="https://bem.onec.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>الديوان الوطني للامتحانات</span></a>
+                    <a href="index" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>العودة للرئيسية</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+            <p id="ft-copy" class="text-center"></p>
+            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> <span id="ft-dev-label">تم التطوير بواسطة</span> <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
+        </div>
+    </footer>
+
+    <script>
+    (function(){
+        var globalCfg = window.CEM_CONFIG || {};
+        var siteData = {};
+        try { siteData = JSON.parse(localStorage.getItem('cem_site_data')) || {}; } catch(e) { siteData = {}; }
+
+        var defaultClubsPage = {title:"النوادي والأنشطة اللامنهجية",subtitle:"أنشطة علمية ورياضية وثقافية لتطوير مهارات التلاميذ",category:"النوادي العلمية والرياضية"};
+        var defaultClubs = [
+            {name:"النادي العلمي",description:"اكتشاف عالم العلوم والتجارب العملية لتطوير الحس العلمي لدى التلاميذ",category:"علوم",supervisor:"أ. محمد بن عمر",schedule:"الثلاثاء 14:00",status:"active",icon:"fa-flask",image:"",joinLink:"#"},
+            {name:"النادي الرياضي",description:"التمارين الرياضية والمسابقات الرياضية المختلفة للياقة البدنية",category:"رياضة",supervisor:"أ. كريم بوزيد",schedule:"الأربعاء 14:00",status:"active",icon:"fa-futbol",image:"",joinLink:"#"},
+            {name:"النادي الثقافي",description:"القراءة والنقاش الثقافي والأنشطة الأدبية لتنمية المعرفة",category:"ثقافة",supervisor:"أ. فاطمة الزهراء",schedule:"الخميس 14:00",status:"active",icon:"fa-book-open",image:"",joinLink:"#"},
+            {name:"نادي المعلوماتية",description:"تعلم البرمجة وتقنية المعلومات والأدوات الرقمية",category:"تكنولوجيا",supervisor:"أ. حكيم بوزورداز",schedule:"الاثنين 14:00",status:"active",icon:"fa-laptop-code",image:"",joinLink:"#"},
+            {name:"النادي الفني",description:"الرسم والتصميم والأنشطة الفنية لتنمية الإبداع",category:"فنون",supervisor:"أ. نادية بن علي",schedule:"الثلاثاء 15:00",status:"active",icon:"fa-palette",image:"",joinLink:"#"},
+            {name:"نادي الإبداع",description:"الكتابة الإبداعية والشعر والأدب لتنمية الموهبة الأدبية",category:"أدب",supervisor:"أ. سعيد مرابط",schedule:"الأحد 14:00",status:"active",icon:"fa-feather-pointed",image:"",joinLink:"#"}
+        ];
+
+        if (!siteData.clubs || !Array.isArray(siteData.clubs) || siteData.clubs.length === 0) {
+            siteData.clubs = JSON.parse(JSON.stringify(defaultClubs));
+            if (!siteData.clubsPage) siteData.clubsPage = JSON.parse(JSON.stringify(defaultClubsPage));
+            localStorage.setItem('cem_site_data', JSON.stringify(siteData));
+        }
+
+        var clubsData = siteData.clubs || defaultClubs;
+        var currentFilter = 'all';
+
+        var colors = ['#006633','#b45309','#7c3aed','#0891b2','#be123c','#4338ca'];
+
+        function getColor(name){
+            var hash = 0;
+            for(var i=0;i<(name||'').length;i++){hash=name.charCodeAt(i)+((hash<<5)-hash);}
+            return colors[Math.abs(hash)%colors.length];
+        }
+
+        function buildCard(c, idx){
+            var cc = getColor(c.name);
+            var stBg = c.status==='active'?'#dcfce7':'#f1f5f9';
+            var stClr = c.status==='active'?'#166534':'#64748b';
+            var stTxt = c.status==='active'?'نشط':'غير نشط';
+            var delay = (idx * 0.08).toFixed(2);
+            var s = '';
+            s += '<article class="club-card visible" style="animation-delay:'+delay+'s">';
+            if(c.image){
+                s += '<div style="height:200px;overflow:hidden"><img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s" onmouseover="this.style.transform=\'scale(1.1)\'" onmouseout="this.style.transform=\'\'"></div>';
+            } else {
+                s += '<div class="icon-wrap" style="height:160px;background:linear-gradient(135deg,'+cc+','+cc+'bb);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">';
+                s += '<div class="c1" style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.08);top:-60px;left:-60px"></div>';
+                s += '<div class="c2" style="position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,0.05);bottom:-40px;right:-40px"></div>';
+                s += '<i class="fa-solid '+(c.icon||'fa-flask')+'" style="color:rgba(255,255,255,0.9);font-size:52px;position:relative;z-index:1"></i>';
+                s += '</div>';
+            }
+            s += '<div style="padding:20px;display:flex;flex-direction:column;gap:12px;flex:1">';
+            s += '<div style="display:flex;align-items:center;justify-content:space-between">';
+            s += '<span style="background:'+stBg+';color:'+stClr+';font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px">'+stTxt+'</span>';
+            if(c.category) s += '<span style="background:'+cc+'15;color:'+cc+';font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px">'+c.category+'</span>';
+            s += '</div>';
+            s += '<h3 style="font-size:16px;font-weight:800;color:#0f172a;line-height:1.5;margin:0">'+c.name+'</h3>';
+            if(c.description) s += '<p style="font-size:13px;color:#64748b;line-height:1.7;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">'+c.description+'</p>';
+            s += '<div style="display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid #f1f5f9;margin-top:auto">';
+            if(c.supervisor) s += '<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#64748b"><i class="fa-solid fa-user-tie" style="color:'+cc+';width:16px;text-align:center"></i><span style="font-weight:600">'+c.supervisor+'</span></div>';
+            if(c.schedule) s += '<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#64748b"><i class="fa-solid fa-clock" style="color:'+cc+';width:16px;text-align:center"></i><span style="font-weight:600">'+c.schedule+'</span></div>';
+            s += '</div>';
+            if(c.joinLink && c.joinLink !== '#'){
+                s += '<a href="'+c.joinLink+'" target="_blank" class="join-btn" style="display:block;text-align:center;background:linear-gradient(135deg,'+cc+','+cc+'dd);color:#fff;font-size:13px;font-weight:700;padding:11px;border-radius:12px;text-decoration:none;margin-top:8px"><i class="fa-solid fa-door-open" style="margin-left:6px"></i>الانضمام للنادي</a>';
+            }
+            s += '</div></article>';
+            return s;
+        }
+
+        function renderClubs(items){
+            var container = document.getElementById('clubs-container');
+            if(!items || items.length===0){
+                container.innerHTML='';
+                document.getElementById('empty-state').classList.remove('hidden');
+                document.getElementById('club-count').textContent='0 نادي';
+                return;
+            }
+            document.getElementById('empty-state').classList.add('hidden');
+            container.innerHTML='';
+            for(var i=0;i<items.length;i++){
+                container.innerHTML += buildCard(items[i], i);
+            }
+            document.getElementById('club-count').textContent=items.length+' نادي'+(items.length>1?' أندية':'');
+        }
+
+        function applyFilter(category){
+            currentFilter = category;
+            var allBtns = document.querySelectorAll('.filter-btn');
+            for(var i=0;i<allBtns.length;i++){allBtns[i].classList.remove('active');}
+            var activeBtn = document.querySelector('.filter-btn[data-filter="'+category+'"]');
+            if(activeBtn) activeBtn.classList.add('active');
+            var filtered = (category==='all') ? clubsData.slice() : clubsData.filter(function(c){return c.category===category;});
+            renderClubs(filtered);
+        }
+
+        function renderFilters(){
+            var cats = ['all'];
+            for(var i=0;i<clubsData.length;i++){
+                if(clubsData[i].category && cats.indexOf(clubsData[i].category)===-1) cats.push(clubsData[i].category);
+            }
+            var container = document.getElementById('filter-container');
+            container.innerHTML='';
+            for(var j=0;j<cats.length;j++){
+                var label = (cats[j]==='all')?'الكل':cats[j];
+                var btn = document.createElement('button');
+                btn.setAttribute('class','filter-btn text-xs font-bold px-4 py-1.5 rounded-full border border-gray-200 bg-white text-gray-600'+(cats[j]==='all'?' active':''));
+                btn.setAttribute('data-filter',cats[j]);
+                btn.textContent=label;
+                (function(cat){btn.addEventListener('click',function(){applyFilter(cat);})})(cats[j]);
+                container.appendChild(btn);
+            }
+        }
+
+        function render(){
+            var clubs = siteData.clubs;
+            if(!clubs || !Array.isArray(clubs) || clubs.length===0) clubs = defaultClubs;
+            clubsData = clubs;
+            var page = siteData.clubsPage || defaultClubsPage;
+            var s = siteData.settings || {};
+
+            if(s.country) document.getElementById('hdr-country').textContent = s.country;
+            if(s.ministry) document.getElementById('hdr-ministry').textContent = s.ministry;
+            if(s.institution){
+                document.getElementById('hdr-title').textContent = s.institution;
+                document.getElementById('ft-title').textContent = s.institution;
+                document.getElementById('ft-copy').textContent = s.institution+' - © 2026 جميع الحقوق محفوظة';
+                document.getElementById('ft-entity').textContent = 'المؤسسة الرسمية ل' + s.institution;
+            }
+            if(s.subtitle){
+                document.getElementById('hdr-sub').textContent = s.subtitle;
+                document.getElementById('ft-sub').textContent = s.subtitle;
+            }
+            if(s.logoUrl) document.getElementById('hdr-logo').src = s.logoUrl;
+            if(s.country) document.getElementById('ft-country').textContent = s.country;
+            if(s.ministry) document.getElementById('ft-ministry').textContent = s.ministry;
+
+            document.getElementById('page-title').textContent = page.title || defaultClubsPage.title;
+            document.getElementById('page-subtitle').textContent = page.subtitle || defaultClubsPage.subtitle;
+            document.getElementById('page-category').textContent = page.category || defaultClubsPage.category;
+            document.getElementById('nav-page-title').textContent = page.title || '';
+            document.getElementById('breadcrumb-title').textContent = page.title || '';
+
+            renderFilters();
+            applyFilter('all');
+            initScrollReveal();
+        }
+
+        function initScrollReveal(){
+            if('IntersectionObserver' in window){
+                var obs = new IntersectionObserver(function(entries){
+                    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')});
+                },{threshold:0.05});
+                var els = document.querySelectorAll('.scroll-reveal');
+                for(var i=0;i<els.length;i++){obs.observe(els[i]);}
+            } else {
+                var els = document.querySelectorAll('.scroll-reveal');
+                for(var i=0;i<els.length;i++){els[i].classList.add('visible');}
+            }
+        }
+
+        async function fetchFromJSONbin(){
+            var binId = siteData.settings && siteData.settings.binId ? siteData.settings.binId : globalCfg.jsonbinId;
+            var masterKey = siteData.settings && siteData.settings.masterKey ? siteData.settings.masterKey : globalCfg.jsonbinMasterKey;
+            if(!binId || !masterKey) return;
+            try {
+                var ctrl = new AbortController();
+                var tid = setTimeout(function(){ctrl.abort();},5000);
+                var res = await fetch('https://api.jsonbin.io/v3/b/'+binId+'/latest',{headers:{'X-Master-Key':masterKey},signal:ctrl.signal});
+                clearTimeout(tid);
+                if(res.ok){
+                    var json = await res.json();
+                    if(json.record){
+                        siteData = json.record;
+                        if(!siteData.clubs || !Array.isArray(siteData.clubs) || siteData.clubs.length===0){
+                            siteData.clubs = JSON.parse(JSON.stringify(defaultClubs));
+                        }
+                        if(!siteData.clubsPage) siteData.clubsPage = JSON.parse(JSON.stringify(defaultClubsPage));
+                        localStorage.setItem('cem_site_data', JSON.stringify(siteData));
+                        render();
+                    }
+                }
+            } catch(e){console.error(e);}
+        }
+
+        render();
+        fetchFromJSONbin();
+        setInterval(fetchFromJSONbin, 30000);
+    })();
+
+        // Apply font size from settings
+        (function(){try{var sd=JSON.parse(localStorage.getItem('cem_site_data'))||{};var s=sd.settings||{};if(s.fontSize&&document.documentElement){document.documentElement.style.setProperty('font-size',s.fontSize+'px','important');}if(s.fontFamily){document.documentElement.style.setProperty('font-family',s.fontFamily+', sans-serif','important');document.body.style.setProperty('font-family',s.fontFamily+', sans-serif','important');}}catch(e){}})();
+    </script>
+</body>
+</html>

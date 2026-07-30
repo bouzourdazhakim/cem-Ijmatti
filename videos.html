@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>معرض الفيديوهات | متوسطة بني جماتي</title>
+    <link rel="icon" href="logo1.png" type="image/png">
     <script src="config.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26'},dzRed:{600:'#d9251d',700:'#cc0000'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}</script>
@@ -21,13 +22,13 @@
     </header>
     <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <div class="flex items-center text-sm font-bold"><a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2"><i class="fa-solid fa-house text-xs"></i><span>الرئيسية</span></a><span class="text-white/50 px-1">/</span><span class="py-3 px-2 text-dzGold-300">معرض الفيديوهات</span></div>
+            <div class="flex items-center text-sm font-bold"><a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2"><i class="fa-solid fa-house text-xs"></i><span>الرئيسية</span></a><span class="text-white/50 px-1">/</span><span class="py-3 px-2 text-dzGold-300" id="nav-page-title">معرض الفيديوهات</span></div>
             <a href="index" class="py-3 px-4 hover:bg-white/10 transition text-sm"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-8 w-full">
-        <nav class="text-xs text-gray-400"><a href="index" class="hover:text-dzGreen-700 transition">الرئيسية</a><span class="mx-1">/</span><span class="text-gray-600 font-bold">معرض الفيديوهات</span></nav>
+        <nav class="text-xs text-gray-400"><a href="index" class="hover:text-dzGreen-700 transition">الرئيسية</a><span class="mx-1">/</span><span class="text-gray-600 font-bold" id="breadcrumb-title">معرض الفيديوهات</span></nav>
         <section class="text-center space-y-3">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50 rounded-full border border-red-100"><i class="fa-solid fa-play-circle text-dzRed-700 text-sm"></i><span class="text-dzRed-700 text-xs font-bold">فيديوهات المؤسسة</span></div>
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-dzDark-800">معرض الفيديوهات</h1>
@@ -129,6 +130,9 @@ if (siteData.settings?.antiCopy !== false) {
     document.addEventListener('cut', e => { e.preventDefault(); });
     document.addEventListener('dragstart', e => { e.preventDefault(); });
 }
+
+        // Apply font size from settings
+        (function(){try{var sd=JSON.parse(localStorage.getItem('cem_site_data'))||{};var s=sd.settings||{};if(s.fontSize&&document.documentElement){document.documentElement.style.setProperty('font-size',s.fontSize+'px','important');}if(s.fontFamily){document.documentElement.style.setProperty('font-family',s.fontFamily+', sans-serif','important');document.body.style.setProperty('font-family',s.fontFamily+', sans-serif','important');}}catch(e){}})();
     </script>
 </body>
 </html>
