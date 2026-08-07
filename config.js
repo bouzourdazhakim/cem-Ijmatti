@@ -7,7 +7,7 @@
 
 window.CEM_CONFIG = {
     // 1. إعدادات JSONbin.io للحفظ المباشر في السحابة
-    jsonbinId: "6a764a1eda38895dfec7dd39",
+    jsonbinId: "6a764adcda38895dfec7dfe2",
     jsonbinMasterKey: "$2a$10$3UR9kGJm1FmhsjHAQ9/l/uI1aYxKJmwycjGTq2qs9/NAZVmV/qO6u",
 
     // 2. إعدادات رفع الصور الفوري عبر ImgBB API
