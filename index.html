@@ -8,6 +8,7 @@
 <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
     <!-- Global Config File for Vercel & Cloud Hosting -->
     <script src="config.js"></script>
+    <script src="default-data.js"></script>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -640,6 +641,7 @@
 </head>
 
 <body class="antialiased selection:bg-dzGreen-700 selection:text-white min-h-screen flex flex-col justify-between">
+    <div id="cem-loading-overlay" style="position:fixed;inset:0;z-index:99999;background:#fdf8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:'Cairo','Segoe UI',sans-serif;direction:rtl;"><div style="width:58px;height:58px;border:5px solid #f5d9a8;border-top-color:#1b4332;border-radius:50%;animation:cemSpin .9s linear infinite;"></div><div data-cem-label style="color:#1b4332;font-size:15px;font-weight:800;">جاري تحميل البيانات...</div><style>@keyframes cemSpin{to{transform:rotate(360deg)}}</style></div>
 
     <!-- 1. BARRE SUPÉRIEURE (الشريط الأعلى والروابط السريعة) -->
     <div class="bg-gray-100 border-b border-gray-200 py-2 px-4 text-xs">
@@ -1047,172 +1049,7 @@
     <script>
         const globalCfg = window.CEM_CONFIG || {};
 
-        const defaultCemData = {
-            settings: {
-                country: "الجمهورية الجزائرية الديمقراطية الشعبية",
-                ministry: "وزارة التربية الوطنية - مديرية التربية",
-                institution: "متوسطة بني جماتي",
-                subtitle: "Ayerbaz Alemmas n It Jmatti • تعلم - تربية - تفوق",
-                logoUrl: "logo.png",
-                coverUrl: "cover.png",
-                awliyaUrl: globalCfg.awliyaUrl || "https://awlyaa.education.dz/",
-                binId: globalCfg.jsonbinId || "",
-                masterKey: globalCfg.jsonbinMasterKey || ""
-            },
-            hero: {
-                category: "البوابة الرقمية الرسمية • وزارة التربية الوطنية",
-                title: "متوسطة بني جماتي • صرح التربية والتعليم والتفوق",
-                desc: "مرحباً بكم في الفضاء الرقمي التفاعلي لمتوسطة بني جماتي (Ayerbaz Alemmas n It Jmatti). نرافق أبناءنا التلاميذ ونخدم الأولياء والطاقم التربوي عبر منصة تعليمية وإعلامية متكاملة تسعى لبناء جيل واعد، متميز علمياً وخلقياً، ومواكب للتطور الرقمي في ظل قيم وطننا العزيز.",
-                btnText: "استكشف الأنشطة والإعلانات الرسمية",
-                btnLink: "#activities"
-            },
-            featuredPost: {
-                enabled: true,
-                type: "announcement",
-                title: "مستجدات وزارة التربية الوطنية",
-                titles: [
-                    { text: "تستقبل المتفوقين الأوائل وطنيا في شهادة البكالوريا وشهادة التعليم المتوسط دورة 2026", date: "28 يوليو 2026", link: "#" },
-                    { text: "بيـــــــان وزارة التربية الوطنية حول نتائج الامتحانات الرسمية", date: "28 يوليو 2026", link: "#" },
-                    { text: "وزير التربية يشرف على تكريم التلاميذ النجباء", date: "27 يوليو 2026", link: "#" },
-                    { text: "بـــــــلاغ هام لكافة أولياء التلاميذ والتأطير التربوي بالمؤسسة", date: "21 يوليو 2026", link: "#" }
-                ],
-                subtitle: "",
-                content: "",
-                image: "",
-                btnLink: "#",
-                btnText: "",
-                color: "red"
-            },
-            stats: [
-                { id: 1, icon: "fa-user-graduate", value: 850, label: "التلاميذ المسجلون", suffix: "+", link: "students.html" },
-                { id: 2, icon: "fa-chalkboard-user", value: 52, label: "الأساتذة والمؤطرون", suffix: "", link: "" },
-                { id: 3, icon: "fa-calendar-alt", value: 45, label: "سنوات الخبرة والعطاء", suffix: "+", link: "" },
-                { id: 4, icon: "fa-flask", value: 15, label: "النوادي والأنشطة", suffix: "", link: "clubs.html" }
-            ],
-            students: {
-                total: 850,
-                female: 420,
-                male: 430,
-                excellent: 85,
-                levels: [
-                    { name: "السنة الأولى متوسط", count: 290, icon: "fa-book-open" },
-                    { name: "السنة الثانية متوسط", count: 280, icon: "fa-book" },
-                    { name: "السنة الثالثة متوسط", count: 280, icon: "fa-graduation-cap" }
-                ],
-                sections: [
-                    { name: "شعبة علوم تجريبية", count: 120, icon: "fa-flask" },
-                    { name: "شعبة رياضيات", count: 95, icon: "fa-square-root-variable" },
-                    { name: "شعبة تقني رياضي", count: 85, icon: "fa-gears" },
-                    { name: "شعبة لغات أجنبي", count: 110, icon: "fa-language" },
-                    { name: "شعبة آداب وفلسفة", count: 90, icon: "fa-book-open" },
-                    { name: "شعبة تسيير واقتصاد", count: 80, icon: "fa-chart-line" }
-                ],
-                info: [
-                    { title: "نسبة الإنجاح", description: "تم تسجيل نسبة إنجاح مرتفعة هذا الموسم", icon: "fa-circle-check" },
-                    { title: "المتفوقون", description: "عدد المتفوقين في الفصل الأول", icon: "fa-trophy" },
-                    { title: "الrciyclage", description: "تلاميذ منخرطون في برامج الترقية", icon: "fa-graduation-cap" },
-                    { title: "التأطير", description: "نسبة التأطير التربوي والأخلاقي", icon: "fa-shield-halved" }
-                ]
-            },
-            about: {
-                identity: [
-                    { icon: "fa-landmark", label: "اسم المؤسسة", value: "متوسطة إسغيد علي - بني جماتي" },
-                    { icon: "fa-map-location-dot", label: "الولاية / البلدية", value: "سطيف - عين الكبيرة" },
-                    { icon: "fa-calendar-check", label: "تاريخ التأسيس", value: "2003 / 2004" },
-                    { icon: "fa-users", label: "الطاقة الاستيعابية", value: "أكثر من 600 تلميذ" },
-                    { icon: "fa-chalkboard-user", label: "الطاقم التربوي", value: "أكثر من 40 أستاذاً" },
-                    { icon: "fa-graduation-cap", label: "الشعب التعليمية", value: "3 أقسام / سنة" }
-                ],
-                mission: "تقديم تعليم متميز يرتكز على القيم الأخلاقية والوطنية، وتنمية قدرات التلاميذ علمياً ورياضياً وثقافياً، ومواكبة المستجدات التربوية والتقنية، مع توفير بيئة تعليمية آمنة ومحفزة للإبداع والابتكار.",
-                vision: "أن نكون مؤسسة تعليمية مرجعية في المنطقة، تُخرج جيلاً واعياً ومتمكناً من المهارات، قادر على المساهمة في بناء الجزائر الجديدة، من خلال تعليم عصري يجمع بين العلم والمعرفة والأخلاق.",
-                history: [
-                    { year: "2003 - 2004", title: "تأسيس المؤسسة", description: "تأسست متوسطة إسغيد علي بني جماتي بموجب القرار الوزاري لسنة 2003، لتكون إطاراً تعليمياً يخدم تلاميذ المنطقة.", color: "green" },
-                    { year: "2010 - 2015", title: "مرحلة التوسع والتحديث", description: "إنشاء فضاءات جديدة تشمل المختبرات العلمية، قاعة المعلوماتية، والمكتبة مع أحدث الوسائل التعليمية.", color: "gold" },
-                    { year: "2016 - 2020", title: "التحوّل الرقمي", description: "إطلاق البوابة الرقمية الرسمية وتطبيق نظام التعليم المساند بالتكنولوجيا وإنشاء فضاء الأولياء الرقمي.", color: "red" },
-                    { year: "2021 - 2026", title: "التميّز والريادة", description: "تحقيق نتائج متميّزة في الامتحانات الرسمية وتنظيم معارض علمية وأنشطة ثقافية ورياضية.", color: "green" }
-                ],
-                goals: [
-                    { icon: "fa-book-open", title: "التحصيل العلمي", description: "رفع مستوى التحصيل العلمي وضمان اجتياز الامتحانات بنسبة نجاح مرتفعة." },
-                    { icon: "fa-heart", title: "التربيّة والأخلاق", description: "غرس القيم الوطنية والأخلاقية وتكوين مواطنين صالحين محبّين لوطنهم." },
-                    { icon: "fa-laptop-code", title: "المهارات الرقمية", description: "تطوير مهارات التلاميذ في تكنولوجيا المعلومات واستعمال الأدوات الرقمية." },
-                    { icon: "fa-trophy", title: "التفوق الرياضي", description: "تشجيع ممارسة الرياضة والمشاركة في التظاهرات الرياضية." },
-                    { icon: "fa-people-group", title: "الشراكات المجتمعية", description: "تعزيز التكامل بين المؤسسة والأسرة والمجتمع المحلي." },
-                    { icon: "fa-shield-halved", title: "الأمن المدرسي", description: "ضمان بيئة مدرسية آمنة وصحية لجميع التلاميذ والطاقم." }
-                ],
-                stats: [
-                    { icon: "fa-users", value: "600+", label: "تلميذ" },
-                    { icon: "fa-chalkboard-user", value: "40+", label: "أستاذ" },
-                    { icon: "fa-door-open", value: "18", label: "قاعة" },
-                    { icon: "fa-award", value: "20+", label: "سنة خبرة" }
-                ]
-            },
-            clubsPage: {
-                title: "النوادي والأنشطة اللامنهجية",
-                subtitle: "أنشطة علمية ورياضية وثقافية لتطوير مهارات التلاميذ",
-                category: "النوادي العلمية والرياضية"
-            },
-            clubs: [
-                { id: 1, name: "النادي العلمي", description: "اكتشاف عالم العلوم والتجارب العملية لتطوير الحس العلمي لدى التلاميذ", category: "علوم", supervisor: "أ. محمد بن عمر", schedule: "الثلاثاء 14:00", status: "active", icon: "fa-flask", image: "", joinLink: "#" },
-                { id: 2, name: "النادي الرياضي", description: "التمارين الرياضية والمسابقات الرياضية المختلفة للياقة البدنية", category: "رياضة", supervisor: "أ. كريم بوزيد", schedule: "الأربعاء 14:00", status: "active", icon: "fa-futbol", image: "", joinLink: "#" },
-                { id: 3, name: "النادي الثقافي", description: "القراءة والنقاش الثقافي والأنشطة الأدبية لتنمية المعرفة", category: "ثقافة", supervisor: "أ. فاطمة الزهراء", schedule: "الخميس 14:00", status: "active", icon: "fa-book-open", image: "", joinLink: "#" },
-                { id: 4, name: "نادي المعلوماتية", description: "تعلم البرمجة وتقنية المعلومات والأدوات الرقمية", category: "تكنولوجيا", supervisor: "أ. حكيم بوزورداز", schedule: "الاثنين 14:00", status: "active", icon: "fa-laptop-code", image: "", joinLink: "#" },
-                { id: 5, name: "النادي الفني", description: "الرسم والتصميم والأنشطة الفنية لتنمية الإبداع", category: "فنون", supervisor: "أ. نادية بن علي", schedule: "الثلاثاء 15:00", status: "active", icon: "fa-palette", image: "", joinLink: "#" },
-                { id: 6, name: "نادي الإبداع", description: "الكتابة الإبداعية والشعر والأدب لتنمية الموهبة الأدبية", category: "أدب", supervisor: "أ. سعيد مرابط", schedule: "الأحد 14:00", status: "active", icon: "fa-feather-pointed", image: "", joinLink: "#" }
-            ],
-            activities: [
-                { id: 1, date: "14-07-2026", title: "حفل تكريم التلاميذ المتفوقين في الفصل الدراسي بالمؤسسة", image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80" },
-                { id: 2, date: "08-07-2026", title: "افتتاح المعرض العلمي والنوادي الثقافية لمتوسطة بني جماتي", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80" }
-            ],
-            dossiers: [
-                { id: 1, title: "دليل التسجيل والاطلاع على النتائج عبر فضاء الأولياء الرقمي", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80" },
-                { id: 2, title: "البرنامج الأسبوعي للدعم والمراجعة المحروسة لتلاميذ شهادة التعليم المتوسط", image: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80" }
-            ],
-            announcements: [
-                { id: 1, date: "23-07-2026", title: "إعلان للأولياء حول إعادة تأكيد المعلومات بالفضاء الرقمي" },
-                { id: 2, date: "14-07-2026", title: "برنامج اختبارات الفصل وتوزيع القاعات المدرسية" },
-                { id: 3, date: "08-07-2026", title: "اجتماع جمعية أولياء التلاميذ لمناقشة النتائج" },
-                { id: 4, date: "01-07-2026", title: "برنامج الرحلات الميدانية والأنشطة الرياضية بالمؤسسة" }
-            ],
-            teachersPage: {
-                title: "فضاء الأساتذة والتأطير التربوي",
-                subtitle: "استعمال الزمن • الحراسة • المناشير الرسمية",
-                category: "التأطير التربوي"
-            },
-            teachers: [
-                { id: 1, type: "timetable", date: "2026-2027", title: "استعمال الزمن الأسبوعي الرسمي للأساتذة", icon: "fa-calendar-week", category: "جدول استعمال الزمن", description: "جدول распределение الحصص الأسبوعية لكافة الأفواج والسنوات الدراسية لمتوسطة بني جماتي." },
-                { id: 2, type: "invigilation", date: "فروض واختبارات 2026", title: "جدول حراسة الامتحانات والفروض الرسمية", icon: "fa-clipboard-check", category: "جدول الحراسة", description: "توزيع الأساتذة والمؤطرين التربويين على حراسة القاعات وقاعات الامتحانات الرسمية بالمؤسسة." },
-                { id: 3, type: "circular", date: "منشور وزاري 2026", title: "المناشير والتعليمات الوزارية الخاصة بالتأطير التربوي", icon: "fa-file-shield", category: "مناشير وزارية", description: "مجموعة المناشير والتعليمات البيداغوجية والتنظيمية الصادرة عن وزارة التربية الوطنية." }
-            ],
-            videos: [
-                { id: 1, title: "التغطية الخاصة لفعاليات اليوم العلمي والنوادي الثقافية بمؤسسة بني جماتي", date: "14-07-2026", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", thumbnail: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80", category: "تغطية خاصة" },
-                { id: 2, title: "حفل تكريم المتفوقين في الامتحان وتوزيع الجوائز والميداليات", date: "08-07-2026", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", thumbnail: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80", category: "حفل التكريم" }
-            ],
-            navbar: [
-                { id: 1, label: "الرئيسية", link: "#", icon: "", dropdown: [], isActive: true, visible: true },
-                { id: 2, label: "عن المتوسطة", link: "#about", icon: "fa-caret-down", dropdown: [
-                    { id: 21, label: "بطاقة فنية عن المؤسسة", link: "#about" },
-                    { id: 22, label: "الطاقم الإداري والتربوي", link: "#staff" },
-                    { id: 23, label: "النظام الداخلي للمؤسسة", link: "regulations.html" }
-                ], isActive: false, visible: true },
-                { id: 3, label: "النشاطات التربوية", link: "#activities", icon: "fa-caret-down", dropdown: [
-                    { id: 31, label: "التظاهرات العلمية والتكريمات", link: "#activities" },
-                    { id: 32, label: "النوادي العلمية والرياضية", link: "#clubs" },
-                    { id: 33, label: "معارض الأنشطة الثقافية", link: "#exhibitions" }
-                ], isActive: false, visible: true },
-                { id: 4, label: "الإعلانات والبلاغات", link: "#press", icon: "fa-caret-down", dropdown: [
-                    { id: 41, label: "جدول الامتحانات والفروض", link: "#press" },
-                    { id: 42, label: "إعلانات أولياء التلاميذ", link: "#parents-news" },
-                    { id: 43, label: "رزنامة العطل المدرسية", link: "#holidays" }
-                ], isActive: false, visible: true },
-                { id: 5, label: "الفضاء الرقمي", link: "#", icon: "fa-caret-down", dropdown: [
-                    { id: 51, label: "فضاء الأولياء الرقمي", link: "https://awlyaa.education.dz/", isExternal: true },
-                    { id: 52, label: "حاسبة معدل شهادة BEM", link: "#calculator" }
-                ], isActive: false, visible: true },
-                { id: 6, label: "فضاء الأساتذة", link: "#teachers", icon: "", dropdown: [], isActive: false, visible: true, color: "text-dzGold-300" },
-                { id: 7, label: "معرض الفيديوهات", link: "#videos", icon: "", dropdown: [], isActive: false, visible: true },
-                { id: 8, label: "اتصل بنا", link: "#contact", icon: "", dropdown: [], isActive: false, visible: true }
-            ]
-        };
+        const defaultCemData = window.DEFAULT_CEM_DATA;
 
         let siteData = JSON.parse(localStorage.getItem('cem_site_data')) || defaultCemData;
         let currentLang = 'ar';
@@ -1432,34 +1269,25 @@
         }
 
         // Ensure keys from config.js are loaded if localStorage is empty
+        if (!siteData.settings.cloudProvider) siteData.settings.cloudProvider = globalCfg.cloudProvider || 'kvdb';
+        if (!siteData.settings.pantryId) siteData.settings.pantryId = globalCfg.pantryId || '';
+        if (!siteData.settings.pantryBasket) siteData.settings.pantryBasket = globalCfg.pantryBasket || 'cem_site_data';
+        if (!siteData.settings.kvdbBucketId) siteData.settings.kvdbBucketId = globalCfg.kvdbBucketId || 'cem_ijmatti_default_bucket';
+        if (!siteData.settings.kvdbKey) siteData.settings.kvdbKey = globalCfg.kvdbKey || 'cem_site_data';
         if (!siteData.settings.binId && globalCfg.jsonbinId) siteData.settings.binId = globalCfg.jsonbinId;
         if (!siteData.settings.masterKey && globalCfg.jsonbinMasterKey) siteData.settings.masterKey = globalCfg.jsonbinMasterKey;
 
         async function fetchFromJSONbin() {
-            const binId = siteData.settings.binId || globalCfg.jsonbinId;
-            const masterKey = siteData.settings.masterKey || globalCfg.jsonbinMasterKey;
-
-            if (binId && masterKey) {
-                try {
-                    const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 5000);
-                    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-                        headers: { 'X-Master-Key': masterKey },
-                        signal: controller.signal
-                    });
-                    clearTimeout(timeout);
-                    if (res.ok) {
-                        const json = await res.json();
-                        if (json.record) {
-                            siteData = json.record;
-                            ensureHeroDefaults();
-                            localStorage.setItem('cem_site_data', JSON.stringify(siteData));
-                            renderSiteData();
-                        }
-                    }
-                } catch (err) {
-                    console.error("JSONbin Sync Error:", err);
+            try {
+                const fetchedData = await window.cemCloudFetch(siteData);
+                if (fetchedData) {
+                    siteData = fetchedData;
+                    ensureHeroDefaults();
+                    localStorage.setItem('cem_site_data', JSON.stringify(siteData));
+                    renderSiteData();
                 }
+            } catch (err) {
+                console.error("Cloud Sync Error:", err);
             }
         }
 
@@ -1954,8 +1782,12 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             renderSiteData();
-            fetchFromJSONbin();
-            setInterval(fetchFromJSONbin, 30000);
+            window.showCemLoading();
+            Promise.resolve(fetchFromJSONbin()).catch(err => console.error("Cloud Sync Error:", err)).finally(() => {
+                window.hideCemLoading();
+                renderSiteData();
+                setInterval(fetchFromJSONbin, 30000);
+            });
         });
 
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }

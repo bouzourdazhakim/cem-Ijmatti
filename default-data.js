@@ -1,0 +1,541 @@
+/*
+ * ====================================================================
+ *  CEM BENI JMATTI - DEFAULT DATA (loaded from database.json)
+ *  Default data used when localStorage is empty.
+ * ====================================================================
+ */
+
+window.DEFAULT_CEM_DATA = {
+    "settings": {
+        "cloudProvider": "cloudinary",
+        "country": "الجمهورية الجزائرية الديمقراطية الشعبية",
+        "ministry": "وزارة التربية الوطنية - مديرية التربية لولاية سطيف",
+        "institution": "متوسطة بني جماتي",
+        "subtitle": "Ayerbaz Alemmas n It Jmatti • تعلم - تربية - تفوق",
+        "logoUrl": "https://i.ibb.co/DfQ0c2TG/logo.jpg",
+        "coverUrl": "cover.png",
+        "awliyaUrl": "https://awlyaa.education.dz/",
+        "adminPassword": "CEM19092002",
+        "binId": "6a6890f8f5f4af5e29cc78fd",
+        "masterKey": "$2a$10$2.qnwRQfkI8MtHWCv4hS2.tV7V2H1Z62sMA.7mFGp0A24x3ptEJp2",
+        "imgbbKey": "9e1ce2595a4aaec35807c37067f327ba",
+        "ghOwner": "",
+        "ghRepo": "",
+        "ghToken": "",
+        "cloudinaryName": "dindawysv",
+        "cloudinaryPreset": "cem_preset",
+        "cloudinaryApiKey": "875188511396798",
+        "cloudinaryApiSecret": "4QN4aLaGJY2k4P92ICYixjFFT-Y",
+        "fontFamily": "Cairo",
+        "antiCopy": true,
+        "fontSize": "17"
+    },
+    "hero": {
+        "category": "البوابة الرقمية الرسمية • وزارة التربية الوطنية",
+        "title": "متوسطة بني جماتي • صرح التربية والتعليم والتفوق",
+        "desc": "مرحباً بكم في الفضاء الرقمي التفاعلي لمتوسطة بني جماتي (Ayerbaz Alemmas n It Jmatti). نرافق أبناءنا التلاميذ ونخدم الأولياء والطاقم التربوي عبر منصة تعليمية وإعلامية متكاملة تسعى لبناء جيل واعد، متميز علمياً وخلقياً، ومواكب للتطور الرقمي في ظل قيم وطننا العزيز.",
+        "btnText": "استكشف الأنشطة والإعلانات الرسمية",
+        "btnLink": "#activities"
+    },
+    "activities": [
+        {
+            "id": 1785327030260,
+            "date": "28-07-2026",
+            "title": " إنضم الآن لنادي المطالعة",
+            "image": "https://i.ibb.co/bg9SpZW0/Chat-GPT-Image-Aug-3-2026-01-42-18-PM.png",
+            "fileUrl": "https://docs.google.com/forms/d/e/1FAIpQLSfw2r6mITCemObVAO_HM7SNjLCPHNEHKgKbQweWLsOIEvWhEA/viewform?usp=publish-editor",
+            "description": "يمكن للمتعلمين الآن الإنضمام لنادي المطالعة والمشاركة في مختلف النشاطات\n\nاستمارة الانضمام إلى نادي المطالعة 📖✨  \nمرحبًا بك في استمارة الانضمام إلى نادي المطالعة بمتوسطة بني جماتي. 📚\n\nإذا كنت من محبي القراءة وترغب في تنمية مهاراتك الفكرية والثقافية والمشاركة في أنشطة النادي، يرجى تعبئة هذه الاستمارة بدقة. سيتم دراسة جميع الطلبات واختيار الأعضاء وفقًا للرغبة والالتزام."
+        },
+        {
+            "id": 1785763148223,
+            "date": "28-07-2026",
+            "title": " إنضم الآن لنادي الإذاعة المدرسية",
+            "image": "https://i.ibb.co/3yhvR43c/Chat-GPT-Image-Jul-30-2026-01-32-35-PM.png",
+            "fileUrl": "https://docs.google.com/forms/d/e/1FAIpQLSehzBdubKUKF4myIrGyka-nCGFOC1G-orN8pW2fovqcxCikXA/viewform?usp=dialog",
+            "description": "يمكن للمتعلمين الآن الإنضمام لنادي المطالعة والمشاركة في مختلف النشاطات\n\n📻 استمارة الانضمام إلى نادي الإذاعة المدرسية\n👋 مرحبًا بك،\n\n🎙️ إذا كنت تمتلك موهبة في الإلقاء أو الكتابة، أو ترغب في تطوير مهاراتك في التواصل والعمل الجماعي، فإن نادي الإذاعة المدرسية يرحب بانضمامك.\n\n📝 يرجى تعبئة هذه الاستمارة بدقة، وسيتم دراسة جميع الطلبات واختيار الأعضاء وفقًا للرغبة والالتزام والاستعداد للمشاركة في أنشطة النادي.\n\n⚠️ ملاحظة: تعبئة الاستمارة لا تعني القبول النهائي، وسيتم التواصل مع المترشحين بعد دراسة الطلبات.\n\n🌹 نتمنى لكم كل التوفيق والنجاح."
+        }
+    ],
+    "dossiers": [
+        {
+            "id": 1785762433385,
+            "title": "القانون الأساسي الخاص بموظفي التربية الوطنية",
+            "image": "https://i.ibb.co/7dSQyQ06/Screenshot-2026-08-03-140827.png",
+            "fileUrl": "https://docs.google.com/viewerng/viewer?url=https://tachri3.com/wp-content/uploads/2025/01/Decret_executif_n%C2%B0_25-54_statut_particulier_des_fonctionnaires_appartenant_aux_corps_specifiques_de_leducation_nationale.pdf&hl=ar",
+            "description": "القانون الأساسي الخاص بموظفي التربية الوطنية\n\nمرسوم تنفيذي رقم 25-54 مؤرخ في 21 جانفي2025, يتضمن القانون الأساسي الخاص بالموظفين المنتمين للأسلاك الخاصة بالتربية الوطنية.\n\nمرسوم تنفيذي رقم 25- 55 مؤرخ في 21 جانفي 2025، يؤسس النظام التعويضي للموظفين المنتمين للأسلاك الخاصة بالتربية الوطنية."
+        }
+    ],
+    "announcements": [
+        {
+            "id": 1785326894220,
+            "date": "28-07-2026",
+            "title": "📢 إعلان هام لأولياء التلاميذ",
+            "image": "https://scontent.fczl1-2.fna.fbcdn.net/v/t39.99422-6/736343150_1393937129458856_3827019677002127912_n.png?stp=dst-jpg_tt6&cstp=mx1423x2048&ctp=s1423x2048&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFlZZu1gedVU353GpfgLgR35qtMr8Ozpo3mq0yvw7OmjTrkb0JJooKCqrj46YjjzKPzWv7thdDb_aC48LrU3yEW&_nc_ohc=Y5xLSQ3A6i8Q7kNvwErkBmQ&_nc_oc=AdpE6ZZTJSK-DoMiF2Djwh8cM77H_p7hh9teRGbJGgVD4uxbdNNORCDoRQdUOSpL1bE&_nc_zt=14&_nc_ht=scontent.fczl1-2.fna&_nc_gid=YxJSPiI3ZW9fgXtL5_2r8w&_nc_ss=7b2a8&oh=00_AQBT6LKBQuyte0SPpSipSW_FLMHBvDMA6xGDzG4axDFhJQ&oe=6A6E9526",
+            "fileUrl": "https://scontent.fczl1-2.fna.fbcdn.net/v/t39.99422-6/736343150_1393937129458856_3827019677002127912_n.png?stp=dst-jpg_tt6&cstp=mx1423x2048&ctp=s1423x2048&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFlZZu1gedVU353GpfgLgR35qtMr8Ozpo3mq0yvw7OmjTrkb0JJooKCqrj46YjjzKPzWv7thdDb_aC48LrU3yEW&_nc_ohc=Y5xLSQ3A6i8Q7kNvwErkBmQ&_nc_oc=AdpE6ZZTJSK-DoMiF2Djwh8cM77H_p7hh9teRGbJGgVD4uxbdNNORCDoRQdUOSpL1bE&_nc_zt=14&_nc_ht=scontent.fczl1-2.fna&_nc_gid=YxJSPiI3ZW9fgXtL5_2r8w&_nc_ss=7b2a8&oh=00_AQBT6LKBQuyte0SPpSipSW_FLMHBvDMA6xGDzG4axDFhJQ&oe=6A6E9526",
+            "description": "📢 إعلان هام لأولياء التلاميذ\n\nتعلم إدارة متوسطة إسغيد علي بني جماتي أن تسجيلات الدخول المدرسي للسنة الدراسية 2026/2027 ستكون خلال:\n\n01 سبتمبر 2026: الأولى والثانية متوسط.\n02 سبتمبر 2026: الثالثة والرابعة متوسط.\n\nوذلك لأسباب إدارية .. نشكر الجميع على حسن التفهم والتعاون"
+        },
+        {
+            "id": 1785762583997,
+            "date": "28-07-2026",
+            "title": "القانون الأساسي الخاص بموظفي التربية الوطنية",
+            "image": "https://i.ibb.co/7dSQyQ06/Screenshot-2026-08-03-140827.png",
+            "fileUrl": "https://docs.google.com/viewerng/viewer?url=https://tachri3.com/wp-content/uploads/2025/01/Decret_executif_n%C2%B0_25-54_statut_particulier_des_fonctionnaires_appartenant_aux_corps_specifiques_de_leducation_nationale.pdf&hl=ar",
+            "description": "القانون الأساسي الخاص بموظفي التربية الوطنية\n\nمرسوم تنفيذي رقم 25-54 مؤرخ في 21 جانفي2025, يتضمن القانون الأساسي الخاص بالموظفين المنتمين للأسلاك الخاصة بالتربية الوطنية.\n\nمرسوم تنفيذي رقم 25- 55 مؤرخ في 21 جانفي 2025، يؤسس النظام التعويضي للموظفين المنتمين للأسلاك الخاصة بالتربية الوطنية."
+        }
+    ],
+    "teachers": [
+        {
+            "id": 1785245974903,
+            "type": "timetable",
+            "date": "2026-2027",
+            "title": "جداول الأساتذة",
+            "icon": "fa-file-lines",
+            "category": "فضاء الأساتذة",
+            "description": "",
+            "image": "https://i.ibb.co/cSYJbKgm/Chat-GPT-Image-Aug-3-2026-02-35-34-PM.png",
+            "fileUrl": ""
+        },
+        {
+            "id": 1785763727805,
+            "type": "timetable",
+            "date": "2026-2027",
+            "title": "جداول الأقسام",
+            "icon": "fa-file-lines",
+            "category": "فضاء الأولياء",
+            "description": "",
+            "image": "https://i.ibb.co/cSYJbKgm/Chat-GPT-Image-Aug-3-2026-02-35-34-PM.png"
+        }
+    ],
+    "videos": [
+        {
+            "id": 1785249359599,
+            "title": "شرح كيفية التسجيل وفتح حساب في فضاء اولياء التلاميذ / لإعادة إدماج التلاميذ \"المطرودين\"",
+            "date": "28-07-2026",
+            "category": "تغطية خاصة",
+            "videoUrl": "https://www.youtube.com/embed/0kxXBLuS0uE",
+            "thumbnail": "https://img.youtube.com/vi/0kxXBLuS0uE/maxresdefault.jpg",
+            "description": "شرح كيفية التسجيل وفتح حساب في فضاء اولياء التلاميذ / لإعادة إدماج التلاميذ \"المطرودين\"\n",
+            "youtubeWatchUrl": "https://www.youtube.com/watch?v=0kxXBLuS0uE"
+        },
+        {
+            "id": 1785269501827,
+            "title": "كيفية التسجيل في فضاء الأساتذة ",
+            "date": "28-07-2026",
+            "category": "تغطية خاصة",
+            "videoUrl": "https://www.youtube.com/embed/Oc7IUhEsN8w",
+            "thumbnail": "https://img.youtube.com/vi/Oc7IUhEsN8w/maxresdefault.jpg",
+            "description": "كيفية التسجيل في فضاء الأساتذة ",
+            "youtubeWatchUrl": "https://www.youtube.com/watch?v=Oc7IUhEsN8w"
+        },
+        {
+            "id": 1785269703275,
+            "title": "شـرح مفصل لجميع طرق استعادة كلمة المرور في فضاء الأساتذة ✅✅✅",
+            "date": "28-07-2026",
+            "category": "تغطية خاصة",
+            "videoUrl": "https://www.youtube.com/embed/DR73lpGwNns",
+            "thumbnail": "https://img.youtube.com/vi/DR73lpGwNns/maxresdefault.jpg",
+            "description": "شـرح مفصل لجميع طرق استعادة كلمة المرور في فضاء الأساتذة ✅✅✅",
+            "youtubeWatchUrl": "https://www.youtube.com/watch?v=DR73lpGwNns"
+        },
+        {
+            "id": 1785269884267,
+            "title": "كيفية التسجيل في مسابقة الترقية للأساتذة والإداريين 2026 | شرح كامل عبر بوابة وزارة التربية",
+            "date": "28-07-2026",
+            "category": "تغطية خاصة",
+            "videoUrl": "https://www.youtube.com/embed/40EHsxOsZz8",
+            "thumbnail": "https://img.youtube.com/vi/40EHsxOsZz8/maxresdefault.jpg",
+            "description": "كيفية التسجيل في مسابقة الترقية للأساتذة والإداريين 2026 | شرح كامل عبر بوابة وزارة التربية",
+            "youtubeWatchUrl": "https://www.youtube.com/watch?v=40EHsxOsZz8"
+        }
+    ],
+    "navbar": [
+        {
+            "id": 1,
+            "label": "الرئيسية",
+            "link": "index.html",
+            "icon": "",
+            "dropdown": [],
+            "isActive": true,
+            "visible": true
+        },
+        {
+            "id": 2,
+            "label": "عن المتوسطة",
+            "link": "#",
+            "icon": "fa-caret-down",
+            "dropdown": [
+                {
+                    "id": 21,
+                    "label": "بطاقة فنية عن المؤسسة",
+                    "link": "about.html"
+                },
+                {
+                    "id": 23,
+                    "label": "النظام الداخلي للمؤسسة",
+                    "link": "regulations.html"
+                }
+            ],
+            "isActive": false,
+            "visible": true
+        },
+        {
+            "id": 3,
+            "label": "النشاطات التربوية",
+            "link": "#activities",
+            "icon": "fa-caret-down",
+            "dropdown": [
+                {
+                    "id": 31,
+                    "label": "التظاهرات العلمية والتكريمات",
+                    "link": "#activities"
+                },
+                {
+                    "id": 32,
+                    "label": "النوادي العلمية والرياضية",
+                    "link": "clubs.html"
+                }
+            ],
+            "isActive": false,
+            "visible": true
+        },
+        {
+            "id": 4,
+            "label": "الإعلانات والبلاغات",
+            "link": "#press",
+            "icon": "fa-caret-down",
+            "dropdown": [
+                {
+                    "id": 41,
+                    "label": "جدول الامتحانات والفروض",
+                    "link": "https://sites.google.com/view/examsdz"
+                },
+                {
+                    "id": 42,
+                    "label": "إعلانات أولياء التلاميذ",
+                    "link": "#"
+                },
+                {
+                    "id": 43,
+                    "label": "رزنامة العطل المدرسية",
+                    "link": "#"
+                }
+            ],
+            "isActive": false,
+            "visible": true
+        },
+        {
+            "id": 5,
+            "label": "الفضاء الرقمي",
+            "link": "#",
+            "icon": "fa-caret-down",
+            "dropdown": [
+                {
+                    "id": 51,
+                    "label": "فضاء الأولياء الرقمي",
+                    "link": "https://awlyaa.education.dz/",
+                    "isExternal": true
+                },
+                {
+                    "id": 52,
+                    "label": "حاسبة معدل شهادة BEM",
+                    "link": "https://al-wajeez.vercel.app/rate-calculator.html#tab-5"
+                }
+            ],
+            "isActive": false,
+            "visible": true
+        },
+        {
+            "id": 6,
+            "label": "فضاء الأساتذة",
+            "link": "#teachers",
+            "icon": "fa-caret-down",
+            "dropdown": [
+                {
+                    "id": 1785249436463,
+                    "label": "الفضاء الرقمي للأساتذة",
+                    "link": "https://ostad.education.dz/auth"
+                },
+                {
+                    "id": 1785249469247,
+                    "label": "منصة الموظف",
+                    "link": "https://mowadaf.education.dz/"
+                },
+                {
+                    "id": 1785249608151,
+                    "label": "استعمال الزمن • الحراسة • المناشير الرسمية",
+                    "link": "#teachers"
+                }
+            ],
+            "isActive": false,
+            "visible": true,
+            "color": ""
+        },
+        {
+            "id": 7,
+            "label": "المطويات",
+            "link": "https://www.education.gov.dz/%d8%a7%d9%84%d9%85%d8%b7%d9%88%d9%8a%d8%a7%d8%aa/",
+            "icon": "",
+            "dropdown": [],
+            "isActive": false,
+            "visible": true
+        },
+        {
+            "id": 8,
+            "label": "اتصل بنا",
+            "link": "https://web.facebook.com/hbouzourdaz121/",
+            "icon": "",
+            "dropdown": [],
+            "isActive": false,
+            "visible": true,
+            "color": ""
+        }
+    ],
+    "featuredPost": {
+        "enabled": true,
+        "type": "announcement",
+        "title": "التسجيلات المدرسية 2026 - 2027",
+        "subtitle": "",
+        "content": "",
+        "image": "",
+        "btnLink": "",
+        "btnText": "",
+        "color": "red",
+        "titles": [
+            {
+                "text": "التسجيلات المدرسية 2026 - 2027",
+                "date": "2026-07-28",
+                "link": "https://scontent.fczl1-2.fna.fbcdn.net/v/t39.99422-6/736343150_1393937129458856_3827019677002127912_n.png?stp=dst-jpg_tt6&cstp=mx1423x2048&ctp=s1423x2048&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFlZZu1gedVU353GpfgLgR35qtMr8Ozpo3mq0yvw7OmjTrkb0JJooKCqrj46YjjzKPzWv7thdDb_aC48LrU3yEW&_nc_ohc=Y5xLSQ3A6i8Q7kNvwErkBmQ&_nc_oc=AdpE6ZZTJSK-DoMiF2Djwh8cM77H_p7hh9teRGbJGgVD4uxbdNNORCDoRQdUOSpL1bE&_nc_zt=14&_nc_ht=scontent.fczl1-2.fna&_nc_gid=YxJSPiI3ZW9fgXtL5_2r8w&_nc_ss=7b2a8&oh=00_AQBT6LKBQuyte0SPpSipSW_FLMHBvDMA6xGDzG4axDFhJQ&oe=6A6E9526"
+            },
+            {
+                "text": "قائمة المتفوقين في شهادة التعليم المتوسط BEM 2026",
+                "date": "2026-07-28",
+                "link": "https://web.facebook.com/share/v/19SAGDerWS/"
+            },
+            {
+                "text": "نجوم المؤسسة للفصل الثاني - مبارك النجاح للجميع 🎊🤍",
+                "date": "2026-07-28",
+                "link": "https://web.facebook.com/reel/1434504128129982/"
+            },
+            {
+                "text": "نجوم المؤسسة للفصل الثالث - مبارك النجاح للجميع 🎊🤍",
+                "date": "2026-07-28",
+                "link": "https://web.facebook.com/share/v/1DwsKjmGV7/"
+            },
+            {
+                "text": "صفحة الفايسبوك الرسمية",
+                "date": "2026-07-28",
+                "link": "https://web.facebook.com/hbouzourdaz121"
+            }
+        ]
+    },
+    "stats": [
+        {
+            "id": 1,
+            "icon": "fa-user-graduate",
+            "value": 200,
+            "label": "التلاميذ المسجلون",
+            "suffix": "+",
+            "link": "students.html"
+        },
+        {
+            "id": 2,
+            "icon": "fa-chalkboard-user",
+            "value": 19,
+            "label": "الأساتذة والمؤطرون",
+            "suffix": "",
+            "link": "#teacher"
+        },
+        {
+            "id": 3,
+            "icon": "fa-calendar-alt",
+            "value": 18,
+            "label": "سنوات الخبرة والعطاء",
+            "suffix": "",
+            "link": "#activi"
+        },
+        {
+            "id": 4,
+            "icon": "fa-flask",
+            "value": 2,
+            "label": "النوادي والأنشطة",
+            "suffix": "",
+            "link": "clubs.html"
+        }
+    ],
+    "students": {
+        "info": [],
+        "sections": [],
+        "levels": [
+            {
+                "name": "أولي متوسط",
+                "count": 66,
+                "icon": "fa-book"
+            },
+            {
+                "name": "ثانية متوسط",
+                "count": 40,
+                "icon": "fa-book"
+            },
+            {
+                "name": "ألثالثة متوسط",
+                "count": 40,
+                "icon": "fa-book"
+            },
+            {
+                "name": "ألأرابعة متوسط",
+                "count": 40,
+                "icon": "fa-book"
+            }
+        ],
+        "total": 222,
+        "female": 222,
+        "male": 22,
+        "excellent": 222
+    },
+    "about": {
+        "identity": [
+            {
+                "icon": "fa-landmark",
+                "label": "اسم المؤسسة",
+                "value": "متوسطة إسغيد علي - بني جماتي"
+            },
+            {
+                "icon": "fa-map-location-dot",
+                "label": "الولاية / البلدية",
+                "value": "سطيف - بني شبانة"
+            },
+            {
+                "icon": "fa-calendar-check",
+                "label": "تاريخ التأسيس",
+                "value": "2008"
+            },
+            {
+                "icon": "fa-users",
+                "label": "الطاقة الاستيعابية",
+                "value": "أكثر من 200 تلميذ"
+            },
+            {
+                "icon": "fa-chalkboard-user",
+                "label": "الطاقم التربوي",
+                "value": "19أستاذاً"
+            },
+            {
+                "icon": "fa-graduation-cap",
+                "label": "الشعب التعليمية",
+                "value": "2 أقسام / سنة"
+            }
+        ],
+        "mission": "تقديم تعليم متميز يرتكز على القيم الأخلاقية والوطنية، وتنمية قدرات التلاميذ علمياً ورياضياً وثقافياً، ومواكبة المستجدات التربوية والتقنية، مع توفير بيئة تعليمية آمنة ومحفزة للإبداع والابتكار.",
+        "vision": "أن نكون مؤسسة تعليمية مرجعية في المنطقة، تُخرج جيلاً واعياً ومتمكناً من المهارات، قادر على المساهمة في بناء الجزائر الجديدة، من خلال تعليم عصري يجمع بين العلم والمعرفة والأخلاق.",
+        "history": [
+            {
+                "year": "2003 - 2004",
+                "title": "تأسيس المؤسسة",
+                "description": "تأسست متوسطة إسغيد علي بني جماتي بموجب القرار الوزاري لسنة 2003، لتكون إطاراً تعليمياً يخدم تلاميذ المنطقة.",
+                "color": "green"
+            },
+            {
+                "year": "2010 - 2015",
+                "title": "مرحلة التوسع والتحديث",
+                "description": "إنشاء فضاءات جديدة تشمل المختبرات العلمية، قاعة المعلوماتية، والمكتبة مع أحدث الوسائل التعليمية.",
+                "color": "gold"
+            },
+            {
+                "year": "2016 - 2020",
+                "title": "التحوّل الرقمي",
+                "description": "إطلاق البوابة الرقمية الرسمية وتطبيق نظام التعليم المساند بالتكنولوجيا وإنشاء فضاء الأولياء الرقمي.",
+                "color": "red"
+            },
+            {
+                "year": "2021 - 2026",
+                "title": "التميّز والريادة",
+                "description": "تحقيق نتائج متميّزة في الامتحانات الرسمية وتنظيم معارض علمية وأنشطة ثقافية ورياضية.",
+                "color": "green"
+            }
+        ],
+        "goals": [
+            {
+                "icon": "fa-book-open",
+                "title": "التحصيل العلمي",
+                "description": "رفع مستوى التحصيل العلمي وضمان اجتياز الامتحانات بنسبة نجاح مرتفعة."
+            },
+            {
+                "icon": "fa-heart",
+                "title": "التربيّة والأخلاق",
+                "description": "غرس القيم الوطنية والأخلاقية وتكوين مواطنين صالحين محبّين لوطنهم."
+            },
+            {
+                "icon": "fa-laptop-code",
+                "title": "المهارات الرقمية",
+                "description": "تطوير مهارات التلاميذ في تكنولوجيا المعلومات واستعمال الأدوات الرقمية."
+            },
+            {
+                "icon": "fa-trophy",
+                "title": "التفوق الرياضي",
+                "description": "تشجيع ممارسة الرياضة والمشاركة في التظاهرات الرياضية."
+            },
+            {
+                "icon": "fa-people-group",
+                "title": "الشراكات المجتمعية",
+                "description": "تعزيز التكامل بين المؤسسة والأسرة والمجتمع المحلي."
+            },
+            {
+                "icon": "fa-shield-halved",
+                "title": "الأمن المدرسي",
+                "description": "ضمان بيئة مدرسية آمنة وصحية لجميع التلاميذ والطاقم."
+            }
+        ],
+        "stats": [
+            {
+                "icon": "fa-users",
+                "value": "200",
+                "label": "تلميذ"
+            },
+            {
+                "icon": "fa-chalkboard-user",
+                "value": "19",
+                "label": "أستاذ"
+            },
+            {
+                "icon": "fa-door-open",
+                "value": "8",
+                "label": "قاعة"
+            }
+        ]
+    },
+    "teachersPage": {
+        "title": "فضاء الأساتذة والتأطير التربوي",
+        "subtitle": "استعمال الزمن • الحراسة • المناشير الرسمية",
+        "category": "التأطير التربوي"
+    },
+    "clubs": [
+        {
+            "id": 1785414137353,
+            "name": "نادي الإذاعة المدرسية",
+            "description": "نادي الإذاعة المدرسية",
+            "category": "ترفيه",
+            "supervisor": "الأستاذ بوزورداز حكيم",
+            "schedule": "الأربعاء",
+            "status": "active",
+            "icon": "fa-flask",
+            "image": "https://i.ibb.co/3yhvR43c/Chat-GPT-Image-Jul-30-2026-01-32-35-PM.png",
+            "joinLink": "https://docs.google.com/forms/d/e/1FAIpQLSehzBdubKUKF4myIrGyka-nCGFOC1G-orN8pW2fovqcxCikXA/viewform?usp=dialog"
+        },
+        {
+            "id": 1785762818725,
+            "name": "نادي المطالعة",
+            "description": "نادي المطالعة",
+            "category": "ثقافة",
+            "supervisor": "مجموعة من الأساتذة",
+            "schedule": "من الساعة 12 إلى 13",
+            "status": "active",
+            "icon": "fa-flask",
+            "image": "https://i.ibb.co/bg9SpZW0/Chat-GPT-Image-Aug-3-2026-01-42-18-PM.png",
+            "joinLink": "https://docs.google.com/forms/d/e/1FAIpQLSfw2r6mITCemObVAO_HM7SNjLCPHNEHKgKbQweWLsOIEvWhEA/viewform?usp=publish-editor"
+        }
+    ],
+    "clubsPage": {
+        "title": "",
+        "subtitle": "",
+        "category": ""
+    }
+};

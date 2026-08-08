@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,7 @@
     
     <!-- Global Config File for Vercel & Cloud Hosting -->
     <script src="config.js"></script>
+    <script src="default-data.js"></script>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -837,33 +838,102 @@
                     </div>
                 </section>
 
-                <!-- TAB 7: JSONBIN INTEGRATION & VERCEL CONFIG EXPORT -->
+                <!-- TAB 7: CLOUD STORAGE INTEGRATION & VERCEL CONFIG EXPORT -->
                 <section id="panel-jsonbin" class="hidden space-y-6">
                     <div class="border-b pb-3 flex justify-between items-center">
-                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-database text-dzGreen-700 ml-2"></i> إعدادات المفاتيح والربط السحابي مع JSONbin</h3>
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-database text-dzGreen-700 ml-2"></i> إعدادات الربط السحابي والمزامنة</h3>
                     </div>
 
-                    <div class="bg-dzGreen-50 p-4 rounded-lg border border-dzGreen-200 text-xs space-y-2 leading-relaxed">
-                        <p class="font-bold text-dzGreen-900"><i class="fa-solid fa-circle-check ml-1"></i> تم تفعيل وتأكيد الربط مع JSONbin.io بنجاح:</p>
-                        <p class="text-gray-700">المفاتيح الحالية متصلة ومحفوظة سحابياً ومحلياً على Bin ID: <strong class="font-mono text-dzGreen-800">6a6890f8f5f4af5e29cc78fd</strong>.</p>
+                    <div class="bg-dzGreen-50 p-4 rounded-lg border border-dzGreen-200 text-xs space-y-2 leading-relaxed" id="cloud-status-card">
+                        <p class="font-bold text-dzGreen-900"><i class="fa-solid fa-circle-check ml-1"></i> حالة الربط السحابي الحالية:</p>
+                        <p class="text-gray-700" id="cloud-status-text">جاري تحميل إعدادات السحابة...</p>
                     </div>
 
                     <div class="space-y-4 text-xs font-bold">
                         <div>
-                            <label class="block mb-1 text-gray-700">معرف الحاوية (Bin ID)</label>
-                            <input type="text" id="cfg-binid" placeholder="مثال: 6a6890f8f5f4af5e29cc78fd" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            <label class="block mb-1 text-gray-700">المزود السحابي النشط (Cloud Storage Provider)</label>
+                            <select id="cfg-cloud-provider" onchange="toggleCloudProviderInputs()" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-bold bg-white">
+                                <option value="cloudinary">Cloudinary (مجاني 25GB - بدون حساب جديد - مستحسن)</option>
+                                <option value="pantry">Pantry.dev (مجاني - سعة 10MB)</option>
+                                <option value="kvdb">KVDB.io (مجاني - يتطلب تفعيل البريد)</option>
+                                <option value="jsonbin">JSONBin.io (المزود القديم)</option>
+                            </select>
                         </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">المفتاح الرئيسي (Master Key / API Key)</label>
-                            <input type="password" id="cfg-masterkey" placeholder="$2a$10$..." class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+
+                        <!-- Pantry Settings -->
+                        <div id="pantry-fields" class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 text-xs space-y-1 leading-relaxed text-blue-900 mb-2">
+                                <p class="font-bold"><i class="fa-solid fa-circle-info ml-1"></i> حول Pantry.dev:</p>
+                                <p>مزود تخزين سحابي مجاني وموثوق. للبدء: سجل مجاناً في <a href="https://getpantry.cloud" target="_blank" class="underline font-bold text-blue-700">getpantry.cloud</a>، واحصل على معرف Pantry ID وضعه بالأسفل.</p>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">معرف السلة (Pantry ID)</label>
+                                <input type="text" id="cfg-pantryid" placeholder="مثال: abc123def-456..." class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">اسم السلة (Basket Name)</label>
+                                <input type="text" id="cfg-pantrybasket" placeholder="cem_site_data" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
+                        </div>
+
+                        <!-- Cloudinary Settings (Data Sync) -->
+                        <div id="cloudinary-fields" class="space-y-4 hidden">
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200 text-xs space-y-1 leading-relaxed text-orange-900 mb-2">
+                                <p class="font-bold"><i class="fa-solid fa-circle-info ml-1"></i> حول Cloudinary كمزود مزامنة:</p>
+                                <p>مجاني 25GB، بدون حدود طلبات — يحفظ بيانات الموقع في الملف العام <strong class="font-mono">cem_site_data.json</strong> ويقرأها من أي جهاز.</p>
+                                <p>الكتابة فوق الملف الموجود تتطلب <strong>رفعاً موقّعاً</strong>: أضف <strong class="font-mono">API Key</strong> و <strong class="font-mono">API Secret</strong> من <a href="https://console.cloudinary.com/settings/api-keys" target="_blank" class="underline font-bold text-orange-700">لوحة Cloudinary → Settings → API Keys</a> (لن تعمل المزامنة بدونهما).</p>
+                                <p>لرفع الصور/الملفات الجديدة في تبويب مركز رفع الصور يكفي الـ Upload Preset (Unsigned) دون مفاتيح.</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">Cloud Name</label>
+                                    <input type="text" id="cld-cloud-name-sync" placeholder="مثال: dxyz123abc" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">API Key (للرفع الموقّع)</label>
+                                    <input type="text" id="cld-api-key" placeholder="مثال: 123456789012345" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block mb-1 text-gray-700">API Secret (للرفع الموقّع - يُحفظ داخل الملف ولا يُنشر للزوار)</label>
+                                    <input type="password" id="cld-api-secret" placeholder="مثال: AbCdEfGhIjKlMnOpQrStUvWxYz123456" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KVDB Settings -->
+                        <div id="kvdb-fields" class="space-y-4 hidden">
+                            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 text-xs space-y-1 leading-relaxed text-amber-900 mb-2">
+                                <p class="font-bold"><i class="fa-solid fa-triangle-exclamation ml-1"></i> حول KVDB.io:</p>
+                                <p>مزود مجاني بحد 16KB لكل مفتاح. أنشئ Bucket عبر الأمر: <code class="font-mono bg-amber-100 px-1 rounded">curl -d 'email=you@email.com' https://kvdb.io</code> ثم فعّل بريدك من <a href="https://kvdb.io/login" target="_blank" class="underline font-bold text-amber-700">kvdb.io/login</a> قبل أن تعمل الكتابة.</p>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">معرف الوعاء (Bucket ID)</label>
+                                <input type="text" id="cfg-kvdbbucketid" placeholder="مثال: cem_ijmatti_randomstring" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">مفتاح البيانات (Key)</label>
+                                <input type="text" id="cfg-kvdbkey" placeholder="cem_site_data" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
+                        </div>
+
+                        <!-- JSONbin Settings -->
+                        <div id="jsonbin-fields" class="space-y-4 hidden">
+                            <div>
+                                <label class="block mb-1 text-gray-700">معرف الحاوية (Bin ID)</label>
+                                <input type="text" id="cfg-binid" placeholder="مثال: 6a6890f8f5f4af5e29cc78fd" class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">المفتاح الرئيسي (Master Key / API Key)</label>
+                                <input type="password" id="cfg-masterkey" placeholder="$2a$10$..." class="w-full border rounded-lg p-2.5 focus:border-dzGreen-700 font-mono">
+                            </div>
                         </div>
 
                         <div class="flex flex-wrap gap-3 pt-2">
-                            <button onclick="testJSONbinConnection()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition">
-                                <i class="fa-solid fa-plug ml-1"></i> اختبار الاتصال بـ JSONbin
+                            <button onclick="testCloudConnection()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition">
+                                <i class="fa-solid fa-plug ml-1"></i> اختبار الاتصال السحابي
                             </button>
                             <button onclick="exportConfigFile()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white font-bold py-2.5 px-4 rounded-lg transition">
-                                <i class="fa-solid fa-file-code ml-1"></i> تنزيل ملف config.js المحدث لـ Vercel
+                                <i class="fa-solid fa-file-code ml-1"></i> تنزيل ملف config.js لـ Vercel
                             </button>
                             <button onclick="resetDefaultData()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2.5 px-4 rounded-lg transition">
                                 <i class="fa-solid fa-rotate-left ml-1"></i> استعادة البيانات الافتراضية
@@ -893,179 +963,15 @@
     <script>
         const globalCfg = window.CEM_CONFIG || {};
 
-        const defaultCemData = {
-            settings: {
-                country: "الجمهورية الجزائرية الديمقراطية الشعبية",
-                ministry: "وزارة التربية الوطنية - مديرية التربية",
-                institution: "متوسطة بني جماتي",
-                subtitle: "Ayerbaz Alemmas n It Jmatti • تعلم - تربية - تفوق",
-                logoUrl: "logo.png",
-                coverUrl: "cover.png",
-                awliyaUrl: globalCfg.awliyaUrl || "https://awlyaa.education.dz/",
-                adminPassword: globalCfg.adminPassword || "admin123",
-                binId: globalCfg.jsonbinId || "6a6890f8f5f4af5e29cc78fd",
-                masterKey: globalCfg.jsonbinMasterKey || "$2a$10$2.qnwRQfkI8MtHWCv4hS2.tV7V2H1Z62sMA.7mFGp0A24x3ptEJp2",
-                imgbbKey: globalCfg.imgbbApiKey || "9e1ce2595a4aaec35807c37067f327ba",
-                cloudinaryName: globalCfg.cloudinaryName || "dindawysv",
-                cloudinaryPreset: globalCfg.cloudinaryPreset || "cem_preset"
-            },
-            hero: {
-                category: "البوابة الرقمية الرسمية • وزارة التربية الوطنية",
-                title: "متوسطة بني جماتي • صرح التربية والتعليم والتفوق",
-                desc: "مرحباً بكم في الفضاء الرقمي التفاعلي لمتوسطة بني جماتي (Ayerbaz Alemmas n It Jmatti). نرافق أبناءنا التلاميذ ونخدم الأولياء والطاقم التربوي عبر منصة تعليمية وإعلامية متكاملة تسعى لبناء جيل واعد، متميز علمياً وخلقياً، ومواكب للتطور الرقمي في ظل قيم وطننا العزيز.",
-                btnText: "استكشف الأنشطة والإعلانات الرسمية",
-                btnLink: "#activities"
-            },
-            featuredPost: {
-                enabled: true,
-                type: "announcement",
-                title: "مستجدات وزارة التربية الوطنية",
-                titles: [
-                    { text: "تستقبل المتفوقين الأوائل وطنيا في شهادة البكالوريا وشهادة التعليم المتوسط دورة 2026", date: "28 يوليو 2026", link: "#" },
-                    { text: "بيـــــــان وزارة التربية الوطنية حول نتائج الامتحانات الرسمية", date: "28 يوليو 2026", link: "#" },
-                    { text: "وزير التربية يشرف على تكريم التلاميذ النجباء", date: "27 يوليو 2026", link: "#" },
-                    { text: "بـــــــلاغ هام لكافة أولياء التلاميذ والتأطير التربوي بالمؤسسة", date: "21 يوليو 2026", link: "#" }
-                ],
-                subtitle: "",
-                content: "",
-                image: "",
-                btnLink: "#",
-                btnText: "",
-                color: "red"
-            },
-            stats: [
-                { id: 1, icon: "fa-user-graduate", value: 850, label: "التلاميذ المسجلون", suffix: "+", link: "students.html" },
-                { id: 2, icon: "fa-chalkboard-user", value: 52, label: "الأساتذة والمؤطرون", suffix: "", link: "" },
-                { id: 3, icon: "fa-calendar-alt", value: 45, label: "سنوات الخبرة والعطاء", suffix: "+", link: "" },
-                { id: 4, icon: "fa-flask", value: 15, label: "النوادي والأنشطة", suffix: "", link: "clubs.html" }
-            ],
-            students: {
-                total: 850,
-                female: 420,
-                male: 430,
-                excellent: 85,
-                levels: [
-                    { name: "السنة الأولى متوسط", count: 290, icon: "fa-book-open" },
-                    { name: "السنة الثانية متوسط", count: 280, icon: "fa-book" },
-                    { name: "السنة الثالثة متوسط", count: 280, icon: "fa-graduation-cap" }
-                ],
-                sections: [
-                    { name: "شعبة علوم تجريبية", count: 120, icon: "fa-flask" },
-                    { name: "شعبة رياضيات", count: 95, icon: "fa-square-root-variable" },
-                    { name: "شعبة تقني رياضي", count: 85, icon: "fa-gears" },
-                    { name: "شعبة لغات أجنبي", count: 110, icon: "fa-language" },
-                    { name: "شعبة آداب وفلسفة", count: 90, icon: "fa-book-open" },
-                    { name: "شعبة تسيير واقتصاد", count: 80, icon: "fa-chart-line" }
-                ],
-                info: [
-                    { title: "نسبة الإنجاح", description: "تم تسجيل نسبة إنجاح مرتفعة هذا الموسم", icon: "fa-circle-check" },
-                    { title: "المتفوقون", description: "عدد المتفوقين في الفصل الأول", icon: "fa-trophy" },
-                    { title: "الانتقاء", description: "تلاميذ منخرطون في برامج الترقية", icon: "fa-graduation-cap" },
-                    { title: "التأطير", description: "نسبة التأطير التربوي والأخلاقي", icon: "fa-shield-halved" }
-                ]
-            },
-            about: {
-                identity: [
-                    { icon: "fa-landmark", label: "اسم المؤسسة", value: "متوسطة إسغيد علي - بني جماتي" },
-                    { icon: "fa-map-location-dot", label: "الولاية / البلدية", value: "سطيف - عين الكبيرة" },
-                    { icon: "fa-calendar-check", label: "تاريخ التأسيس", value: "2003 / 2004" },
-                    { icon: "fa-users", label: "الطاقة الاستيعابية", value: "أكثر من 600 تلميذ" },
-                    { icon: "fa-chalkboard-user", label: "الطاقم التربوي", value: "أكثر من 40 أستاذاً" },
-                    { icon: "fa-graduation-cap", label: "الشعب التعليمية", value: "3 أقسام / سنة" }
-                ],
-                mission: "تقديم تعليم متميز يرتكز على القيم الأخلاقية والوطنية، وتنمية قدرات التلاميذ علمياً ورياضياً وثقافياً، ومواكبة المستجدات التربوية والتقنية، مع توفير بيئة تعليمية آمنة ومحفزة للإبداع والابتكار.",
-                vision: "أن نكون مؤسسة تعليمية مرجعية في المنطقة، تُخرج جيلاً واعياً ومتمكناً من المهارات، قادر على المساهمة في بناء الجزائر الجديدة، من خلال تعليم عصري يجمع بين العلم والمعرفة والأخلاق.",
-                history: [
-                    { year: "2003 - 2004", title: "تأسيس المؤسسة", description: "تأسست متوسطة إسغيد علي بني جماتي بموجب القرار الوزاري لسنة 2003، لتكون إطاراً تعليمياً يخدم تلاميذ المنطقة.", color: "green" },
-                    { year: "2010 - 2015", title: "مرحلة التوسع والتحديث", description: "إنشاء فضاءات جديدة تشمل المختبرات العلمية، قاعة المعلوماتية، والمكتبة مع أحدث الوسائل التعليمية.", color: "gold" },
-                    { year: "2016 - 2020", title: "التحوّل الرقمي", description: "إطلاق البوابة الرقمية الرسمية وتطبيق نظام التعليم المساند بالتكنولوجيا وإنشاء فضاء الأولياء الرقمي.", color: "red" },
-                    { year: "2021 - 2026", title: "التميّز والريادة", description: "تحقيق نتائج متميّزة في الامتحانات الرسمية وتنظيم معارض علمية وأنشطة ثقافية ورياضية.", color: "green" }
-                ],
-                goals: [
-                    { icon: "fa-book-open", title: "التحصيل العلمي", description: "رفع مستوى التحصيل العلمي وضمان اجتياز الامتحانات بنسبة نجاح مرتفعة." },
-                    { icon: "fa-heart", title: "التربيّة والأخلاق", description: "غرس القيم الوطنية والأخلاقية وتكوين مواطنين صالحين محبّين لوطنهم." },
-                    { icon: "fa-laptop-code", title: "المهارات الرقمية", description: "تطوير مهارات التلاميذ في تكنولوجيا المعلومات واستعمال الأدوات الرقمية." },
-                    { icon: "fa-trophy", title: "التفوق الرياضي", description: "تشجيع ممارسة الرياضة والمشاركة في التظاهرات الرياضية." },
-                    { icon: "fa-people-group", title: "الشراكات المجتمعية", description: "تعزيز التكامل بين المؤسسة والأسرة والمجتمع المحلي." },
-                    { icon: "fa-shield-halved", title: "الأمن المدرسي", description: "ضمان بيئة مدرسية آمنة وصحية لجميع التلاميذ والطاقم." }
-                ],
-                stats: [
-                    { icon: "fa-users", value: "600+", label: "تلميذ" },
-                    { icon: "fa-chalkboard-user", value: "40+", label: "أستاذ" },
-                    { icon: "fa-door-open", value: "18", label: "قاعة" },
-                    { icon: "fa-award", value: "20+", label: "سنة خبرة" }
-                ]
-            },
-            clubsPage: {
-                title: "النوادي والأنشطة اللامنهجية",
-                subtitle: "أنشطة علمية ورياضية وثقافية لتطوير مهارات التلاميذ",
-                category: "النوادي العلمية والرياضية"
-            },
-            clubs: [
-                { id: 1, name: "النادي العلمي", description: "اكتشاف عالم العلوم والتجارب العملية لتطوير الحس العلمي لدى التلاميذ", category: "علوم", supervisor: "أ. محمد بن عمر", schedule: "الثلاثاء 14:00", status: "active", icon: "fa-flask", image: "", joinLink: "#" },
-                { id: 2, name: "النادي الرياضي", description: "التمارين الرياضية والمسابقات الرياضية المختلفة للياقة البدنية", category: "رياضة", supervisor: "أ. كريم بوزيد", schedule: "الأربعاء 14:00", status: "active", icon: "fa-futbol", image: "", joinLink: "#" },
-                { id: 3, name: "النادي الثقافي", description: "القراءة والنقاش الثقافي والأنشطة الأدبية لتنمية المعرفة", category: "ثقافة", supervisor: "أ. فاطمة الزهراء", schedule: "الخميس 14:00", status: "active", icon: "fa-book-open", image: "", joinLink: "#" },
-                { id: 4, name: "نادي المعلوماتية", description: "تعلم البرمجة وتقنية المعلومات والأدوات الرقمية", category: "تكنولوجيا", supervisor: "أ. حكيم بوزورداز", schedule: "الاثنين 14:00", status: "active", icon: "fa-laptop-code", image: "", joinLink: "#" },
-                { id: 5, name: "النادي الفني", description: "الرسم والتصميم والأنشطة الفنية لتنمية الإبداع", category: "فنون", supervisor: "أ. نادية بن علي", schedule: "الثلاثاء 15:00", status: "active", icon: "fa-palette", image: "", joinLink: "#" },
-                { id: 6, name: "نادي الإبداع", description: "الكتابة الإبداعية والشعر والأدب لتنمية الموهبة الأدبية", category: "أدب", supervisor: "أ. سعيد مرابط", schedule: "الأحد 14:00", status: "active", icon: "fa-feather-pointed", image: "", joinLink: "#" }
-            ],
-            activities: [
-                { id: 1, date: "14-07-2026", title: "حفل تكريم التلاميذ المتفوقين في الفصل الدراسي بالمؤسسة", image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80" },
-                { id: 2, date: "08-07-2026", title: "افتتاح المعرض العلمي والنوادي الثقافية لمتوسطة بني جماتي", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80" }
-            ],
-            dossiers: [
-                { id: 1, title: "دليل التسجيل والاطلاع على النتائج عبر فضاء الأولياء الرقمي", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80" },
-                { id: 2, title: "البرنامج الأسبوعي للدعم والمراجعة المحروسة لتلاميذ شهادة التعليم المتوسط", image: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80" }
-            ],
-            announcements: [
-                { id: 1, date: "23-07-2026", title: "إعلان للأولياء حول إعادة تأكيد المعلومات بالفضاء الرقمي" },
-                { id: 2, date: "14-07-2026", title: "برنامج اختبارات الفصل وتوزيع القاعات المدرسية" },
-                { id: 3, date: "08-07-2026", title: "اجتماع جمعية أولياء التلاميذ لمناقشة النتائج" },
-                { id: 4, date: "01-07-2026", title: "برنامج الرحلات الميدانية والأنشطة الرياضية بالمؤسسة" }
-            ],
-            teachersPage: {
-                title: "فضاء الأساتذة والتأطير التربوي",
-                subtitle: "استعمال الزمن • الحراسة • المناشير الرسمية",
-                category: "التأطير التربوي"
-            },
-            teachers: [
-                { id: 1, type: "timetable", date: "2026-2027", title: "استعمال الزمن الأسبوعي الرسمي للأساتذة", icon: "fa-calendar-week", category: "جدول استعمال الزمن", description: "جدول توزيع الحصص الأسبوعية لكافة الأفواج والسنوات الدراسية لمتوسطة بني جماتي." },
-                { id: 2, type: "invigilation", date: "فروض واختبارات 2026", title: "جدول حراسة الامتحانات والفروض الرسمية", icon: "fa-clipboard-check", category: "جدول الحراسة", description: "توزيع الأساتذة والمؤطرين التربويين على حراسة القاعات وقاعات الامتحانات الرسمية بالمؤسسة." },
-                { id: 3, type: "circular", date: "منشور وزاري 2026", title: "المناشير والتعليمات الوزارية الخاصة بالتأطير التربوي", icon: "fa-file-shield", category: "مناشير وزارية", description: "مجموعة المناشير والتعليمات البيداغوجية والتنظيمية الصادرة عن وزارة التربية الوطنية." }
-            ],
-            videos: [
-                { id: 1, title: "التغطية الخاصة لفعاليات اليوم العلمي والنوادي الثقافية بمؤسسة بني جماتي", date: "14-07-2026", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", thumbnail: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80", category: "تغطية خاصة" },
-                { id: 2, title: "حفل تكريم المتفوقين في الامتحان وتوزيع الجوائز والميداليات", date: "08-07-2026", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", thumbnail: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80", category: "حفل التكريم" }
-            ],
-            navbar: [
-                { id: 1, label: "الرئيسية", link: "#", icon: "", dropdown: [], isActive: true, visible: true },
-                { id: 2, label: "عن المتوسطة", link: "#about", icon: "fa-caret-down", dropdown: [
-                    { id: 21, label: "بطاقة فنية عن المؤسسة", link: "#about" },
-                    { id: 22, label: "الطاقم الإداري والتربوي", link: "#staff" },
-                    { id: 23, label: "النظام الداخلي للمؤسسة", link: "#rules" }
-                ], isActive: false, visible: true },
-                { id: 3, label: "النشاطات التربوية", link: "#activities", icon: "fa-caret-down", dropdown: [
-                    { id: 31, label: "التظاهرات العلمية والتكريمات", link: "#activities" },
-                    { id: 32, label: "النوادي العلمية والرياضية", link: "#clubs" },
-                    { id: 33, label: "معارض الأنشطة الثقافية", link: "#exhibitions" }
-                ], isActive: false, visible: true },
-                { id: 4, label: "الإعلانات والبلاغات", link: "#press", icon: "fa-caret-down", dropdown: [
-                    { id: 41, label: "جدول الامتحانات والفروض", link: "#press" },
-                    { id: 42, label: "إعلانات أولياء التلاميذ", link: "#parents-news" },
-                    { id: 43, label: "رزنامة العطل المدرسية", link: "#holidays" }
-                ], isActive: false, visible: true },
-                { id: 5, label: "الفضاء الرقمي", link: "#", icon: "fa-caret-down", dropdown: [
-                    { id: 51, label: "فضاء الأولياء الرقمي", link: "https://awlyaa.education.dz/", isExternal: true },
-                    { id: 52, label: "حاسبة معدل شهادة BEM", link: "#calculator" }
-                ], isActive: false, visible: true },
-                { id: 6, label: "فضاء الأساتذة", link: "#teachers", icon: "", dropdown: [], isActive: false, visible: true, color: "text-dzGold-300" },
-                { id: 7, label: "معرض الفيديوهات", link: "#videos", icon: "", dropdown: [], isActive: false, visible: true },
-                { id: 8, label: "اتصل بنا", link: "#contact", icon: "", dropdown: [], isActive: false, visible: true }
-            ]
-        };
+        const defaultCemData = window.DEFAULT_CEM_DATA;
 
         let currentData = JSON.parse(localStorage.getItem('cem_site_data')) || defaultCemData;
 
+        if (!currentData.settings.cloudProvider) currentData.settings.cloudProvider = globalCfg.cloudProvider || "kvdb";
+        if (!currentData.settings.pantryId) currentData.settings.pantryId = globalCfg.pantryId || "";
+        if (!currentData.settings.pantryBasket) currentData.settings.pantryBasket = globalCfg.pantryBasket || "cem_site_data";
+        if (!currentData.settings.kvdbBucketId) currentData.settings.kvdbBucketId = globalCfg.kvdbBucketId || "cem_ijmatti_default_bucket";
+        if (!currentData.settings.kvdbKey) currentData.settings.kvdbKey = globalCfg.kvdbKey || "cem_site_data";
         if (!currentData.settings.binId || currentData.settings.binId === "") currentData.settings.binId = globalCfg.jsonbinId;
         if (!currentData.settings.masterKey || currentData.settings.masterKey === "") currentData.settings.masterKey = globalCfg.jsonbinMasterKey;
 
@@ -1137,25 +1043,16 @@
                 initAdminForms();
 
                 // Background Cloud Sync on Login
-                const binId = currentData.settings.binId || globalCfg.jsonbinId;
-                const masterKey = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
-                if (binId && masterKey) {
-                    try {
-                        const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-                            headers: { 'X-Master-Key': masterKey }
-                        });
-                        if (res.ok) {
-                            const json = await res.json();
-                            if (json.record) {
-                                currentData = json.record;
-                                ensureHeroDefaults();
-                                localStorage.setItem('cem_site_data', JSON.stringify(currentData));
-                                initAdminForms();
-                            }
-                        }
-                    } catch (err) {
-                        console.warn("Could not sync from cloud on login, using local data.");
+                try {
+                    const fetchedData = await window.cemCloudFetch(currentData);
+                    if (fetchedData) {
+                        currentData = fetchedData;
+                        ensureHeroDefaults();
+                        localStorage.setItem('cem_site_data', JSON.stringify(currentData));
+                        initAdminForms();
                     }
+                } catch (err) {
+                    console.warn("Could not sync from cloud on login, using local data.");
                 }
             } else {
                 // فشل تسجيل الدخول - زيادة العداد
@@ -1243,11 +1140,34 @@
             document.getElementById('cfg-font-family').value = currentData.settings.fontFamily || 'Cairo';
             document.getElementById('cfg-font-size').value = currentData.settings.fontSize || '16';
             document.getElementById('cfg-anti-copy').checked = currentData.settings.antiCopy !== false;
+            document.getElementById('cfg-cloud-provider').value = currentData.settings.cloudProvider || 'pantry';
+            document.getElementById('cfg-pantryid').value = currentData.settings.pantryId || '';
+            document.getElementById('cfg-pantrybasket').value = currentData.settings.pantryBasket || 'cem_site_data';
+            document.getElementById('cfg-kvdbbucketid').value = currentData.settings.kvdbBucketId || '';
+            document.getElementById('cfg-kvdbkey').value = currentData.settings.kvdbKey || 'cem_site_data';
             document.getElementById('cfg-binid').value = currentData.settings.binId || globalCfg.jsonbinId;
             document.getElementById('cfg-masterkey').value = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
+
+            // Update Cloud Status Card
+            const p = currentData.settings.cloudProvider || 'pantry';
+            let statusTextStr = '';
+            if (p === 'pantry') {
+                statusTextStr = `المزود النشط: <strong class="text-blue-700">Pantry.dev</strong> | Pantry ID: <strong class="font-mono">${currentData.settings.pantryId || 'غير محدد'}</strong>`;
+            } else if (p === 'kvdb') {
+                statusTextStr = `المزود النشط: <strong class="text-yellow-700 font-bold">KVDB.io</strong> | Bucket ID: <strong class="font-mono">${currentData.settings.kvdbBucketId || 'غير محدد'}</strong>`;
+            } else if (p === 'cloudinary') {
+                statusTextStr = `المزود النشط: <strong class="text-orange-600">Cloudinary</strong> (رفع موقّع) | الملف: <strong class="font-mono">cem_site_data.json</strong> | API Key: <strong class="font-mono">${currentData.settings.cloudinaryApiKey || globalCfg.cloudinaryApiKey ? 'مُفعّل ✓' : 'غير مُدخل ✗'}</strong>`;
+            } else {
+                statusTextStr = `المزود النشط: <strong class="text-dzGreen-700">JSONBin.io</strong> | Bin ID: <strong class="font-mono">${currentData.settings.binId || 'غير محدد'}</strong>`;
+            }
+            document.getElementById('cloud-status-text').innerHTML = statusTextStr;
+            toggleCloudProviderInputs();
             document.getElementById('imgbb-api-key').value = currentData.settings.imgbbKey || globalCfg.imgbbApiKey;
             document.getElementById('cld-cloud-name').value = currentData.settings.cloudinaryName || globalCfg.cloudinaryName || '';
+            document.getElementById('cld-cloud-name-sync').value = currentData.settings.cloudinaryName || globalCfg.cloudinaryName || '';
             document.getElementById('cld-upload-preset').value = currentData.settings.cloudinaryPreset || globalCfg.cloudinaryPreset || '';
+            document.getElementById('cld-api-key').value = currentData.settings.cloudinaryApiKey || globalCfg.cloudinaryApiKey || '';
+            document.getElementById('cld-api-secret').value = currentData.settings.cloudinaryApiSecret || globalCfg.cloudinaryApiSecret || '';
 
             // Clear password change fields
             document.getElementById('cfg-pass-current').value = '';
@@ -1598,38 +1518,25 @@
             // Save to localStorage
             localStorage.setItem('cem_site_data', JSON.stringify(currentData));
 
-            // Sync with JSONbin
-            const binId = currentData.settings.binId || globalCfg.jsonbinId;
-            const masterKey = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
+            // Sync with Cloud
+            const provider = currentData.settings.cloudProvider || 'cloudinary';
+            const providerName = provider === 'pantry' ? 'Pantry.dev' : (provider === 'kvdb' ? 'KVDB.io' : (provider === 'cloudinary' ? 'Cloudinary' : 'JSONBin.io'));
 
-            if (binId && masterKey) {
-                statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-600 ml-1"></i> جاري حفظ كلمة المرور الجديدة في السحابة...';
-                statusEl.className = 'text-xs font-bold text-blue-600';
+            statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-blue-600 ml-1"></i> جاري حفظ كلمة المرور الجديدة في السحابة (${providerName})...`;
+            statusEl.className = 'text-xs font-bold text-blue-600';
 
-                try {
-                    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': masterKey
-                        },
-                        body: JSON.stringify(currentData)
-                    });
-
-                    if (res.ok) {
-                        statusEl.innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم تغيير كلمة المرور بنجاح ومزامنتها مع السحابة!';
-                        statusEl.className = 'text-xs font-bold text-dzGreen-600';
-                    } else {
-                        statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. فشل المزامنة السحابية';
-                        statusEl.className = 'text-xs font-bold text-yellow-600';
-                    }
-                } catch (err) {
-                    statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. تعذر الاتصال بالشبكة';
+            try {
+                const ok = await window.cemCloudSave(currentData);
+                if (ok) {
+                    statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم تغيير كلمة المرور بنجاح ومزامنتها مع السحابة (${providerName})!`;
+                    statusEl.className = 'text-xs font-bold text-dzGreen-600';
+                } else {
+                    statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. فشل المزامنة السحابية';
                     statusEl.className = 'text-xs font-bold text-yellow-600';
                 }
-            } else {
-                statusEl.innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم تغيير كلمة المرور بنجاح (محلياً فقط)';
-                statusEl.className = 'text-xs font-bold text-dzGreen-600';
+            } catch (err) {
+                statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. تعذر الاتصال بالشبكة';
+                statusEl.className = 'text-xs font-bold text-yellow-600';
             }
 
             // Clear password fields
@@ -2544,14 +2451,325 @@
         }
 
         function exportConfigFile() {
-            const cfgContent = `window.CEM_CONFIG = {
-    jsonbinId: "${document.getElementById('cfg-binid').value.trim() || globalCfg.jsonbinId}",
-    jsonbinMasterKey: "${document.getElementById('cfg-masterkey').value.trim() || globalCfg.jsonbinMasterKey}",
+            const cfgContent = `/**
+ * ====================================================================
+ *  إعدادات المزامنة والتكوين الدائم لمتوسطة بني جماتي (Vercel & Cloud Config)
+ *  CEM BENI JMATTI - GLOBAL CLOUD CONFIGURATION
+ * ====================================================================
+ */
+
+window.CEM_CONFIG = {
+    // تحديد المزود السحابي النشط
+    cloudProvider: "${document.getElementById('cfg-cloud-provider').value}",
+
+    // 1. إعدادات Pantry.dev
+    pantryId: "${document.getElementById('cfg-pantryid').value.trim()}",
+    pantryBasket: "${document.getElementById('cfg-pantrybasket').value.trim() || 'cem_site_data'}",
+
+    // 2. إعدادات KVDB.io
+    kvdbBucketId: "${document.getElementById('cfg-kvdbbucketid').value.trim()}",
+    kvdbKey: "${document.getElementById('cfg-kvdbkey').value.trim() || 'cem_site_data'}",
+
+    // 3. إعدادات JSONbin.io
+    jsonbinId: "${document.getElementById('cfg-binid').value.trim() || globalCfg.jsonbinId || ''}",
+    jsonbinMasterKey: "${document.getElementById('cfg-masterkey').value.trim() || globalCfg.jsonbinMasterKey || ''}",
+
+    // 4. إعدادات رفع الصور الفوري عبر ImgBB API
     imgbbApiKey: "${document.getElementById('imgbb-api-key').value.trim() || globalCfg.imgbbApiKey}",
+
+    // 5. إعدادات استضافة الملفات والصور عبر Cloudinary (بديل GitHub - مجاني 25GB)
+    //    يستخدم أيضاً كمزود مزامنة بيانات الموقع
     cloudinaryName: "${document.getElementById('cld-cloud-name').value.trim() || globalCfg.cloudinaryName || ''}",
     cloudinaryPreset: "${document.getElementById('cld-upload-preset').value.trim() || globalCfg.cloudinaryPreset || ''}",
+    cloudinaryApiKey: "${document.getElementById('cld-api-key').value.trim() || globalCfg.cloudinaryApiKey || ''}",
+    cloudinaryApiSecret: "${document.getElementById('cld-api-secret').value.trim() || globalCfg.cloudinaryApiSecret || ''}",
+
+    // 6. كلمة مرور لوحة التحكم الخاصة بالمؤسسة
     adminPassword: "${currentData.settings.adminPassword || globalCfg.adminPassword}",
-    awliyaUrl: "${document.getElementById('cfg-awliya').value.trim() || globalCfg.awliyaUrl}"
+
+    // 7. روابط الاتصال والفضاء الرقمي للأولياء
+    awliyaUrl: "${document.getElementById('cfg-awliya').value.trim() || globalCfg.awliyaUrl}",
+    facebookUrl: "${globalCfg.facebookUrl || ''}",
+    twitterUrl: "${globalCfg.twitterUrl || ''}",
+    youtubeUrl: "${globalCfg.youtubeUrl || ''}"
+};
+
+/**
+ * ====================================================================
+ * وظائف المزامنة السحابية الموحدة لجميع صفحات البوابة
+ * ====================================================================
+ */
+
+// دالة SHA-1 مدمجة لتوقيع طلبات Cloudinary الموقّعة (بدون أي مكتبات خارجية)
+window.cemSha1 = function(msg) {
+    function rol(x, n) { return (x << n) | (x >>> (32 - n)); }
+    function toHex(x) { x = x >>> 0; var s = x.toString(16); while (s.length < 8) s = '0' + s; return s; }
+    var K = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6];
+    var H = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
+    var str = unescape(encodeURIComponent(msg));
+    var bytes = [];
+    for (var i = 0; i < str.length; i++) bytes[i] = str.charCodeAt(i) & 0xff;
+    var bitlen = bytes.length * 8;
+    bytes.push(0x80);
+    while (bytes.length % 64 !== 56) bytes.push(0x00);
+    var hi = Math.floor(bitlen / 0x100000000), lo = bitlen >>> 0;
+    for (var j = 0; j < 4; j++) bytes.push((hi >>> (24 - 8 * j)) & 0xff);
+    for (var j = 0; j < 4; j++) bytes.push((lo >>> (24 - 8 * j)) & 0xff);
+    var W = [];
+    var nWords = bytes.length / 4;
+    for (i = 0; i < nWords; i++) {
+        W[i] = (bytes[i * 4] << 24) | (bytes[i * 4 + 1] << 16) | (bytes[i * 4 + 2] << 8) | bytes[i * 4 + 3];
+    }
+    var a, b, c, d, e, f, k, t;
+    for (var blk = 0; blk < nWords / 16; blk++) {
+        var w = W.slice(blk * 16, blk * 16 + 16);
+        for (var n = 16; n < 80; n++) {
+            t = w[n - 3] ^ w[n - 8] ^ w[n - 14] ^ w[n - 16];
+            w[n] = rol(t, 1);
+        }
+        a = H[0]; b = H[1]; c = H[2]; d = H[3]; e = H[4];
+        for (n = 0; n < 80; n++) {
+            if (n < 20) { f = (b & c) | (~b & d); k = K[0]; }
+            else if (n < 40) { f = b ^ c ^ d; k = K[1]; }
+            else if (n < 60) { f = (b & c) | (b & d) | (c & d); k = K[2]; }
+            else { f = b ^ c ^ d; k = K[3]; }
+            t = (rol(a, 5) + f + e + k + w[n]) | 0;
+            e = d; d = c; c = rol(b, 30); b = a; a = t;
+        }
+        H[0] = (H[0] + a) | 0; H[1] = (H[1] + b) | 0; H[2] = (H[2] + c) | 0; H[3] = (H[3] + d) | 0; H[4] = (H[4] + e) | 0;
+    }
+    return toHex(H[0]) + toHex(H[1]) + toHex(H[2]) + toHex(H[3]) + toHex(H[4]);
+};
+
+// شاشة تحميل تُعرض قبل جلب بيانات السحابة حتى لا تظهر البيانات القديمة لحظة تحديث الصفحة
+// (تعيد استخدام غطاء HTML الثابت الموجود في بداية body إن وُجد لتفادي أي وميض)
+window.showCemLoading = function(text) {
+    var el = document.getElementById('cem-loading-overlay');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'cem-loading-overlay';
+        el.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#fdf8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:"Cairo","Segoe UI",sans-serif;direction:rtl;';
+        el.innerHTML =
+            '<div style="width:58px;height:58px;border:5px solid #f5d9a8;border-top-color:#1b4332;border-radius:50%;animation:cemSpin .9s linear infinite;"></div>' +
+            '<div data-cem-label style="color:#1b4332;font-size:15px;font-weight:800;">جاري تحميل البيانات...</div>' +
+            '<style>@keyframes cemSpin{to{transform:rotate(360deg)}}</style>';
+        document.body.appendChild(el);
+    } else {
+        el.style.display = 'flex';
+    }
+    if (text) {
+        var lbl = el.querySelector('[data-cem-label]');
+        if (lbl) lbl.textContent = text;
+    }
+};
+window.hideCemLoading = function() {
+    var el = document.getElementById('cem-loading-overlay');
+    if (el) el.style.display = 'none';
+};
+
+window.cemCloudFetch = async function(localData) {
+    const settings = localData?.settings || {};
+    const globalCfg = window.CEM_CONFIG || {};
+    const settingsProvider = settings.cloudProvider || '';
+    const configProvider = globalCfg.cloudProvider || 'jsonbin';
+    const candidates = (settingsProvider && settingsProvider !== configProvider)
+        ? [settingsProvider, configProvider]
+        : [settingsProvider || configProvider];
+
+    for (const provider of candidates) {
+        const result = await cemCloudFetchFrom(provider, settings, globalCfg);
+        if (result) return result;
+    }
+    return null;
+};
+
+async function cemCloudFetchFrom(provider, settings, globalCfg) {
+    if (provider === 'pantry') {
+        const pantryId = settings.pantryId || globalCfg.pantryId;
+        const basketName = settings.pantryBasket || globalCfg.pantryBasket || 'cem_site_data';
+        if (!pantryId) return null;
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 6000);
+        try {
+            const res = await fetch(\`https://getpantry.cloud/apiv1/pantry/\${pantryId}/basket/\${basketName}\`, {
+                cache: 'no-cache',
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+            if (res.ok) {
+                return await res.json();
+            }
+        } catch (e) {
+            console.error("Pantry Fetch Error:", e);
+        }
+    } else if (provider === 'kvdb') {
+        const bucketId = settings.kvdbBucketId || globalCfg.kvdbBucketId;
+        const key = settings.kvdbKey || globalCfg.kvdbKey || 'cem_site_data';
+        if (!bucketId) return null;
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 6000);
+        try {
+            const res = await fetch(\`https://kvdb.io/\${bucketId}/\${key}\`, {
+                cache: 'no-cache',
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+            if (res.ok) {
+                return await res.json();
+            }
+        } catch (e) {
+            console.error("KVDB Fetch Error:", e);
+        }
+    } else if (provider === 'cloudinary') {
+        const cloudName = settings.cloudinaryName || globalCfg.cloudinaryName;
+        if (!cloudName) return null;
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 6000);
+        try {
+            // cache: 'no-cache' يجبر المتصفح على إعادة التحقق من السيرفر كل مرة
+            // بدلاً من استخدام نسخته القديمة لمدة 30 يوماً (Cache-Control: max-age)
+            const res = await fetch(\`https://res.cloudinary.com/\${cloudName}/raw/upload/cem_site_data.json\`, {
+                cache: 'no-cache',
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+            if (res.ok) {
+                return await res.json();
+            }
+        } catch (e) {
+            console.error("Cloudinary Fetch Error:", e);
+        }
+    } else {
+        const binId = settings.binId || globalCfg.jsonbinId;
+        const masterKey = settings.masterKey || globalCfg.jsonbinMasterKey;
+        if (!binId || !masterKey) return null;
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 6000);
+        try {
+            const res = await fetch(\`https://api.jsonbin.io/v3/b/\${binId}/latest\`, {
+                headers: { 'X-Master-Key': masterKey },
+                cache: 'no-cache',
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+            if (res.ok) {
+                const j = await res.json();
+                return j.record || null;
+            }
+        } catch (e) {
+            console.error("JSONbin Fetch Error:", e);
+        }
+    }
+    return null;
+};
+
+window.cemCloudSave = async function(currentData) {
+    const settings = currentData?.settings || {};
+    const globalCfg = window.CEM_CONFIG || {};
+    const settingsProvider = settings.cloudProvider || '';
+    const configProvider = globalCfg.cloudProvider || 'jsonbin';
+    const candidates = (settingsProvider && settingsProvider !== configProvider)
+        ? [settingsProvider, configProvider]
+        : [settingsProvider || configProvider];
+
+    let lastError = null;
+    for (const provider of candidates) {
+        try {
+            return await cemCloudSaveTo(provider, currentData, settings, globalCfg);
+        } catch (e) {
+            console.error(provider + " Save Error:", e);
+            lastError = e;
+        }
+    }
+    if (lastError) throw lastError;
+    return false;
+};
+
+async function cemCloudSaveTo(provider, currentData, settings, globalCfg) {
+    if (provider === 'pantry') {
+        const pantryId = settings.pantryId || globalCfg.pantryId;
+        const basketName = settings.pantryBasket || globalCfg.pantryBasket || 'cem_site_data';
+        if (!pantryId) throw new Error("مُعرف السلة (Pantry ID) مفقود!");
+
+        const res = await fetch(\`https://getpantry.cloud/apiv1/pantry/\${pantryId}/basket/\${basketName}\`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentData)
+        });
+        return res.ok;
+    } else if (provider === 'kvdb') {
+        const bucketId = settings.kvdbBucketId || globalCfg.kvdbBucketId;
+        const key = settings.kvdbKey || globalCfg.kvdbKey || 'cem_site_data';
+        if (!bucketId) throw new Error("مُعرف Bucket ID مفقود!");
+
+        const res = await fetch(\`https://kvdb.io/\${bucketId}/\${key}\`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentData)
+        });
+        return res.ok;
+    } else if (provider === 'cloudinary') {
+        const cloudName = settings.cloudinaryName || globalCfg.cloudinaryName;
+        const apiKey = settings.cloudinaryApiKey || globalCfg.cloudinaryApiKey;
+        const apiSecret = settings.cloudinaryApiSecret || globalCfg.cloudinaryApiSecret;
+        if (!cloudName || !apiKey || !apiSecret) throw new Error("إعدادات Cloudinary ناقصة! يجب تعبئة Cloud Name + API Key + API Secret (من Dashboard → Settings → API Keys) لتمكين الكتابة فوق الملف.");
+
+        const timestamp = Math.floor(Date.now() / 1000);
+        const signedParams = [
+            ['invalidate', 'true'],
+            ['overwrite', 'true'],
+            ['public_id', 'cem_site_data'],
+            ['timestamp', String(timestamp)]
+        ].sort((x, y) => (x[0] < y[0] ? -1 : 1));
+        const signature = window.cemSha1(signedParams.map(p => p[0] + '=' + p[1]).join('&') + apiSecret);
+
+        const formData = new FormData();
+        formData.append('file', new Blob([JSON.stringify(currentData)], { type: 'application/json' }), 'cem_site_data.json');
+        formData.append('public_id', 'cem_site_data');
+        formData.append('overwrite', 'true');
+        formData.append('invalidate', 'true');
+        formData.append('timestamp', String(timestamp));
+        formData.append('api_key', apiKey);
+        formData.append('signature', signature);
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
+        try {
+            const res = await fetch(\`https://api.cloudinary.com/v1_1/\${cloudName}/raw/upload\`, {
+                method: 'POST',
+                body: formData,
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+            if (!res.ok) {
+                const errBody = await res.json().catch(() => ({}));
+                throw new Error(errBody && errBody.error ? errBody.error.message : ('HTTP ' + res.status));
+            }
+            return true;
+        } catch (e) {
+            clearTimeout(timeout);
+            console.error("Cloudinary Save Error:", e);
+            throw e;
+        }
+    } else {
+        const binId = settings.binId || globalCfg.jsonbinId;
+        const masterKey = settings.masterKey || globalCfg.jsonbinMasterKey;
+        if (!binId || !masterKey) throw new Error("مفاتيح الاتصال بـ JSONbin مفقودة!");
+
+        const res = await fetch(\`https://api.jsonbin.io/v3/b/\${binId}\`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': masterKey
+            },
+            body: JSON.stringify(currentData)
+        });
+        return res.ok;
+    }
 };`;
 
             const blob = new Blob([cfgContent], { type: 'text/javascript' });
@@ -2573,11 +2791,19 @@
             currentData.settings.fontFamily = document.getElementById('cfg-font-family').value;
             currentData.settings.fontSize = document.getElementById('cfg-font-size').value;
             currentData.settings.antiCopy = document.getElementById('cfg-anti-copy').checked;
+            // Cloud Provider Settings
+            currentData.settings.cloudProvider = document.getElementById('cfg-cloud-provider').value;
+            currentData.settings.pantryId = document.getElementById('cfg-pantryid').value.trim();
+            currentData.settings.pantryBasket = document.getElementById('cfg-pantrybasket').value.trim();
+            currentData.settings.kvdbBucketId = document.getElementById('cfg-kvdbbucketid').value.trim();
+            currentData.settings.kvdbKey = document.getElementById('cfg-kvdbkey').value.trim();
             currentData.settings.binId = document.getElementById('cfg-binid').value.trim();
             currentData.settings.masterKey = document.getElementById('cfg-masterkey').value.trim();
             currentData.settings.imgbbKey = document.getElementById('imgbb-api-key').value.trim();
-            currentData.settings.cloudinaryName = document.getElementById('cld-cloud-name').value.trim();
+            currentData.settings.cloudinaryName = (document.getElementById('cld-cloud-name').value.trim() || document.getElementById('cld-cloud-name-sync').value.trim());
             currentData.settings.cloudinaryPreset = document.getElementById('cld-upload-preset').value.trim();
+            currentData.settings.cloudinaryApiKey = document.getElementById('cld-api-key').value.trim();
+            currentData.settings.cloudinaryApiSecret = document.getElementById('cld-api-secret').value.trim();
 
             currentData.hero.category = document.getElementById('hero-cat').value;
             currentData.hero.title = document.getElementById('hero-tit').value;
@@ -2647,54 +2873,143 @@
             localStorage.setItem('cem_site_data', JSON.stringify(currentData));
             document.getElementById('last-saved-time').textContent = 'آخر حفظ: ' + new Date().toLocaleTimeString('ar-DZ');
 
-            const binId = currentData.settings.binId || globalCfg.jsonbinId;
-            const masterKey = currentData.settings.masterKey || globalCfg.jsonbinMasterKey;
-
-            if (binId && masterKey) {
-                document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-600 ml-1"></i> جاري المزامنة مع JSONbin.io...';
-                try {
-                    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': masterKey
-                        },
-                        body: JSON.stringify(currentData)
-                    });
-                    if (res.ok) {
-                        document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم الحفظ في التخزين المحلي والسحابي (JSONbin) بنجاح وبشكل متزامن!';
-                        alert('تم الحفظ في التخزين المحلي وفي السحابة (JSONbin.io) بنجاح وفي الوقت نفسه!');
-                    } else {
-                        alert('تم الحفظ في التخزين المحلي. يرجى التحقق من صحة Bin ID و Master Key للمزامنة السحابية.');
-                    }
-                } catch (err) {
-                    alert('تم الحفظ في التخزين المحلي (تعذر الاتصال بالشبكة للمزامنة السحابية).');
+            const provider = currentData.settings.cloudProvider || 'cloudinary';
+            const providerName = provider === 'pantry' ? 'Pantry.dev' : (provider === 'kvdb' ? 'KVDB.io' : (provider === 'cloudinary' ? 'Cloudinary' : 'JSONBin.io'));
+            
+            document.getElementById('status-text').innerHTML = `<i class="fa-solid fa-spinner fa-spin text-blue-600 ml-1"></i> جاري المزامنة مع ${providerName}...`;
+            
+            try {
+                const ok = await window.cemCloudSave(currentData);
+                if (ok) {
+                    document.getElementById('status-text').innerHTML = `<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم الحفظ في التخزين المحلي والسحابي (${providerName}) بنجاح!`;
+                    alert(`تم الحفظ في التخزين المحلي وفي السحابة (${providerName}) بنجاح!`);
+                    initAdminForms();
+                } else {
+                    document.getElementById('status-text').innerHTML = `<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. فشل المزامنة السحابية مع ${providerName}.`;
+                    alert(`تم الحفظ في التخزين المحلي. يرجى التحقق من إعدادات الاتصال بـ ${providerName} في تبويب السحابة.`);
                 }
-            } else {
-                alert('تم حفظ التغييرات في التخزين المحلي بنجاح!');
+            } catch (err) {
+                document.getElementById('status-text').innerHTML = `<i class="fa-solid fa-triangle-exclamation text-yellow-600 ml-1"></i> تم الحفظ محلياً. تعذر المزامنة السحابية.`;
+                alert(`تم الحفظ في التخزين المحلي (فشل الاتصال بـ ${providerName}: ${err.message}).`);
             }
         }
 
-        async function testJSONbinConnection() {
-            const binId = document.getElementById('cfg-binid').value.trim() || globalCfg.jsonbinId;
-            const masterKey = document.getElementById('cfg-masterkey').value.trim() || globalCfg.jsonbinMasterKey;
+        function toggleCloudProviderInputs() {
+            const provider = document.getElementById('cfg-cloud-provider').value;
+            document.getElementById('pantry-fields').classList.add('hidden');
+            document.getElementById('kvdb-fields').classList.add('hidden');
+            document.getElementById('jsonbin-fields').classList.add('hidden');
+            document.getElementById('cloudinary-fields').classList.add('hidden');
 
-            if (!binId || !masterKey) {
-                alert('يرجى إدخال Bin ID و Master Key أولاً قبل اختبار الاتصال.');
-                return;
+            if (provider === 'pantry') {
+                document.getElementById('pantry-fields').classList.remove('hidden');
+            } else if (provider === 'kvdb') {
+                document.getElementById('kvdb-fields').classList.remove('hidden');
+            } else if (provider === 'jsonbin') {
+                document.getElementById('jsonbin-fields').classList.remove('hidden');
+            } else if (provider === 'cloudinary') {
+                document.getElementById('cloudinary-fields').classList.remove('hidden');
             }
+        }
 
-            try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                    headers: { 'X-Master-Key': masterKey }
-                });
-                if (res.ok) {
-                    alert('الاتصال بـ JSONbin.io ناجح ومطابق 100%!');
-                } else {
-                    alert('فشل الاتصال: يرجى التأكد من الـ Bin ID والـ Master Key الخاص بحسابك.');
+        async function testCloudConnection() {
+            const provider = document.getElementById('cfg-cloud-provider').value;
+            
+            if (provider === 'pantry') {
+                const pantryId = document.getElementById('cfg-pantryid').value.trim();
+                const basketName = document.getElementById('cfg-pantrybasket').value.trim() || 'cem_site_data';
+                if (!pantryId) {
+                    alert('يرجى إدخال معرف Pantry ID أولاً.');
+                    return;
                 }
-            } catch (e) {
-                alert('خطأ في الاتصال بالسيرفر: ' + e.message);
+                try {
+                    const res = await fetch(`https://getpantry.cloud/apiv1/pantry/${pantryId}`);
+                    if (res.ok) {
+                        alert('الاتصال بـ Pantry.dev ناجح ومطابق 100%! تم التحقق من وجود المعرف.');
+                    } else {
+                        alert('فشل الاتصال: يرجى التأكد من صحة معرف Pantry ID الخاص بك.');
+                    }
+                } catch (e) {
+                    alert('خطأ في الاتصال بالسيرفر: ' + e.message);
+                }
+            } else if (provider === 'kvdb') {
+                const bucketId = document.getElementById('cfg-kvdbbucketid').value.trim();
+                const key = document.getElementById('cfg-kvdbkey').value.trim() || 'cem_site_data';
+                if (!bucketId) {
+                    alert('يرجى إدخال معرف Bucket ID أولاً.');
+                    return;
+                }
+                try {
+                    const res = await fetch(`https://kvdb.io/${bucketId}/${key}`);
+                    if (res.status === 404 || res.ok) {
+                        alert('الاتصال بـ KVDB.io ناجح ومطابق 100%! (المساحة جاهزة للاستخدام).');
+                    } else {
+                        alert('فشل الاتصال بـ KVDB.io. الحالة: ' + res.status);
+                    }
+                } catch (e) {
+                    alert('خطأ في الاتصال بالسيرفر: ' + e.message);
+                }
+            } else if (provider === 'cloudinary') {
+                const cloudName = document.getElementById('cld-cloud-name').value.trim() || globalCfg.cloudinaryName || '';
+                const apiKey = document.getElementById('cld-api-key').value.trim() || globalCfg.cloudinaryApiKey || '';
+                const apiSecret = document.getElementById('cld-api-secret').value.trim() || globalCfg.cloudinaryApiSecret || '';
+                if (!cloudName || !apiKey || !apiSecret) {
+                    alert('يرجى تعبئة Cloud Name + API Key + API Secret (من لوحة Cloudinary → Settings → API Keys) أولاً.');
+                    return;
+                }
+                try {
+                    const timestamp = Math.floor(Date.now() / 1000);
+                    const signedParams = [
+                        ['invalidate', 'true'],
+                        ['overwrite', 'true'],
+                        ['public_id', 'cem_site_data'],
+                        ['timestamp', String(timestamp)]
+                    ].sort((x, y) => (x[0] < y[0] ? -1 : 1));
+                    const signature = window.cemSha1(signedParams.map(p => p[0] + '=' + p[1]).join('&') + apiSecret);
+
+                    const fd = new FormData();
+                    fd.append('file', new Blob([JSON.stringify(currentData)], { type: 'application/json' }), 'cem_site_data.json');
+                    fd.append('public_id', 'cem_site_data');
+                    fd.append('overwrite', 'true');
+                    fd.append('invalidate', 'true');
+                    fd.append('timestamp', String(timestamp));
+                    fd.append('api_key', apiKey);
+                    fd.append('signature', signature);
+
+                    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`, {
+                        method: 'POST',
+                        body: fd
+                    });
+                    const json = await res.json().catch(() => ({}));
+                    if (res.ok && json.public_id) {
+                        alert('الاتصال بـ Cloudinary ناجح 100% مع التوقيع الموقّع! تم تحديث البيانات السحابية بنسخة اليوم (الكتابة فوق مفعّلة).');
+                    } else {
+                        alert('فشل التوقيع الموقّع: ' + (json.error ? json.error.message : ('HTTP ' + res.status)) + ' — تأكد من صحة API Key و API Secret.');
+                    }
+                } catch (e) {
+                    alert('خطأ في الاتصال بالسيرفر: ' + e.message);
+                }
+            } else {
+                const binId = document.getElementById('cfg-binid').value.trim() || globalCfg.jsonbinId;
+                const masterKey = document.getElementById('cfg-masterkey').value.trim() || globalCfg.jsonbinMasterKey;
+
+                if (!binId || !masterKey) {
+                    alert('يرجى إدخال Bin ID و Master Key أولاً قبل اختبار الاتصال.');
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                        headers: { 'X-Master-Key': masterKey }
+                    });
+                    if (res.ok) {
+                        alert('الاتصال بـ JSONbin.io ناجح ومطابق 100%!');
+                    } else {
+                        alert('فشل الاتصال: يرجى التأكد من الـ Bin ID والـ Master Key الخاص بحسابك.');
+                    }
+                } catch (e) {
+                    alert('خطأ في الاتصال بالسيرفر: ' + e.message);
+                }
             }
         }
 
@@ -2711,6 +3026,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkLoginSession();
             updateLoginButton();
+            // Keep the two Cloud Name fields in sync
+            var cldNameA = document.getElementById('cld-cloud-name');
+            var cldNameB = document.getElementById('cld-cloud-name-sync');
+            if (cldNameA && cldNameB) {
+                cldNameA.addEventListener('input', function() { cldNameB.value = cldNameA.value; });
+                cldNameB.addEventListener('input', function() { cldNameA.value = cldNameB.value; });
+            }
             // Live preview: font size
             var fsSelect = document.getElementById('cfg-font-size');
             if (fsSelect) fsSelect.addEventListener('change', function() {

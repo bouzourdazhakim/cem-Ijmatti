@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>عن المتوسطة | متوسطة بني جماتي</title>
     <link rel="icon" href="logo1.png" type="image/png">
     <script src="config.js"></script>
+    <script src="default-data.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26',900:'#003319'},dzRed:{600:'#d9251d',700:'#cc0000'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','Segoe UI','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}
@@ -48,6 +49,7 @@
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col justify-between">
+    <div id="cem-loading-overlay" style="position:fixed;inset:0;z-index:99999;background:#fdf8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:'Cairo','Segoe UI',sans-serif;direction:rtl;"><div style="width:58px;height:58px;border:5px solid #f5d9a8;border-top-color:#1b4332;border-radius:50%;animation:cemSpin .9s linear infinite;"></div><div data-cem-label style="color:#1b4332;font-size:15px;font-weight:800;">جاري تحميل البيانات...</div><style>@keyframes cemSpin{to{transform:rotate(360deg)}}</style></div>
     <header class="bg-white border-b border-gray-100 py-3 px-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             <div class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -169,7 +171,7 @@
 
     <script>
         const globalCfg = window.CEM_CONFIG || {};
-        let siteData = JSON.parse(localStorage.getItem('cem_site_data')) || {};
+        let siteData = JSON.parse(localStorage.getItem('cem_site_data')) || window.DEFAULT_CEM_DATA;
 
         const defaultAbout = {
             identity: [
@@ -221,31 +223,18 @@
         }
 
         async function fetchFromJSONbin() {
-            const binId = siteData.settings.binId || globalCfg.jsonbinId;
-            const masterKey = siteData.settings.masterKey || globalCfg.jsonbinMasterKey;
-            if (binId && masterKey) {
-                try {
-                    const c = new AbortController();
-                    const t = setTimeout(() => c.abort(), 5000);
-                    const r = await fetch('https://api.jsonbin.io/v3/b/' + binId + '/latest', {
-                        headers: { 'X-Master-Key': masterKey },
-                        signal: c.signal
-                    });
-                    clearTimeout(t);
-                    if (r.ok) {
-                        const j = await r.json();
-                        if (j.record) {
-                            siteData = j.record;
-                            if (!siteData.about || typeof siteData.about !== 'object' || Object.keys(siteData.about).length === 0) {
-                                siteData.about = JSON.parse(JSON.stringify(defaultAbout));
-                            }
-                            localStorage.setItem('cem_site_data', JSON.stringify(siteData));
-                            render();
-                        }
+            try {
+                const fetchedData = await window.cemCloudFetch(siteData);
+                if (fetchedData) {
+                    siteData = fetchedData;
+                    if (!siteData.about || typeof siteData.about !== 'object' || Object.keys(siteData.about).length === 0) {
+                        siteData.about = JSON.parse(JSON.stringify(defaultAbout));
                     }
-                } catch (e) {
-                    console.error("Sync Error:", e);
+                    localStorage.setItem('cem_site_data', JSON.stringify(siteData));
+                    render();
                 }
+            } catch (e) {
+                console.error("Sync Error:", e);
             }
         }
 
@@ -384,8 +373,11 @@
         }
 
         render();
-        fetchFromJSONbin();
-        setInterval(fetchFromJSONbin, 30000);
+        window.showCemLoading();
+        Promise.resolve(fetchFromJSONbin()).catch(function(e){console.error(e);}).finally(function(){
+            window.hideCemLoading();
+            setInterval(fetchFromJSONbin, 30000);
+        });
 
         function showToast(msg) {
             var t = document.getElementById('global-toast');
