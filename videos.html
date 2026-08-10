@@ -48,6 +48,7 @@
         .cat-scroll{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px;scroll-snap-type:x proximity;}
         .cat-scroll::-webkit-scrollbar{display:none;}
         .cat-scroll .cat-btn{flex-shrink:0;scroll-snap-align:start;}
+        .filter-chips{display:flex;flex-wrap:wrap;gap:.4rem;}
         .cat-btn-side{
             display:flex;align-items:center;justify-content:space-between;gap:.5rem;width:100%;
             padding:.55rem .85rem;border-radius:.75rem;border:1.5px solid #e2e8f0;background:#fff;
@@ -173,32 +174,39 @@
 
     <main class="max-w-7xl mx-auto px-4 py-6 md:py-10 space-y-6 w-full">
 
-        <!-- Filter Bar (mobile) -->
-        <div class="filter-bar space-y-3.5 lg:hidden" id="filter-section" style="display:none">
+        <!-- Filter Bar (mobile): sticky compact with collapsible filters -->
+        <div class="filter-bar space-y-3 lg:hidden sticky top-12 z-40 p-3.5" id="filter-section" style="display:none">
             <!-- Search -->
             <div class="search-wrap">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
                 <input type="text" id="search-input" placeholder="ابحث عن فيديو بالعنوان..." oninput="applyFilters(); debouncedNotifyVideosBelow()">
             </div>
-            <!-- Category chips: horizontal scroll on mobile only -->
-            <div class="flex items-center gap-2 lg:hidden">
-                <span class="text-xs font-bold text-gray-500 shrink-0">التصنيف:</span>
-                <div class="cat-scroll-wrap flex-1 min-w-0">
-                    <div id="cat-btns" class="cat-scroll"></div>
-                </div>
-            </div>
-            <!-- Year + Counter + Reset -->
+            <!-- Toggle + results -->
             <div class="flex items-center gap-2">
-                <select id="year-filter" class="year-sel" onchange="applyFilters(); notifyVideosBelow()">
-                    <option value="">كل السنوات</option>
-                </select>
-                <span class="results-badge">
+                <button id="mobile-filters-toggle" onclick="toggleMobileFilters()" class="cat-btn flex-1 justify-center" style="padding:.5rem .9rem">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>الفلاتر</span>
+                    <span id="active-filters-count" class="hidden items-center justify-center min-w-5 h-5 px-1 rounded-full bg-dzRed-600 text-white text-[10px] font-black" style="display:none">0</span>
+                </button>
+                <span class="results-badge shrink-0">
                     <i class="fa-solid fa-film"></i>
                     <span id="results-count">0</span> فيديو
                 </span>
-                <button onclick="resetFilters()" class="cat-btn mr-auto" title="إعادة ضبط الفلاتر">
-                    <i class="fa-solid fa-rotate-left"></i>
-                    <span class="hidden sm:inline">إعادة الضبط</span>
+            </div>
+            <!-- Collapsible filters panel -->
+            <div id="mobile-filters-panel" class="hidden space-y-3 pt-1">
+                <div>
+                    <span class="text-[11px] font-bold text-red-700 inline-flex items-center gap-1 bg-red-50 border border-red-100 rounded-full px-2.5 py-1 mb-2"><i class="fa-solid fa-tags" style="font-size:.6rem"></i> التصنيف</span>
+                    <div id="cat-btns" class="filter-chips"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[11px] font-bold text-dzGreen-700 inline-flex items-center gap-1 bg-dzGreen-50 border border-dzGreen-100 rounded-full px-2.5 py-1 shrink-0"><i class="fa-solid fa-calendar" style="font-size:.6rem"></i> السنة</span>
+                    <select id="year-filter" class="year-sel flex-1" onchange="applyFilters(); notifyVideosBelow()">
+                        <option value="">كل السنوات</option>
+                    </select>
+                </div>
+                <button onclick="resetFilters()" class="cat-btn w-full justify-center" style="padding:.5rem .9rem;border-color:#fecaca;color:#dc2626;background:#fef2f2">
+                    <i class="fa-solid fa-rotate-left"></i> إعادة ضبط جميع الفلاتر
                 </button>
             </div>
         </div>
@@ -303,12 +311,17 @@
             </div>
         </div>
 
-    <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
-            <p id="ft-copy" class="text-center">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة</p>
-            <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> تم التطوير بواسطة <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
-        </div>
-    </footer>
+    <footer class="bg-dzDark-800 text-gray-300 py-6 border-t-4 border-dzGreen-700 mt-auto relative overflow-hidden footer-seal-bg">
+    <style>.footer-seal-bg{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" opacity="0.06"><circle cx="200" cy="200" r="180" fill="none" stroke="%23ffffff" stroke-width="4"/><circle cx="200" cy="200" r="140" fill="none" stroke="%23ffffff" stroke-width="2"/><text x="200" y="190" font-size="26" font-family="sans-serif" text-anchor="middle" fill="%23ffffff">وزارة التربية الوطنية</text><text x="200" y="225" font-size="22" font-family="sans-serif" text-anchor="middle" fill="%23ffffff">متوسطة بني جماتي</text></svg>');background-repeat:no-repeat;background-position:left 4% bottom 0;background-size:130px;}[dir="ltr"] .footer-seal-bg{background-position:right 4% bottom 0;}</style>
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+        <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+        <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+        <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2" aria-label="العودة للأعلى"><i class="fa-solid fa-arrow-up text-sm"></i></button>
+    </div>
+</footer>
+
+
 
 
 
@@ -751,6 +764,34 @@
             document.querySelectorAll('#cat-btns .cat-btn, #cat-btns-sidebar .cat-btn-side').forEach(b=>{
                 b.classList.toggle('active', b.dataset.cat===activeCategory);
             });
+            updateActiveFilterBadge();
+        }
+
+        function updateActiveFilterBadge(){
+            const badge = document.getElementById('active-filters-count');
+            if(!badge) return;
+            const q = (document.getElementById('search-input').value || '').trim();
+            const yr = document.getElementById('year-filter').value;
+            let count = 0;
+            if(activeCategory !== 'all') count++;
+            if(yr) count++;
+            if(q) count++;
+            if(count > 0){
+                badge.textContent = count;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function toggleMobileFilters(){
+            const panel = document.getElementById('mobile-filters-panel');
+            const btn = document.getElementById('mobile-filters-toggle');
+            if(!panel || !btn) return;
+            const willOpen = panel.classList.contains('hidden');
+            panel.classList.toggle('hidden');
+            btn.classList.toggle('active', willOpen);
+            btn.querySelector('span:first-of-type').textContent = willOpen ? 'إغلاق الفلاتر' : 'الفلاتر';
         }
 
         function applyFilters(){
@@ -768,6 +809,7 @@
             } else {
                 noR.classList.add('hidden');
             }
+            updateActiveFilterBadge();
             renderCards(filtered);
         }
 
@@ -886,7 +928,12 @@ function notifyVideosBelow(){
         showToast('لا توجد نتائج مطابقة للفلاتر المحددة');
         return;
     }
-    showToast('تم تحديث النتائج: ' + filtered + ' فيديو — القائمة في الأسفل', scrollToVideosGrid, 'انزل للأسفل');
+    if(window.matchMedia('(max-width: 1023px)').matches){
+        scrollToVideosGrid();
+        showToast('تم التحديث: ' + filtered + ' فيديو ✓');
+    } else {
+        showToast('تم تحديث النتائج: ' + filtered + ' فيديو — القائمة في الأسفل', scrollToVideosGrid, 'انزل للأسفل');
+    }
 }
 
 document.addEventListener('click', function(e) {
@@ -918,5 +965,17 @@ if (siteData.settings?.antiCopy !== false) {
 
         (function(){try{var sd=JSON.parse(localStorage.getItem('cem_site_data'))||{};var s=sd.settings||{};if(s.fontSize&&document.documentElement){document.documentElement.style.setProperty('font-size',s.fontSize+'px','important');}if(s.fontFamily){document.documentElement.style.setProperty('font-family',s.fontFamily+', sans-serif','important');document.body.style.setProperty('font-family',s.fontFamily+', sans-serif','important');}}catch(e){}})();
     </script>
+<a href="library.html" class="libfab" title="المكتبة الرقمية" aria-label="المكتبة الرقمية">
+    <i class="fa-solid fa-book-open"></i>
+    <span class="libfab-label">المكتبة الرقمية</span>
+</a>
+<style>
+.libfab{position:fixed;bottom:18px;left:18px;z-index:9990;display:flex;align-items:center;gap:9px;background:#006633;color:#fff;padding:12px 17px;border-radius:50px;box-shadow:0 6px 20px rgba(0,102,51,.45);font-family:"Cairo","Segoe UI",sans-serif;font-size:13px;font-weight:800;text-decoration:none;transition:transform .25s,background .25s;}
+.libfab:hover{transform:translateY(-3px);background:#007a3e;}
+.libfab i{font-size:16px;}
+@keyframes libfabPulse{0%,100%{box-shadow:0 6px 20px rgba(0,102,51,.45)}50%{box-shadow:0 6px 30px rgba(0,102,51,.8)}}
+.libfab{animation:libfabPulse 2s infinite;}
+@media(max-width:640px){.libfab{padding:11px 13px;}.libfab .libfab-label{display:none;}}
+</style>
 </body>
 </html>

@@ -200,8 +200,12 @@
                         <i class="fa-solid fa-chevron-left text-[10px]"></i>
                     </button>
                     <button onclick="switchTab('videos')" id="tab-videos" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-red-700">
-                        <span><i class="fa-solid fa-video ml-2 text-red-600"></i> مكتبة الفيديوهات</span>
-                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-video w-4 text-center"></i> مكتبة الفيديوهات</span>
+                        <i class="fa-solid fa-chevron-left text-[9px] opacity-50"></i>
+                    </button>
+                    <button onclick="switchTab('documents')" id="tab-documents" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-indigo-700">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-book-open w-4 text-center"></i> المكتبة الرقمية</span>
+                        <i class="fa-solid fa-chevron-left text-[9px] opacity-50"></i>
                     </button>
                     <button onclick="switchTab('featured')" id="tab-featured" class="tab-btn w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between text-yellow-600">
                         <span><i class="fa-solid fa-star ml-2 text-yellow-500"></i> المنشور المميز</span>
@@ -725,6 +729,30 @@
                     </div>
                 </section>
 
+                <!-- TAB: DIGITAL LIBRARY (DOCUMENTS) -->
+                <section id="panel-documents" class="hidden space-y-6">
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-book-open text-indigo-600 ml-2"></i> المكتبة الرقمية — دروس وملخصات وفروض <span id="documents-count" class="text-[11px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5 ml-1"></span></h3>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="documents-search" placeholder="ابحث بالعنوان أو المادة أو المستوى..." oninput="filterItems('documents-list-container','documents-search',idx=>{const d=currentData.documents[idx]||{};return (d.title||'')+' '+(d.subject||'')+' '+(d.level||'')+' '+(d.type||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-200">
+                            </div>
+                            <button onclick="addDocumentItem()" class="bg-indigo-600 text-white text-xs font-bold px-3 py-2 rounded hover:bg-indigo-700 transition whitespace-nowrap">+ إضافة وثيقة جديدة</button>
+                        </div>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-200 text-xs text-indigo-800 font-bold">
+                        <i class="fa-solid fa-circle-info ml-1"></i> <b>الوثائق</b> هي ملفات PDF للدروس والملخصات والمذكرات والفروض والاختبارات. أضف عنواناً، المادة، المستوى، النوع، ثم ارفع ملف PDF من جهازك (يُرفع إلى Cloudinary) أو ألصق رابطاً مباشراً.
+                    </div>
+                    <div id="documents-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-folder-open text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+                    <div id="documents-list-container" class="space-y-3">
+                        <!-- Dynamic Document Items -->
+                    </div>
+                </section>
+
                 <!-- TAB: STATISTICS MANAGEMENT -->
                 <section id="panel-stats" class="hidden space-y-6">
                     <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
@@ -1081,6 +1109,7 @@
     <input type="file" id="quick-file-input" accept="image/*" class="hidden" onchange="handleQuickUpload(event)">
     <!-- DIRECT VIDEO UPLOAD FILE PICKER -->
     <input type="file" id="quick-video-input" accept="video/*" class="hidden" onchange="handleVideoDirectUpload(event)">
+    <input type="file" id="quick-doc-input" accept="application/pdf,.pdf" class="hidden" onchange="handleDocDirectUpload(event)">
 
     <!-- SCRIPT FOR ADMIN PANEL & DATA MANAGEMENT -->
     <script>
@@ -1210,6 +1239,7 @@
             if (!currentData.dossiers || !Array.isArray(currentData.dossiers)) currentData.dossiers = [];
             if (!currentData.teachers || !Array.isArray(currentData.teachers)) currentData.teachers = [];
             if (!currentData.videos || !Array.isArray(currentData.videos)) currentData.videos = [];
+            if (currentData === defaultCemData || !Array.isArray(currentData.documents)) currentData.documents = [];
             if (!currentData.stats || !Array.isArray(currentData.stats) || currentData.stats.length === 0) {
                 currentData.stats = JSON.parse(JSON.stringify(defaultCemData.stats));
             }
@@ -1243,7 +1273,7 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
 
-            const sections = ['settings', 'hero', 'navbar', 'featured', 'stats', 'students', 'about', 'activities', 'clubs', 'announcements', 'dossiers', 'teachers', 'videos', 'media-upload', 'jsonbin'];
+            const sections = ['settings', 'hero', 'navbar', 'featured', 'stats', 'students', 'about', 'activities', 'clubs', 'announcements', 'dossiers', 'teachers', 'videos', 'documents', 'media-upload', 'jsonbin'];
             sections.forEach(sec => {
                 document.getElementById('panel-' + sec).classList.add('hidden');
             });
@@ -1339,6 +1369,7 @@
             renderDossiersForm();
             renderTeachersForm();
             renderVideosForm();
+            renderDocumentsForm();
             renderStatsForm();
             renderStudentsForm();
             renderAboutForm();
@@ -2390,8 +2421,206 @@
             if (confirm('هل أنت متأكد من حذف هذا الفيديو؟')) {
                 currentData.videos.splice(index, 1);
                 fixOpenAfterRemove('videos-list-container', index);
-                renderVideosForm();
+            renderVideosForm();
             }
+        }
+
+        const DOC_LEVELS = ['الأولى متوسط', 'الثانية متوسط', 'الثالثة متوسط', 'الرابعة متوسط', 'مشترك'];
+        const DOC_TYPES = ['درس', 'ملخص', 'مذكرة', 'فرض', 'اختبار', 'كتاب', 'دليل', 'أخرى'];
+
+        function renderDocumentsForm() {
+            const container = document.getElementById('documents-list-container');
+            container.innerHTML = '';
+            const docsList = currentData.documents || [];
+            if (!docsList) return;
+
+            docsList.forEach((doc, index) => {
+                const open = isItemOpen('documents-list-container', index);
+                const hasFile = !!(doc.fileUrl || '').trim();
+                const typeColor = { 'درس': '#006633', 'ملخص': '#8c6b24', 'مذكرة': '#4f46e5', 'فرض': '#ea580c', 'اختبار': '#dc2626', 'كتاب': '#7c3aed', 'دليل': '#0d9488', 'أخرى': '#475569' }[doc.type] || '#334155';
+                const levelOpts = DOC_LEVELS.map(l => `<option value="${l}" ${doc.level === l ? 'selected' : ''}>${l}</option>`).join('');
+                const typeOpts = DOC_TYPES.map(t => `<option value="${t}" ${doc.type === t ? 'selected' : ''}>${t}</option>`).join('');
+
+                container.innerHTML += `
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('documents-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            <span class="item-icon-box" style="background:${typeColor}1a;color:${typeColor}"><i class="fa-solid fa-file-pdf"></i></span>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(doc.title) || '<span class="text-gray-400">وثيقة بدون عنوان</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${doc.subject ? `<span class="inline-flex items-center text-[10px] font-bold text-dzGreen-700 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5">${escHtml(doc.subject)}</span>` : ''}
+                                    ${doc.level ? `<span class="inline-flex items-center text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5">${escHtml(doc.level)}</span>` : ''}
+                                    ${doc.type ? `<span class="inline-flex items-center text-[10px] font-bold text-white rounded px-1.5 py-0.5" style="background:${typeColor}">${escHtml(doc.type)}</span>` : ''}
+                                    ${hasFile ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-file-arrow-down"></i>له ملف</span>' : '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-clock"></i>بدون ملف</span>'}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                        </div>
+                        <!-- Details Body -->
+                        <div id="documents-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-indigo-50 border-t border-indigo-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-indigo-600 text-white px-2 py-0.5 rounded text-[10px]">تحرير الوثيقة #${index + 1}</span>
+                                <button onclick="removeDocument(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف الوثيقة</button>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">عنوان الوثيقة</label>
+                                <input type="text" value="${escHtml(doc.title)}" onchange="currentData.documents[${index}].title = this.value" placeholder="مثال: ملخص دروس الرياضيات — الأعداد النسبية" class="w-full border rounded p-2 focus:border-indigo-600">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">المادة</label>
+                                    <input type="text" value="${escHtml(doc.subject)}" onchange="currentData.documents[${index}].subject = this.value" placeholder="مثال: الرياضيات، اللغة العربية..." class="w-full border rounded p-2 focus:border-indigo-600">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">المستوى</label>
+                                    <select onchange="currentData.documents[${index}].level = this.value" class="w-full border rounded p-2 focus:border-indigo-600">${levelOpts}</select>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">النوع</label>
+                                    <select onchange="currentData.documents[${index}].type = this.value" class="w-full border rounded p-2 focus:border-indigo-600">${typeOpts}</select>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">التاريخ</label>
+                                    <input type="text" value="${escHtml(doc.date)}" onchange="currentData.documents[${index}].date = this.value" placeholder="مثال: 01-09-2026" class="w-full border rounded p-2 focus:border-indigo-600">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">حجم الملف (اختياري)</label>
+                                    <input type="text" value="${escHtml(doc.size)}" onchange="currentData.documents[${index}].size = this.value" placeholder="مثال: 1.5 MB" class="w-full border rounded p-2 focus:border-indigo-600">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">المؤلف (للكتب — اختياري)</label>
+                                    <input type="text" value="${escHtml(doc.author)}" onchange="currentData.documents[${index}].author = this.value" placeholder="مثال: مصطفى محمود، د. أحمد شوقي..." class="w-full border rounded p-2 focus:border-indigo-600">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">غلاف / صورة (اختياري — للكتب والملفات)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="doc-img-${index}" value="${escHtml(doc.image)}" onchange="currentData.documents[${index}].image = this.value" placeholder="رابط صورة الغلاف أو أرفعها من جهازك..." class="w-full border rounded p-2 font-mono focus:border-indigo-600">
+                                    <button onclick="triggerQuickUpload('doc-img-${index}', ${index}, 'document')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                        <i class="fa-solid fa-upload"></i> ImgBB
+                                    </button>
+                                </div>
+                                ${doc.image ? `<img src="${escHtml(doc.image)}" class="mt-2 w-24 h-32 object-cover rounded border" alt="معاينة الغلاف" onerror="this.style.display='none'">` : ''}
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط الملف (PDF)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="doc-url-${index}" value="${escHtml(doc.fileUrl)}" onchange="currentData.documents[${index}].fileUrl = this.value" placeholder="ألصق رابط ملف PDF مباشر أو ارفعه من جهازك..." class="w-full border rounded p-2 font-mono focus:border-indigo-600">
+                                    <button onclick="triggerDocUpload(${index})" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1" title="رفع ملف PDF من جهازك إلى Cloudinary">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع PDF
+                                    </button>
+                                </div>
+                                ${hasFile ? `<a href="${escHtml(doc.fileUrl)}" target="_blank" rel="noopener" class="text-[10px] text-indigo-600 hover:underline inline-flex items-center gap-1 mt-1"><i class="fa-solid fa-up-right-from-square"></i> فتح الملف في تبويب جديد</a>` : '<p class="text-[10px] text-gray-400 mt-1">يدعم: ملفات PDF المرفوعة (Cloudinary) أو أي رابط مباشر.</p>'}
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">وصف مختصر (اختياري)</label>
+                                <textarea rows="2" onchange="currentData.documents[${index}].description = this.value" placeholder="وصف مختصر للوثيقة..." class="w-full border rounded p-2 focus:border-indigo-600">${escHtml(doc.description)}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const countEl = document.getElementById('documents-count');
+            if (countEl) countEl.textContent = '(' + docsList.length + ')';
+            filterItems('documents-list-container', 'documents-search', idx => {
+                const d = currentData.documents[idx] || {};
+                return (d.title || '') + ' ' + (d.subject || '') + ' ' + (d.level || '') + ' ' + (d.type || '');
+            });
+        }
+
+        function addDocumentItem() {
+            if (!currentData.documents) currentData.documents = [];
+            currentData.documents.push({
+                id: Date.now(),
+                title: 'وثيقة جديدة — ملخص دروس',
+                subject: 'الرياضيات',
+                level: 'الأولى متوسط',
+                type: 'ملخص',
+                date: '01-09-2026',
+                fileUrl: '',
+                size: '',
+                author: '',
+                image: '',
+                description: ''
+            });
+            openItemCard('documents-list-container', currentData.documents.length - 1);
+            renderDocumentsForm();
+            scrollToItem('documents-list-container', currentData.documents.length - 1);
+        }
+
+        function removeDocument(index) {
+            if (confirm('هل أنت متأكد من حذف هذه الوثيقة؟')) {
+                currentData.documents.splice(index, 1);
+                fixOpenAfterRemove('documents-list-container', index);
+                renderDocumentsForm();
+            }
+        }
+
+        let activeDocIndex = null;
+
+        function triggerDocUpload(index) {
+            activeDocIndex = index;
+            document.getElementById('quick-doc-input').click();
+        }
+
+        async function handleDocDirectUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!/pdf$/i.test(file.name) && file.type !== 'application/pdf') {
+                alert('يرجى اختيار ملف PDF فقط.');
+                event.target.value = '';
+                return;
+            }
+            if (file.size > 50 * 1024 * 1024) {
+                alert('حجم الملف كبير جداً. الحد الأقصى لملفات PDF هو 50MB.');
+                event.target.value = '';
+                return;
+            }
+
+            const cloudName = document.getElementById('cld-cloud-name').value.trim() || globalCfg.cloudinaryName || '';
+            const uploadPreset = document.getElementById('cld-upload-preset').value.trim() || globalCfg.cloudinaryPreset || '';
+            if (!cloudName || !uploadPreset) {
+                alert('يرجى تعبئة Cloud Name و Upload Preset في تبويب "رفع الوسائط" أولاً.');
+                event.target.value = '';
+                return;
+            }
+
+            document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-indigo-500 ml-1"></i> جاري رفع ملف PDF إلى Cloudinary...';
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('upload_preset', uploadPreset);
+
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, { method: 'POST', body: fd });
+                const json = await res.json();
+                if (json.secure_url) {
+                    const index = activeDocIndex;
+                    if (index === null || index === undefined) {
+                        alert('حدث خطأ: لم يتم تحديد موضع الوثيقة. أعد المحاولة.');
+                        return;
+                    }
+                    if (!currentData.documents) currentData.documents = [];
+                    currentData.documents[index].fileUrl = json.secure_url;
+                    const urlInput = document.getElementById(`doc-url-${index}`);
+                    if (urlInput) urlInput.value = json.secure_url;
+                    renderDocumentsForm();
+                    document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم رفع ملف PDF إلى Cloudinary بنجاح!';
+                    alert('تم رفع الملف بنجاح!\n' + json.secure_url);
+                } else {
+                    let errMsg = 'خطأ غير معروف';
+                    if (json.error && json.error.message) errMsg = json.error.message;
+                    alert('فشل رفع الملف: ' + errMsg);
+                    document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> فشل رفع الملف.';
+                }
+            } catch (err) {
+                alert('خطأ في الرفع إلى Cloudinary: ' + err.message);
+                document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> فشل رفع الملف.';
+            }
+            event.target.value = '';
         }
 
         function isDirectVideoUrl(url) {
@@ -2572,7 +2801,8 @@
                     const imgInput = document.getElementById(`vid-img-${index}`);
                     if (imgInput) imgInput.value = thumb;
 
-                    renderVideosForm();
+            renderVideosForm();
+            renderDocumentsForm();
                     document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم رفع الفيديو إلى Cloudinary بنجاح! سيُعرض مباشرة في الصفحة.';
                     alert('تم رفع الفيديو بنجاح!\n' + json.secure_url);
                 } else {
@@ -3166,6 +3396,10 @@
                         if (activeArrayType === 'video' && activeArrayIndex !== null) {
                             if (!currentData.videos) currentData.videos = defaultCemData.videos;
                             currentData.videos[activeArrayIndex].thumbnail = uploadedUrl;
+                        }
+                        if (activeArrayType === 'document' && activeArrayIndex !== null) {
+                            if (!currentData.documents) currentData.documents = [];
+                            currentData.documents[activeArrayIndex].image = uploadedUrl;
                         }
                     }
                     document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم رفع الصورة إلى ImgBB وربطها بنجاح!';

@@ -189,17 +189,17 @@
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
-    <footer class="bg-dzDark-800 text-gray-400 py-6 border-t-4 border-dzGreen-700 mt-auto">
-        <div class="max-w-5xl mx-auto px-4 flex flex-col items-center justify-center gap-1 text-xs">
-            <div class="w-9 h-9 rounded-full border border-dzGold-400 p-0.5 bg-white overflow-hidden shrink-0 mb-2">
-                <img id="footer-logo-detail" src="logo.png" alt="الشعار" class="w-full h-full logo-circular">
-            </div>
-            <p class="font-bold text-white text-sm" id="ft-inst">متوسطة بني جماتي</p>
-            <p class="text-gray-500 text-center" id="ft-copy-detail">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
-            <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
-            <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
-        </div>
-    </footer>
+    <footer class="bg-dzDark-800 text-gray-300 py-6 border-t-4 border-dzGreen-700 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+        <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+        <div class="hidden" aria-hidden="true"><img id="footer-logo-detail" alt=""><span id="ft-inst"></span><span id="ft-copy-detail"></span></div>
+        <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+        <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2" aria-label="العودة للأعلى"><i class="fa-solid fa-arrow-up text-sm"></i></button>
+    </div>
+</footer>
+
+
 
     <div id="photo-modal" class="fixed inset-0 bg-black/95 z-50 hidden" onclick="closePhotoModal()">
         <button onclick="closePhotoModal()" class="fixed top-3 right-3 sm:top-5 sm:right-5 text-white/90 hover:text-white text-2xl sm:text-3xl z-50 bg-white/10 hover:bg-white/20 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition"><i class="fa-solid fa-xmark"></i></button>
@@ -490,5 +490,17 @@
 
         loadAndRenderDetail().finally(function(){ window.hideCemLoading(); });
     </script>
+<a href="library.html" class="libfab" title="المكتبة الرقمية" aria-label="المكتبة الرقمية">
+    <i class="fa-solid fa-book-open"></i>
+    <span class="libfab-label">المكتبة الرقمية</span>
+</a>
+<style>
+.libfab{position:fixed;bottom:18px;left:18px;z-index:9990;display:flex;align-items:center;gap:9px;background:#006633;color:#fff;padding:12px 17px;border-radius:50px;box-shadow:0 6px 20px rgba(0,102,51,.45);font-family:"Cairo","Segoe UI",sans-serif;font-size:13px;font-weight:800;text-decoration:none;transition:transform .25s,background .25s;}
+.libfab:hover{transform:translateY(-3px);background:#007a3e;}
+.libfab i{font-size:16px;}
+@keyframes libfabPulse{0%,100%{box-shadow:0 6px 20px rgba(0,102,51,.45)}50%{box-shadow:0 6px 30px rgba(0,102,51,.8)}}
+.libfab{animation:libfabPulse 2s infinite;}
+@media(max-width:640px){.libfab{padding:11px 13px;}.libfab .libfab-label{display:none;}}
+</style>
 </body>
 </html>

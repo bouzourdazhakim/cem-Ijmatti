@@ -921,86 +921,48 @@
     </main>
 
     <!-- 5. PIED DE PAGE (التذييل الرسمي) -->
-    <footer
-        class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 relative overflow-hidden footer-seal-bg mt-auto">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-gray-700">
-
-            <!-- العمود الأول: الشعار والمؤسسة -->
-            <div class="md:col-span-4 space-y-4">
-                <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                    <div
-                        class="w-14 h-14 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center">
-                        <img id="footer-logo-img" src="logo.png" alt="الشعار الرسمي"
-                            class="w-full h-full logo-circular">
-                    </div>
-                    <div>
-                        <h4 id="ft-sec1-title" class="text-sm font-bold text-white uppercase tracking-wider">
-                            متوسطة بني جماتي
-                        </h4>
-                        <p id="ft-subtitle" class="text-[11px] text-dzGold-400 font-tajawal">Ayerbaz Alemmas n It Jmatti
-                        </p>
-                    </div>
+    <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 relative overflow-hidden footer-seal-bg mt-auto">
+    <style>
+        .footer-seal-bg{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" opacity="0.05"><circle cx="200" cy="200" r="180" fill="none" stroke="%23ffffff" stroke-width="4"/><circle cx="200" cy="200" r="140" fill="none" stroke="%23ffffff" stroke-width="2"/><text x="200" y="190" font-size="26" font-family="sans-serif" text-anchor="middle" fill="%23ffffff">وزارة التربية الوطنية</text><text x="200" y="225" font-size="22" font-family="sans-serif" text-anchor="middle" fill="%23ffffff">متوسطة بني جماتي</text></svg>');background-repeat:no-repeat;background-position:left 5% bottom 5%;background-size:300px;}
+        [dir="ltr"] .footer-seal-bg{background-position:right 5% bottom 5%;}
+    </style>
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-gray-700">
+        <div class="md:col-span-4 space-y-4">
+            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                <div class="w-14 h-14 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center">
+                    <img id="footer-logo-img" src="logo.png" alt="الشعار الرسمي" class="w-full h-full logo-circular">
                 </div>
-                <div id="ft-address" class="text-xs text-gray-300 leading-relaxed space-y-1 font-sans">
-                    <p class="font-semibold text-white" id="ft-ministry-txt">وزارة التربية الوطنية - مديرية التربية</p>
-                    <p>المؤسسة الرسمية لمتوسطة بني جماتي</p>
-                    <p id="ft-country-txt">الجمهورية الجزائرية الديمقراطية الشعبية</p>
+                <div>
+                    <h4 id="ft-sec1-title" class="text-sm font-bold text-white uppercase tracking-wider">متوسطة بني جماتي</h4>
+                    <p id="ft-subtitle" class="text-[11px] text-dzGold-400 font-tajawal">Ayerbaz Alemmas n It Jmatti</p>
                 </div>
             </div>
-
-            <!-- العمود الثاني: المنصات والروابط الرسمية -->
-            <div class="md:col-span-8 space-y-4">
-                <h4 id="ft-sec2-title"
-                    class="text-sm font-bold text-white uppercase tracking-wider border-b border-dzGold-500 pb-2 inline-block">
-                    منصات وروابط مفيدة
-                </h4>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
-                    <a href="https://awlyaa.education.dz/" target="_blank"
-                        class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
-                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
-                        <span>فضاء الأولياء الرقمي - وزارة التربية الوطنية</span>
-                    </a>
-                    <a href="https://www.education.gov.dz/" target="_blank"
-                        class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
-                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
-                        <span>البوابة الرسمية لوزارة التربية الوطنية</span>
-                    </a>
-                    <a href="https://bem.onec.dz/" target="_blank"
-                        class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
-                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
-                        <span>الديوان الوطني للامتحانات والمسابقات (ONEC)</span>
-                    </a>
-                    <a href="#" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
-                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
-                        <span>دليل التوجيه المدرسي والمهني</span>
-                    </a>
-                    <a href="#" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1">
-                        <i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i>
-                        <span>مكتبة الدروس والتمارين التفاعلية</span>
-                    </a>
-                    <a href="#"
-                        class="hover:text-dzGold-400 hover:underline transition flex items-center gap-1.5 py-1 text-dzGold-400 font-bold hidden">
-                        <i class="fa-solid fa-lock text-[10px]"></i>
-                        <span>لوحة التحكم الإدارية</span>
-                    </a>
-                </div>
+            <div id="ft-address" class="text-xs text-gray-300 leading-relaxed space-y-1 font-sans">
+                <p class="font-semibold text-white" id="ft-ministry-txt">وزارة التربية الوطنية - مديرية التربية</p>
+                <p>المؤسسة الرسمية لمتوسطة بني جماتي</p>
+                <p id="ft-country-txt">الجمهورية الجزائرية الديمقراطية الشعبية</p>
             </div>
-
         </div>
-
-        <div
-            class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
-            <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
-            <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
-            <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
-            <button onclick="scrollToTop()"
-                class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2"
-                aria-label="العودة للأعلى">
-                <i class="fa-solid fa-arrow-up text-sm"></i>
-            </button>
+        <div class="md:col-span-8 space-y-4">
+            <h4 id="ft-sec2-title" class="text-sm font-bold text-white uppercase tracking-wider border-b border-dzGold-500 pb-2 inline-block">منصات وروابط مفيدة</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
+                <a href="https://awlyaa.education.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>فضاء الأولياء الرقمي - وزارة التربية الوطنية</span></a>
+                <a href="https://www.education.gov.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>البوابة الرسمية لوزارة التربية الوطنية</span></a>
+                <a href="https://bem.onec.dz/" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>الديوان الوطني للامتحانات والمسابقات (ONEC)</span></a>
+                <a href="https://ostad.education.dz/auth" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>الفضاء الرقمي للأساتذة</span></a>
+                <a href="https://al-wajeez.vercel.app/rate-calculator.html#tab-5" target="_blank" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>حاسبة معدل شهادة BEM</span></a>
+                <a href="library.html" class="hover:text-white hover:underline transition flex items-center gap-1.5 py-1"><i class="fa-solid fa-angle-left text-[10px] text-dzGold-400 ltr:rotate-180"></i><span>المكتبة الرقمية (دروس وملخصات وكتب)</span></a>
+            </div>
         </div>
-    </footer>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+        <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+        <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+        <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2" aria-label="العودة للأعلى"><i class="fa-solid fa-arrow-up text-sm"></i></button>
+    </div>
+</footer>
+
 
     <!-- MODAL POPUPS -->
     <div id="search-modal"
@@ -1690,8 +1652,8 @@
                 en: { 1: 'Home', 2: 'About School', 3: 'Activities', 4: 'Announcements', 5: 'Digital Space', 6: 'Teachers', 7: 'Videos', 8: 'Contact Us' }
             };
             const navSubLabels = {
-                ar: { 21: 'بطاقة فنية عن المؤسسة', 22: 'الطاقم الإداري والتربوي', 23: 'النظام الداخلي للمؤسسة', 31: 'التظاهرات العلمية والتكريمات', 32: 'النوادي العلمية والرياضية', 33: 'معارض الأنشطة الثقافية', 41: 'جدول الامتحانات والفروض', 42: 'إعلانات أولياء التلاميذ', 43: 'رزنامة العطل المدرسية', 51: 'فضاء الأولياء الرقمي', 52: 'حاسبة معدل شهادة BEM' },
-                en: { 21: 'School Profile', 22: 'Staff', 23: 'Rules', 31: 'Educational Events', 32: 'Scientific Clubs', 33: 'Exhibitions', 41: 'Exam Schedule', 42: 'Parent News', 43: 'Holidays', 51: 'Parents Portal', 52: 'BEM Calculator' }
+                ar: { 21: 'بطاقة فنية عن المؤسسة', 22: 'الطاقم الإداري والتربوي', 23: 'النظام الداخلي للمؤسسة', 31: 'التظاهرات العلمية والتكريمات', 32: 'النوادي العلمية والرياضية', 33: 'معارض الأنشطة الثقافية', 41: 'جدول الامتحانات والفروض', 42: 'إعلانات أولياء التلاميذ', 43: 'رزنامة العطل المدرسية', 51: 'فضاء الأولياء الرقمي', 52: 'حاسبة معدل شهادة BEM', 53: 'المكتبة الرقمية (دروس وملخصات)' },
+                en: { 21: 'School Profile', 22: 'Staff', 23: 'Rules', 31: 'Educational Events', 32: 'Scientific Clubs', 33: 'Exhibitions', 41: 'Exam Schedule', 42: 'Parent News', 43: 'Holidays', 51: 'Parents Portal', 52: 'BEM Calculator', 53: 'Digital Library (Lessons & Summaries)' }
             };
             const labels = navLabels[currentLang] || navLabels.ar;
             const subLabels = navSubLabels[currentLang] || navSubLabels.ar;
@@ -2028,8 +1990,7 @@
                 document.getElementById('search-empty-text').textContent = 'Type a word then click search';
                 document.getElementById('video-modal-title').textContent = 'Video Library';
                 // Stats
-                document.getElementById('stats-title').textContent = 'School by Numbers';
-                document.getElementById('stats-badge').textContent = 'School Statistics';
+                document.getElementById('stats-heading').textContent = 'School by Numbers';
                 // Social
                 document.getElementById('social-awliya').querySelector('span').textContent = 'Parents Digital Space';
                 document.getElementById('social-ostad').querySelector('span').textContent = 'Teachers Digital Space';
@@ -2082,8 +2043,7 @@
                 document.getElementById('search-empty-text').textContent = 'اكتب كلمة ثم اضغط بحث';
                 document.getElementById('video-modal-title').textContent = 'مكتبة الفيديو للمؤسسة';
                 // Stats
-                document.getElementById('stats-title').textContent = 'المؤسسة بالأرقام';
-                document.getElementById('stats-badge').textContent = 'إحصائيات المؤسسة';
+                document.getElementById('stats-heading').textContent = 'المؤسسة بالأرقام';
                 // Social
                 document.getElementById('social-awliya').querySelector('span').textContent = 'فضاء الأولياء الرقمي';
                 document.getElementById('social-ostad').querySelector('span').textContent = 'فضاء الأساتذة الرقمي';
@@ -2205,6 +2165,18 @@
             document.addEventListener('dragstart', e => { e.preventDefault(); });
         }
     </script>
+<a href="library.html" class="libfab" title="المكتبة الرقمية" aria-label="المكتبة الرقمية">
+    <i class="fa-solid fa-book-open"></i>
+    <span class="libfab-label">المكتبة الرقمية</span>
+</a>
+<style>
+.libfab{position:fixed;bottom:18px;left:18px;z-index:9990;display:flex;align-items:center;gap:9px;background:#006633;color:#fff;padding:12px 17px;border-radius:50px;box-shadow:0 6px 20px rgba(0,102,51,.45);font-family:"Cairo","Segoe UI",sans-serif;font-size:13px;font-weight:800;text-decoration:none;transition:transform .25s,background .25s;}
+.libfab:hover{transform:translateY(-3px);background:#007a3e;}
+.libfab i{font-size:16px;}
+@keyframes libfabPulse{0%,100%{box-shadow:0 6px 20px rgba(0,102,51,.45)}50%{box-shadow:0 6px 30px rgba(0,102,51,.8)}}
+.libfab{animation:libfabPulse 2s infinite;}
+@media(max-width:640px){.libfab{padding:11px 13px;}.libfab .libfab-label{display:none;}}
+</style>
 </body>
 
 </html>

@@ -147,6 +147,54 @@ window.DEFAULT_CEM_DATA = {
             "youtubeWatchUrl": "https://www.youtube.com/watch?v=40EHsxOsZz8"
         }
     ],
+    "documents": [
+        {
+            "id": 1786000000001,
+            "title": "ملخص دروس الرياضيات — الأعداد النسبية (مثال تجريبي)",
+            "subject": "الرياضيات",
+            "level": "الأولى متوسط",
+            "type": "ملخص",
+            "date": "10-08-2026",
+            "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            "size": "1.2 MB",
+            "description": "نموذج تجريبي للمكتبة الرقمية — استبدل الملف بملفك الخاص من لوحة التحكم."
+        },
+        {
+            "id": 1786000000002,
+            "title": "درس الجملة الواقعة في محل جر (مثال تجريبي)",
+            "subject": "اللغة العربية",
+            "level": "الثانية متوسط",
+            "type": "درس",
+            "date": "10-08-2026",
+            "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            "size": "850 KB",
+            "description": "نموذج تجريبي للمكتبة الرقمية — استبدل الملف بملفك الخاص من لوحة التحكم."
+        },
+        {
+            "id": 1786000000003,
+            "title": "فرض محروس في العلوم الطبيعية — التغذية عند الإنسان (مثال تجريبي)",
+            "subject": "العلوم الطبيعية",
+            "level": "الرابعة متوسط",
+            "type": "فرض",
+            "date": "10-08-2026",
+            "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            "size": "2.1 MB",
+            "description": "نموذج تجريبي للمكتبة الرقمية — استبدل الملف بملفك الخاص من لوحة التحكم."
+        },
+        {
+            "id": 1786000000004,
+            "title": "كتاب: رسائل من القرآن — ثقافة إيمانية للقراءة الحرة (مثال تجريبي)",
+            "subject": "ثقافة عامة",
+            "level": "مشترك",
+            "type": "كتاب",
+            "date": "10-08-2026",
+            "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            "size": "4.5 MB",
+            "author": "أ. أدهم الشرقاوي",
+            "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
+            "description": "نموذج تجريبي لكتاب خارجي — أضف كتب الثقافة والقراءة الحرة هنا مع غلاف الكتاب ومؤلفه."
+        }
+    ],
     "navbar": [
         {
             "id": 1,
@@ -238,6 +286,11 @@ window.DEFAULT_CEM_DATA = {
                     "id": 52,
                     "label": "حاسبة معدل شهادة BEM",
                     "link": "https://al-wajeez.vercel.app/rate-calculator.html#tab-5"
+                },
+                {
+                    "id": 53,
+                    "label": "المكتبة الرقمية (دروس وملخصات)",
+                    "link": "library.html"
                 }
             ],
             "isActive": false,

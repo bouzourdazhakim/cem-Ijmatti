@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المكتبة الرقمية | متوسطة بني جماتي</title>
+    <link rel="icon" href="logo1.png" type="image/png">
+    <script src="config.js"></script>
+    <script src="default-data.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{dzGreen:{50:'#f0fdf4',100:'#dcfce7',600:'#007a3d',700:'#006633',800:'#004d26'},dzRed:{600:'#d9251d',700:'#cc0000'},dzGold:{300:'#e2c578',400:'#c59d43',500:'#a88434',600:'#8c6b24'},dzDark:{800:'#2b3036',900:'#1e2227'}},fontFamily:{sans:['Cairo','sans-serif'],cairo:['Cairo','sans-serif'],tajawal:['Tajawal','sans-serif']}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body{font-family:'Cairo','Tajawal',sans-serif;background:#fff;color:#2b3036;overflow-x:hidden}
+        .dz-nav-bg{background:#006633}
+        .no-select{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+        .logo-circular{border-radius:50%!important;object-fit:cover!important;clip-path:circle(48.5% at 50% 50%)!important}
+
+        /* === Filter Bar === */
+        .filter-bar{
+            background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);
+            border:1.5px solid #e2e8f0;
+            border-radius:1.25rem;
+            padding:1.25rem 1.5rem;
+            box-shadow:0 2px 16px rgba(0,102,51,.07);
+        }
+        .search-wrap{position:relative;}
+        .search-wrap input{
+            width:100%;padding:.65rem 1rem .65rem 2.75rem;
+            border:1.5px solid #cbd5e1;border-radius:.75rem;
+            font-family:'Cairo',sans-serif;font-size:.875rem;
+            background:#fff;transition:border-color .2s,box-shadow .2s;outline:none;direction:rtl;
+        }
+        .search-wrap input:focus{border-color:#006633;box-shadow:0 0 0 3px rgba(0,102,51,.12);}
+        .search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:.85rem;pointer-events:none;}
+        .cat-btn{
+            display:inline-flex;align-items:center;gap:.35rem;
+            padding:.38rem .9rem;border-radius:2rem;
+            font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;
+            border:1.5px solid #e2e8f0;background:#fff;color:#64748b;
+            cursor:pointer;transition:all .2s ease;white-space:nowrap;
+        }
+        .cat-btn:hover{border-color:#006633;color:#006633;background:#f0fdf4;}
+        .cat-btn.active{background:#006633;color:#fff;border-color:#006633;box-shadow:0 2px 8px rgba(0,102,51,.25);}
+        .cat-scroll-wrap{-webkit-overflow-scrolling:touch;}
+        .cat-scroll{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px;scroll-snap-type:x proximity;}
+        .cat-scroll::-webkit-scrollbar{display:none;}
+        .cat-scroll .cat-btn{flex-shrink:0;scroll-snap-align:start;}
+        .filter-chips{display:flex;flex-wrap:wrap;gap:.4rem;}
+        .cat-btn-side{
+            display:flex;align-items:center;justify-content:space-between;gap:.5rem;width:100%;
+            padding:.55rem .85rem;border-radius:.75rem;border:1.5px solid #e2e8f0;background:#fff;
+            color:#64748b;font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;
+            cursor:pointer;transition:all .2s ease;text-align:right;
+        }
+        .cat-btn-side:hover{border-color:#006633;color:#006633;background:#f0fdf4;}
+        .cat-btn-side.active{background:#006633;color:#fff;border-color:#006633;box-shadow:0 2px 8px rgba(0,102,51,.25);}
+        .cat-btn-side .cnt{font-size:.62rem;font-weight:800;padding:.1rem .5rem;border-radius:2rem;background:rgba(0,0,0,.07);}
+        .cat-btn-side.active .cnt{background:rgba(255,255,255,.22);}
+        .year-sel{
+            padding:.42rem .9rem;border-radius:.65rem;
+            border:1.5px solid #e2e8f0;font-family:'Cairo',sans-serif;
+            font-size:.8rem;font-weight:700;color:#475569;
+            background:#fff;cursor:pointer;outline:none;transition:border-color .2s;direction:rtl;
+        }
+        .year-sel:focus{border-color:#006633;box-shadow:0 0 0 3px rgba(0,102,51,.1);}
+        .results-badge{
+            display:inline-flex;align-items:center;gap:.4rem;
+            padding:.3rem .85rem;background:#dcfce7;color:#006633;
+            border-radius:2rem;font-size:.75rem;font-weight:800;
+            border:1px solid #bbf7d0;white-space:nowrap;
+        }
+
+        /* === Document cards === */
+        #docs-container article{animation:fadeInUp .35s ease both;}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+        .doc-cover{
+            position:relative;display:flex;align-items:center;justify-content:center;
+            aspect-ratio:16/8.5;overflow:hidden;
+        }
+        .doc-cover .big-icon{font-size:2.6rem;color:rgba(255,255,255,.92);filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));}
+        .doc-type-badge{
+            position:absolute;top:.7rem;right:.7rem;
+            font-size:.64rem;font-weight:800;padding:.2rem .65rem;border-radius:2rem;
+            background:rgba(255,255,255,.94);display:inline-flex;align-items:center;gap:.3rem;
+            box-shadow:0 2px 8px rgba(0,0,0,.15);
+        }
+        .doc-size-badge{
+            position:absolute;bottom:.7rem;left:.7rem;
+            font-size:.6rem;font-weight:700;padding:.15rem .6rem;border-radius:2rem;
+            background:rgba(0,0,0,.35);color:#fff;display:inline-flex;align-items:center;gap:.3rem;
+        }
+        .doc-dl-btn{
+            display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+            padding:.45rem .6rem;border-radius:.8rem;font-size:.7rem;font-weight:800;
+            background:#006633;color:#fff;transition:all .2s ease;border:none;cursor:pointer;
+            font-family:'Cairo',sans-serif;
+        }
+        @media (min-width:640px){
+            .doc-dl-btn{padding:.5rem 1rem;font-size:.78rem;}
+        }
+        .doc-dl-btn:hover{background:#004d26;box-shadow:0 4px 14px rgba(0,102,51,.35);}
+        .doc-dl-btn.disabled{background:#cbd5e1;color:#64748b;cursor:not-allowed;box-shadow:none;}
+
+        /* Skeleton */
+        .sk-card{background:#fff;border:1px solid #f1f5f9;border-radius:1.1rem;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+        .sk-shimmer{position:relative;overflow:hidden;background:#eef2f7;}
+        .sk-shimmer::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);animation:skSlide 1.4s infinite;}
+        @keyframes skSlide{to{transform:translateX(100%);}}
+
+        /* Misc polish */
+        .grid-label{display:flex;align-items:center;gap:.6rem;}
+        .grid-label::after{content:'';flex:1;height:1px;background:#e5e7eb;}
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+    <div id="cem-loading-overlay" style="position:fixed;inset:0;z-index:99999;background:#fdf8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:'Cairo','Segoe UI',sans-serif;direction:rtl;"><div style="width:58px;height:58px;border:5px solid #f5d9a8;border-top-color:#1b4332;border-radius:50%;animation:cemSpin .9s linear infinite;"></div><div data-cem-label style="color:#1b4332;font-size:15px;font-weight:800;">جاري تحميل البيانات...</div><style>@keyframes cemSpin{to{transform:rotate(360deg)}}</style></div>
+    <header class="bg-white border-b border-gray-100 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center gap-4">
+            <a href="index" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-dzGold-400 p-0.5 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center"><img id="hdr-logo" src="logo.png" alt="الشعار" class="w-full h-full logo-circular"></a>
+            <div><h3 id="hdr-country" class="text-xs md:text-sm font-bold text-gray-600">الجمهورية الجزائرية الديمقراطية الشعبية</h3><p id="hdr-ministry" class="text-xs md:text-sm font-extrabold text-dzGreen-700">وزارة التربية الوطنية - مديرية التربية</p><h1 id="hdr-title" class="text-xl sm:text-2xl md:text-3xl font-black text-dzDark-800">متوسطة بني جماتي</h1><p id="hdr-sub" class="text-[11px] sm:text-xs font-bold text-dzGold-600 font-tajawal">Ayerbaz Alemmas n It Jmatti</p></div>
+        </div>
+    </header>
+    <nav class="dz-nav-bg text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center text-sm font-bold"><a href="index" class="py-3 px-4 hover:bg-white/10 transition flex items-center gap-2"><i class="fa-solid fa-house text-xs"></i><span>الرئيسية</span></a><span class="text-white/50 px-1">/</span><span class="py-3 px-2 text-dzGold-300" id="nav-page-title">المكتبة الرقمية</span></div>
+            <a href="index" class="py-3 px-4 hover:bg-white/10 transition text-sm"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-6 md:py-10 space-y-6 w-full">
+
+        <!-- Page title -->
+        <section class="text-center">
+            <span class="inline-flex items-center gap-2 text-[11px] font-extrabold text-dzGreen-700 bg-dzGreen-50 border border-dzGreen-200 rounded-full px-3 py-1 mb-3"><i class="fa-solid fa-book-open"></i> الفضاء الرقمي للمؤسسة</span>
+            <h1 class="text-2xl md:text-4xl font-black text-dzDark-800 mb-2"><i class="fa-solid fa-folder-open text-dzGold-500 ml-2"></i>المكتبة الرقمية</h1>
+            <p class="text-gray-500 text-sm font-bold max-w-xl mx-auto">دروس، ملخصات، مذكرات، فروض واختبارات — مصنفة حسب المواد والمستويات للتحميل المباشر</p>
+        </section>
+
+        <!-- Filter Bar (mobile): sticky compact with collapsible filters -->
+        <div class="filter-bar space-y-3 lg:hidden sticky top-12 z-40 p-3.5" id="filter-section" style="display:none">
+            <!-- Search -->
+            <div class="search-wrap">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input" placeholder="ابحث عن درس أو ملخص أو مادة..." oninput="applyFilters(); debouncedNotifyBelow()">
+            </div>
+            <!-- Toggle + results -->
+            <div class="flex items-center gap-2">
+                <button id="mobile-filters-toggle" onclick="toggleMobileFilters()" class="cat-btn flex-1 justify-center" style="padding:.5rem .9rem">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>الفلاتر</span>
+                    <span id="active-filters-count" class="hidden items-center justify-center min-w-5 h-5 px-1 rounded-full bg-dzRed-600 text-white text-[10px] font-black" style="display:none">0</span>
+                </button>
+                <span class="results-badge shrink-0">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span id="results-count">0</span> وثيقة
+                </span>
+            </div>
+            <!-- Collapsible filters panel -->
+            <div id="mobile-filters-panel" class="hidden space-y-3 pt-1">
+                <div>
+                    <span class="text-[11px] font-bold text-dzGreen-700 inline-flex items-center gap-1 bg-dzGreen-50 border border-dzGreen-100 rounded-full px-2.5 py-1 mb-2"><i class="fa-solid fa-book" style="font-size:.6rem"></i> المادة</span>
+                    <div id="cat-btns" class="filter-chips"></div>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold text-blue-700 inline-flex items-center gap-1 bg-blue-50 border border-blue-100 rounded-full px-2.5 py-1 mb-2"><i class="fa-solid fa-layer-group" style="font-size:.6rem"></i> المستوى</span>
+                    <div id="level-btns" class="filter-chips"></div>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold text-orange-700 inline-flex items-center gap-1 bg-orange-50 border border-orange-100 rounded-full px-2.5 py-1 mb-2"><i class="fa-solid fa-tags" style="font-size:.6rem"></i> النوع</span>
+                    <div id="type-btns" class="filter-chips"></div>
+                </div>
+                <button onclick="resetFilters()" class="cat-btn w-full justify-center" style="padding:.5rem .9rem;border-color:#fecaca;color:#dc2626;background:#fef2f2">
+                    <i class="fa-solid fa-rotate-left"></i> إعادة ضبط جميع الفلاتر
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar filters (desktop) + content -->
+        <div class="lg:grid lg:grid-cols-4 gap-6 items-start">
+
+            <aside class="hidden lg:block lg:sticky lg:top-20 filter-bar p-4 self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+                <h4 class="text-xs font-extrabold text-gray-600 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-dzRed-700"></i> البحث والفلاتر
+                </h4>
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input-side" placeholder="ابحث عن درس أو ملخص..." oninput="syncFilterInputs(this); applyFilters(); debouncedNotifyBelow()">
+                </div>
+                <h5 class="text-[11px] font-extrabold text-gray-500 mt-4 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-book text-dzGold-600"></i> المواد</h5>
+                <div id="cat-btns-sidebar" class="space-y-1.5"></div>
+                <h5 class="text-[11px] font-extrabold text-gray-500 mt-4 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-layer-group text-blue-600"></i> المستويات</h5>
+                <div id="level-btns-sidebar" class="space-y-1.5"></div>
+                <h5 class="text-[11px] font-extrabold text-gray-500 mt-4 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-tags text-orange-600"></i> الأنواع</h5>
+                <div id="type-btns-sidebar" class="space-y-1.5"></div>
+                <button onclick="resetFilters()" class="cat-btn-side justify-center mt-4" title="إعادة ضبط الفلاتر">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-rotate-left text-xs"></i> إعادة ضبط الفلاتر</span>
+                </button>
+            </aside>
+
+            <div class="lg:col-span-3 space-y-6 min-w-0">
+                <div class="grid-label text-sm font-extrabold text-dzDark-800">
+                    <i class="fa-solid fa-folder-open text-dzGold-600"></i>
+                    <span>كل الوثائق</span>
+                    <span id="all-docs-count" class="text-[11px] font-bold text-gray-400"></span>
+                </div>
+                <div id="docs-container" class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-5">
+                    <div class="sk-card"><div class="sk-shimmer" style="aspect-ratio:16/8.5"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer" style="aspect-ratio:16/8.5"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer" style="aspect-ratio:16/8.5"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer" style="aspect-ratio:16/8.5"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer" style="aspect-ratio:16/8.5"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer" style="aspect-ratio:16/8.5"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                </div>
+                <!-- No documents at all -->
+                <div id="empty-state" class="hidden text-center py-16 text-gray-400">
+                    <i class="fa-solid fa-folder-open text-4xl mb-3 block"></i>
+                    <p class="text-sm font-bold">لا توجد وثائق في المكتبة حالياً</p>
+                </div>
+                <!-- No results after filtering -->
+                <div id="no-results-state" class="hidden text-center py-16">
+                    <i class="fa-solid fa-filter-circle-xmark text-4xl mb-3 block text-dzGold-400"></i>
+                    <p class="text-base font-bold text-gray-700">لا توجد نتائج مطابقة</p>
+                    <p class="text-xs mt-1 text-gray-400">جرّب تعديل كلمة البحث أو اختر فلتراً مختلفاً</p>
+                    <button onclick="resetFilters()" style="margin-top:.9rem;display:inline-flex;align-items:center;gap:.5rem;background:#006633;color:#fff;padding:.5rem 1.2rem;border-radius:2rem;font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:700;border:none;cursor:pointer;">
+                        <i class="fa-solid fa-rotate-left text-xs"></i> إعادة ضبط الفلاتر
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dzDark-800 text-gray-300 py-6 border-t-4 border-dzGreen-700 mt-auto relative overflow-hidden footer-seal-bg">
+    <style>.footer-seal-bg{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" opacity="0.06"><circle cx="200" cy="200" r="180" fill="none" stroke="%23ffffff" stroke-width="4"/><circle cx="200" cy="200" r="140" fill="none" stroke="%23ffffff" stroke-width="2"/><text x="200" y="190" font-size="26" font-family="sans-serif" text-anchor="middle" fill="%23ffffff">وزارة التربية الوطنية</text><text x="200" y="225" font-size="22" font-family="sans-serif" text-anchor="middle" fill="%23ffffff">متوسطة بني جماتي</text></svg>');background-repeat:no-repeat;background-position:left 4% bottom 0;background-size:130px;}[dir="ltr"] .footer-seal-bg{background-position:right 4% bottom 0;}</style>
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+        <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+        <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+        <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2" aria-label="العودة للأعلى"><i class="fa-solid fa-arrow-up text-sm"></i></button>
+    </div>
+</footer>
+
+
+
+    <script>
+        const globalCfg = window.CEM_CONFIG || {};
+        let siteData = JSON.parse(localStorage.getItem('cem_site_data')) || window.DEFAULT_CEM_DATA;
+
+        async function fetchFromCloud() {
+            try {
+                const fetchedData = await window.cemCloudFetch(siteData);
+                if (fetchedData) {
+                    siteData = fetchedData;
+                    localStorage.setItem('cem_site_data', JSON.stringify(siteData));
+                    initFilters();
+                    applyFilters();
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function docSortKey(d) {
+            const s = (d.date || '').trim();
+            let m = s.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+            if (m) return m[3] + m[2] + m[1];
+            m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+            if (m) return m[1] + m[2] + m[3];
+            m = s.match(/^(\d{4})$/);
+            if (m) return m[1] + '1231';
+            return '00000000';
+        }
+
+        function getFilteredDocs() {
+            const docs = siteData.documents || [];
+            const q = (document.getElementById('search-input').value || '').trim().toLowerCase();
+            const list = docs.map((d, idx) => ({ d, idx }))
+                .filter(x => {
+                    const d = x.d;
+                    if (q && !((d.title || '') + ' ' + (d.subject || '') + ' ' + (d.level || '') + ' ' + (d.type || '')).toLowerCase().includes(q)) return false;
+                    if (activeSubject !== 'all' && d.subject !== activeSubject) return false;
+                    if (activeLevel !== 'all' && d.level !== activeLevel) return false;
+                    if (activeType !== 'all' && d.type !== activeType) return false;
+                    return true;
+                })
+                .sort((a, b) => {
+                    const ka = docSortKey(a.d), kb = docSortKey(b.d);
+                    if (ka !== kb) return ka < kb ? 1 : -1;
+                    return b.idx - a.idx;
+                });
+            return list.map(x => x.d);
+        }
+
+        let activeSubject = 'all', activeLevel = 'all', activeType = 'all';
+
+        const TYPE_META = {
+            'درس': { icon: 'fa-chalkboard-user', grad: 'linear-gradient(135deg,#007a3d,#004d26)', color: '#006633' },
+            'ملخص': { icon: 'fa-list-check', grad: 'linear-gradient(135deg,#c59d43,#8c6b24)', color: '#8c6b24' },
+            'مذكرة': { icon: 'fa-file-pen', grad: 'linear-gradient(135deg,#6366f1,#4338ca)', color: '#4f46e5' },
+            'فرض': { icon: 'fa-file-circle-question', grad: 'linear-gradient(135deg,#f97316,#c2410c)', color: '#ea580c' },
+            'اختبار': { icon: 'fa-file-lines', grad: 'linear-gradient(135deg,#dc2626,#991b1b)', color: '#dc2626' },
+            'كتاب': { icon: 'fa-book-open-reader', grad: 'linear-gradient(135deg,#8b5cf6,#5b21b6)', color: '#7c3aed' },
+            'دليل': { icon: 'fa-map-location-dot', grad: 'linear-gradient(135deg,#14b8a6,#0f766e)', color: '#0d9488' },
+            'أخرى': { icon: 'fa-file-circle-plus', grad: 'linear-gradient(135deg,#64748b,#334155)', color: '#475569' }
+        };
+
+        function typeMeta(t) {
+            return TYPE_META[t] || { icon: 'fa-file-pdf', grad: 'linear-gradient(135deg,#475569,#1e293b)', color: '#334155' };
+        }
+
+        function initFilters() {
+            const docs = siteData.documents || [];
+            const subjects = [...new Set(docs.map(d => d.subject).filter(Boolean))];
+            const levels = [...new Set(docs.map(d => d.level).filter(Boolean))];
+            const types = [...new Set(docs.map(d => d.type).filter(Boolean))];
+            const counts = {
+                subject: subjects.map(s => ({ v: s, n: docs.filter(d => d.subject === s).length })),
+                level: levels.map(l => ({ v: l, n: docs.filter(d => d.level === l).length })),
+                type: types.map(t => ({ v: t, n: docs.filter(d => d.type === t).length }))
+            };
+
+            const build = (container, kind, activeVal) => {
+                const isSide = container.id.endsWith('-sidebar');
+                const cls = isSide ? 'cat-btn-side' : 'cat-btn';
+                container.innerHTML = '';
+                const allBtn = document.createElement('button');
+                allBtn.className = cls + (activeVal === 'all' ? ' active' : '');
+                allBtn.dataset.val = 'all';
+                allBtn.innerHTML = '<i class="fa-solid fa-border-all" style="font-size:.7rem"></i> <span>الكل</span>' + (isSide ? `<span class="cnt">${docs.length}</span>` : '');
+                container.appendChild(allBtn);
+                counts[kind].forEach(c => {
+                    const btn = document.createElement('button');
+                    btn.className = cls + (activeVal === c.v ? ' active' : '');
+                    btn.dataset.val = c.v;
+                    btn.innerHTML = isSide ? `<span>${c.v}</span><span class="cnt">${c.n}</span>` : `<span>${c.v}</span><span style="opacity:.7">(${c.n})</span>`;
+                    container.appendChild(btn);
+                });
+                container.querySelectorAll('button').forEach(b => {
+                    b.onclick = () => {
+                        if (kind === 'subject') activeSubject = b.dataset.val;
+                        else if (kind === 'level') activeLevel = b.dataset.val;
+                        else activeType = b.dataset.val;
+                        updateFilterBtns();
+                        applyFilters();
+                        notifyBelow();
+                    };
+                });
+            };
+
+            build(document.getElementById('cat-btns'), 'subject', activeSubject);
+            build(document.getElementById('level-btns'), 'level', activeLevel);
+            build(document.getElementById('type-btns'), 'type', activeType);
+            build(document.getElementById('cat-btns-sidebar'), 'subject', activeSubject);
+            build(document.getElementById('level-btns-sidebar'), 'level', activeLevel);
+            build(document.getElementById('type-btns-sidebar'), 'type', activeType);
+        }
+
+        function updateFilterBtns() {
+            const sets = [
+                ['cat-btns', 'cat-btns-sidebar', activeSubject],
+                ['level-btns', 'level-btns-sidebar', activeLevel],
+                ['type-btns', 'type-btns-sidebar', activeType]
+            ];
+            sets.forEach(([m, s, val]) => {
+                document.querySelectorAll('#' + m + ' button, #' + s + ' button').forEach(b => {
+                    b.classList.toggle('active', b.dataset.val === val);
+                });
+            });
+            updateActiveFilterBadge();
+        }
+
+        function updateActiveFilterBadge() {
+            const badge = document.getElementById('active-filters-count');
+            if (!badge) return;
+            const q = (document.getElementById('search-input').value || '').trim();
+            let count = 0;
+            if (activeSubject !== 'all') count++;
+            if (activeLevel !== 'all') count++;
+            if (activeType !== 'all') count++;
+            if (q) count++;
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function toggleMobileFilters() {
+            const panel = document.getElementById('mobile-filters-panel');
+            const btn = document.getElementById('mobile-filters-toggle');
+            if (!panel || !btn) return;
+            const willOpen = panel.classList.contains('hidden');
+            panel.classList.toggle('hidden');
+            btn.classList.toggle('active', willOpen);
+            btn.querySelector('span:first-of-type').textContent = willOpen ? 'إغلاق الفلاتر' : 'الفلاتر';
+        }
+
+        function syncFilterInputs(el) {
+            if (!el) return;
+            const isSide = el.id.endsWith('-side');
+            const other = document.getElementById(el.id.replace(/-side$/, '') + (isSide ? '' : '-side'));
+            if (other) other.value = el.value;
+        }
+
+        function applyFilters() {
+            const docs = siteData.documents || [];
+            const filtered = getFilteredDocs();
+            const rc1 = document.getElementById('results-count');
+            const rc2 = document.getElementById('results-count-side');
+            if (rc1) rc1.textContent = filtered.length;
+            if (rc2) rc2.textContent = filtered.length;
+            const countLabel = document.getElementById('all-docs-count');
+            if (countLabel) countLabel.textContent = '(' + docs.length + ')';
+            const noR = document.getElementById('no-results-state');
+            const empty = document.getElementById('empty-state');
+            if (docs.length === 0) {
+                empty.classList.remove('hidden');
+                noR.classList.add('hidden');
+            } else {
+                empty.classList.add('hidden');
+                if (filtered.length === 0) noR.classList.remove('hidden');
+                else noR.classList.add('hidden');
+            }
+            updateActiveFilterBadge();
+            renderCards(filtered);
+        }
+
+        function resetFilters() {
+            ['search-input', 'year-filter', 'search-input-side', 'year-filter-side'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            activeSubject = 'all';
+            activeLevel = 'all';
+            activeType = 'all';
+            updateFilterBtns();
+            applyFilters();
+        }
+
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function renderCards(items) {
+            const container = document.getElementById('docs-container');
+            container.innerHTML = items.map((d, i) => {
+                const meta = typeMeta(d.type);
+                const hasFile = !!(d.fileUrl || '').trim();
+                const cover = (d.image || '').trim();
+                return `
+                <article class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition flex flex-col group" style="animation-delay:${i * 35}ms">
+                    <div class="doc-cover" ${cover ? '' : `style="background:${meta.grad}"`}>
+                        ${cover
+                            ? `<img src="${esc(cover)}" alt="${esc(d.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'"><span class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></span>`
+                            : `<i class="fa-solid ${meta.icon} big-icon"></i>`}
+                        <span class="doc-type-badge z-10" style="color:${meta.color}"><i class="fa-solid ${meta.icon}" style="font-size:.6rem"></i> ${esc(d.type || 'وثيقة')}</span>
+                        ${d.size ? `<span class="doc-size-badge z-10"><i class="fa-solid fa-database" style="font-size:.55rem"></i> ${esc(d.size)}</span>` : ''}
+                    </div>
+                    <div class="p-3 sm:p-4 flex flex-col gap-1.5 sm:gap-2 flex-1">
+                        <h3 class="text-[11px] sm:text-[13px] font-extrabold text-dzDark-800 leading-snug min-h-[2.5rem] sm:min-h-[2.8rem] group-hover:text-dzGreen-700 transition line-clamp-2">${esc(d.title)}</h3>
+                        <div class="flex items-center gap-1 flex-wrap">
+                            ${d.subject ? `<span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-dzGreen-700 bg-dzGreen-50 border border-dzGreen-100 rounded-full px-1.5 sm:px-2 py-0.5"><i class="fa-solid fa-book" style="font-size:.5rem"></i> <span class="truncate max-w-[5.5rem] sm:max-w-none">${esc(d.subject)}</span></span>` : ''}
+                            ${d.level ? `<span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded-full px-1.5 sm:px-2 py-0.5"><i class="fa-solid fa-layer-group" style="font-size:.5rem"></i> ${esc(d.level)}</span>` : ''}
+                            ${d.date ? `<span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-full px-1.5 sm:px-2 py-0.5"><i class="fa-solid fa-calendar" style="font-size:.5rem"></i> ${esc(d.date)}</span>` : ''}
+                        </div>
+                        ${d.author ? `<p class="text-[10px] sm:text-[11px] font-bold text-dzGold-600 flex items-center gap-1"><i class="fa-solid fa-pen-nib" style="font-size:.55rem"></i> <span class="truncate">${esc(d.author)}</span></p>` : ''}
+                        ${d.description ? `<p class="hidden sm:block text-[11px] text-gray-500 leading-relaxed line-clamp-2">${esc(d.description)}</p>` : ''}
+                        <div class="mt-auto pt-1.5 sm:pt-2">
+                            ${hasFile
+                                ? `<a href="${esc(d.fileUrl)}" target="_blank" rel="noopener" class="doc-dl-btn w-full"><i class="fa-solid fa-download"></i> <span class="truncate">تحميل / عرض الملف</span></a>`
+                                : `<button class="doc-dl-btn disabled w-full"><i class="fa-solid fa-clock"></i> <span class="truncate">الملف قيد الإعداد</span></button>`}
+                        </div>
+                    </div>
+                </article>`;
+            }).join('');
+        }
+
+        function showToast(msg, onClick, btnLabel) {
+            let t = document.getElementById('global-toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'global-toast';
+                t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-dzDark-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[999] text-sm font-bold flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none';
+                document.body.appendChild(t);
+            }
+            t.innerHTML = '<i class="fa-solid fa-circle-exclamation text-dzGold-400"></i> ' + msg + (onClick ? ' <button id="toast-action" style="background:#007a3d;color:#fff;border:none;border-radius:2rem;padding:.35rem .9rem;font-family:\'Cairo\',sans-serif;font-size:.75rem;font-weight:800;cursor:pointer;white-space:nowrap">' + (btnLabel || 'عرض') + '</button>' : '');
+            const actionBtn = document.getElementById('toast-action');
+            if (actionBtn) {
+                actionBtn.onclick = function () {
+                    clearTimeout(t._timer);
+                    t.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                    t.classList.remove('opacity-100', 'translate-y-0');
+                    if (onClick) onClick();
+                };
+            }
+            t.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            t.classList.add('opacity-100', 'translate-y-0');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => { t.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none'); t.classList.remove('opacity-100', 'translate-y-0'); }, 3500);
+        }
+
+        function scrollToGrid() {
+            const label = document.querySelector('.grid-label');
+            if (label) label.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        let _filterNotifyT;
+        function debouncedNotifyBelow() {
+            clearTimeout(_filterNotifyT);
+            _filterNotifyT = setTimeout(notifyBelow, 500);
+        }
+
+        function notifyBelow() {
+            const filtered = getFilteredDocs().length;
+            if (filtered === 0) {
+                showToast('لا توجد نتائج مطابقة للفلاتر المحددة');
+                return;
+            }
+            if (window.matchMedia('(max-width: 1023px)').matches) {
+                scrollToGrid();
+                showToast('تم التحديث: ' + filtered + ' وثيقة ✓');
+            } else {
+                showToast('تم تحديث النتائج: ' + filtered + ' وثيقة — القائمة في الأسفل', scrollToGrid, 'انزل للأسفل');
+            }
+        }
+
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a[href]');
+            if (!a) return;
+            const href = a.getAttribute('href').trim();
+            if (href === '#' || href === '' || href === 'javascript:void(0)' || href === 'javascript:;') {
+                e.preventDefault();
+                showToast('هذا الرابط غير متوفر حالياً');
+            }
+        });
+
+        if (siteData.settings?.antiCopy !== false) {
+            document.body.classList.add('no-select');
+            document.addEventListener('contextmenu', e => { e.preventDefault(); showToast('النقر بالزرار الأيمن معطّل'); });
+            document.addEventListener('keydown', function (e) {
+                if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); }
+                if (e.ctrlKey && (e.key === 's' || e.key === 'S')) { e.preventDefault(); }
+                if (e.ctrlKey && (e.key === 'p' || e.key === 'P')) { e.preventDefault(); }
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); }
+                if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); }
+                if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); }
+                if (e.key === 'F12') { e.preventDefault(); }
+            });
+            document.addEventListener('copy', e => { e.preventDefault(); showToast('النسخ معطّل'); });
+            document.addEventListener('cut', e => { e.preventDefault(); });
+            document.addEventListener('dragstart', e => { e.preventDefault(); });
+        }
+
+        (function init() {
+            const hasDocs = !!(siteData.documents && siteData.documents.length);
+            const filterSection = document.getElementById('filter-section');
+            if (filterSection) filterSection.style.display = hasDocs ? '' : 'none';
+            if (siteData.settings?.institution) {
+                document.getElementById('hdr-title').textContent = siteData.settings.institution;
+                document.getElementById('ft-copy').textContent = siteData.settings.institution + ' © 2026 جميع الحقوق محفوظة';
+            }
+            initFilters();
+            applyFilters();
+            window.hideCemLoading();
+            fetchFromCloud();
+        })();
+
+        (function () {
+            try {
+                var sd = JSON.parse(localStorage.getItem('cem_site_data')) || {};
+                var s = sd.settings || {};
+                if (s.fontSize && document.documentElement) { document.documentElement.style.setProperty('font-size', s.fontSize + 'px', 'important'); }
+                if (s.fontFamily) {
+                    document.documentElement.style.setProperty('font-family', s.fontFamily + ', sans-serif', 'important');
+                    document.body.style.setProperty('font-family', s.fontFamily + ', sans-serif', 'important');
+                }
+            } catch (e) { }
+        })();
+    </script>
+</body>
+</html>

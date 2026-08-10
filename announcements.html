@@ -38,12 +38,16 @@
         <div id="empty-state" class="hidden text-center py-16 text-gray-400"><i class="fa-solid fa-bell-slash text-4xl mb-3 block"></i><p class="text-sm font-bold">لا توجد إعلانات حالياً</p></div>
     </main>
 
-    <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
-            <p id="ft-copy" class="text-center">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة</p>
-            <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> تم التطوير بواسطة <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
-        </div>
-    </footer>
+    <footer class="bg-dzDark-800 text-gray-300 py-6 border-t-4 border-dzGreen-700 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
+        <p class="text-center" id="ft-copy">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة - وزارة التربية الوطنية - مديرية التربية لولاية سطيف</p>
+        <p class="text-dzGold-400 font-mono text-center">Ayerbaz Alemmas n It Jmatti</p>
+        <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> <span id="ft-developer-label">تم التطوير بواسطة</span> <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="w-9 h-9 rounded bg-dzGreen-700 text-white flex items-center justify-center hover:bg-dzGreen-600 transition shadow mt-2" aria-label="العودة للأعلى"><i class="fa-solid fa-arrow-up text-sm"></i></button>
+    </div>
+</footer>
+
+
 
     <script>
         const globalCfg=window.CEM_CONFIG||{};
@@ -133,5 +137,17 @@ if (siteData.settings?.antiCopy !== false) {
         // Apply font size from settings
         (function(){try{var sd=JSON.parse(localStorage.getItem('cem_site_data'))||{};var s=sd.settings||{};if(s.fontSize&&document.documentElement){document.documentElement.style.setProperty('font-size',s.fontSize+'px','important');}if(s.fontFamily){document.documentElement.style.setProperty('font-family',s.fontFamily+', sans-serif','important');document.body.style.setProperty('font-family',s.fontFamily+', sans-serif','important');}}catch(e){}})();
     </script>
+<a href="library.html" class="libfab" title="المكتبة الرقمية" aria-label="المكتبة الرقمية">
+    <i class="fa-solid fa-book-open"></i>
+    <span class="libfab-label">المكتبة الرقمية</span>
+</a>
+<style>
+.libfab{position:fixed;bottom:18px;left:18px;z-index:9990;display:flex;align-items:center;gap:9px;background:#006633;color:#fff;padding:12px 17px;border-radius:50px;box-shadow:0 6px 20px rgba(0,102,51,.45);font-family:"Cairo","Segoe UI",sans-serif;font-size:13px;font-weight:800;text-decoration:none;transition:transform .25s,background .25s;}
+.libfab:hover{transform:translateY(-3px);background:#007a3e;}
+.libfab i{font-size:16px;}
+@keyframes libfabPulse{0%,100%{box-shadow:0 6px 20px rgba(0,102,51,.45)}50%{box-shadow:0 6px 30px rgba(0,102,51,.8)}}
+.libfab{animation:libfabPulse 2s infinite;}
+@media(max-width:640px){.libfab{padding:11px 13px;}.libfab .libfab-label{display:none;}}
+</style>
 </body>
 </html>
