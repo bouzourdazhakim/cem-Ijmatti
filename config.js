@@ -43,7 +43,7 @@ window.CEM_CONFIG = {
     awliyaUrl: "https://awlyaa.education.dz/",
     facebookUrl: "https://web.facebook.com/hbouzourdaz121",
     twitterUrl: "",
-    youtubeUrl: ""
+    youtubeUrl: "https://www.youtube.com/@cem_beni_djemati"
 };
 
 /**

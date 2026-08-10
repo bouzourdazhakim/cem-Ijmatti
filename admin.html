@@ -55,6 +55,24 @@
         .navbar-drag-item:hover { border-color: #93c5fd !important; }
         .navbar-drag-item.dragging { opacity: 0.5; transform: scale(0.98); }
         .drag-handle:hover { transform: scale(1.2); }
+        .vid-card .vid-chevron { transition: transform .25s ease; }
+        .vid-card.open .vid-chevron { transform: rotate(180deg); }
+        .vid-summary-row { transition: background .2s; }
+        .vid-summary-row:hover { background: #fef2f2; }
+        .vid-type-badge { display: inline-flex; align-items: center; gap: .25rem; font-size: 10px; font-weight: 800; padding: .15rem .55rem; border-radius: 2rem; white-space: nowrap; }
+        .vid-type-badge.yt { background: #fee2e2; color: #cc0000; border: 1px solid #fecaca; }
+        .vid-type-badge.direct { background: #dcfce7; color: #007a3d; border: 1px solid #bbf7d0; }
+        .vid-type-badge.none { background: #e2e8f0; color: #64748b; border: 1px solid #cbd5e1; }
+        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .item-card { border-radius: .9rem; overflow: hidden; background: #fff; border: 1px solid #e5e7eb; transition: border-color .2s, box-shadow .2s; }
+        .item-card.open { border-color: #006633; box-shadow: 0 4px 16px rgba(0,102,51,.08); }
+        .item-card .item-chevron { transition: transform .25s ease; }
+        .item-card.open .item-chevron { transform: rotate(180deg); }
+        .item-summary { transition: background .2s; cursor: pointer; user-select: none; }
+        .item-summary:hover { background: #f8fafc; }
+        .item-chip { display: inline-flex; align-items: center; gap: .3rem; font-size: 10px; font-weight: 800; padding: .15rem .55rem; border-radius: 2rem; white-space: nowrap; }
+        .item-thumb { width: 5rem; height: 48px; object-fit: cover; border-radius: .4rem; border: 1px solid #e5e7eb; }
+        .item-icon-box { width: 2.75rem; height: 2.75rem; border-radius: .6rem; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased">
@@ -90,27 +108,31 @@
     <div id="admin-app" class="hidden min-h-screen flex-col">
 
         <!-- ADMIN TOP NAV BAR -->
-        <header class="bg-dzDark-900 text-white border-b-4 border-dzGreen-700 py-3.5 px-4 sticky top-0 z-40 shadow-lg">
-            <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
-                <div class="flex items-center gap-3">
+        <header class="bg-dzDark-900 text-white border-b-4 border-dzGreen-700 py-3 px-4 sticky top-0 z-40 shadow-lg">
+            <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+                <div class="flex items-center gap-3 min-w-0">
+                    <button onclick="openSidebar()" class="lg:hidden bg-dzGreen-700 hover:bg-dzGreen-800 text-white w-10 h-10 rounded-lg shrink-0 flex items-center justify-center transition" title="فتح القائمة">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                     <div class="w-10 h-10 rounded-full border border-dzGold-400 bg-white p-0.5 overflow-hidden shrink-0">
                         <img src="logo.png" alt="Logo" class="w-full h-full logo-circular">
                     </div>
-                    <div>
-                        <h1 class="text-base font-extrabold text-white">لوحة تحكم متوسطة بني جماتي</h1>
-                        <p class="text-[11px] text-dzGold-400 font-bold">متصل بالسحابة JSONbin (Bin ID: 6a6890...)</p>
+                    <div class="min-w-0">
+                        <h1 class="text-sm sm:text-base font-extrabold text-white truncate">لوحة تحكم متوسطة بني جماتي</h1>
+                        <p class="text-[11px] text-dzGold-400 font-bold hidden sm:block">متصل بالسحابة JSONbin (Bin ID: 6a6890...)</p>
                     </div>
                 </div>
 
                 <!-- Sync Controls & Actions -->
-                <div class="flex items-center gap-2">
-                    <button onclick="exportConfigFile()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-lg shadow flex items-center gap-1 transition" title="تنزيل ملف config.js">
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    <button onclick="exportConfigFile()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 sm:px-3 py-2 rounded-lg shadow flex items-center gap-1 transition" title="تنزيل ملف config.js">
                         <i class="fa-solid fa-download"></i>
-                        <span>تصدير config.js</span>
+                        <span class="hidden md:inline">تصدير config.js</span>
                     </button>
-                    <button onclick="saveAndSyncAll()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-1.5 transition">
+                    <button onclick="saveAndSyncAll()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-2.5 sm:px-4 py-2 rounded-lg shadow flex items-center gap-1.5 transition">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <span>حفظ ومزامنة مع JSONbin</span>
+                        <span class="hidden sm:inline">حفظ ومزامنة مع JSONbin</span>
+                        <span class="sm:hidden">حفظ</span>
                     </button>
                     <a href="index.html" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold px-3 py-2 rounded-lg transition flex items-center gap-1">
                         <i class="fa-solid fa-globe"></i>
@@ -135,8 +157,16 @@
         <div class="max-w-7xl mx-auto px-4 py-6 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6">
 
             <!-- SIDEBAR TABS NAV -->
-            <aside class="lg:col-span-3 space-y-2">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 space-y-1 text-xs font-bold">
+            <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden lg:hidden" onclick="closeSidebar()"></div>
+            <aside id="sidebar-menu" class="fixed inset-y-0 right-0 z-50 w-72 max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full lg:static lg:translate-x-0 lg:col-span-3 lg:w-auto lg:max-w-none lg:shadow-none lg:bg-transparent lg:transition-none">
+                <div class="h-full lg:h-auto flex flex-col">
+                    <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-dzGreen-50 shrink-0">
+                        <span class="text-sm font-extrabold text-dzDark-800"><i class="fa-solid fa-sliders ml-2 text-dzGreen-700"></i> أقسام لوحة التحكم</span>
+                        <button onclick="closeSidebar()" class="bg-dzDark-800 hover:bg-dzDark-900 text-white w-8 h-8 rounded-lg flex items-center justify-center transition" title="إغلاق القائمة">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 space-y-1 text-xs font-bold overflow-y-auto flex-1 lg:flex-none">
                     <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn active w-full text-right py-3 px-3.5 rounded-lg border transition flex items-center justify-between">
                         <span><i class="fa-solid fa-sliders ml-2"></i> الإعدادات والشعار</span>
                         <i class="fa-solid fa-chevron-left text-[10px]"></i>
@@ -197,11 +227,12 @@
                         <span><i class="fa-solid fa-database ml-2"></i> إعدادات المفاتيح و JSONbin</span>
                         <i class="fa-solid fa-chevron-left text-[10px]"></i>
                     </button>
+                    </div>
                 </div>
             </aside>
 
             <!-- MAIN PANEL CONTENT AREA -->
-            <main class="lg:col-span-9 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <main class="lg:col-span-9 bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 min-w-0">
 
                 <!-- TAB 1: SETTINGS & BRANDING -->
                 <section id="panel-settings" class="space-y-6">
@@ -407,12 +438,24 @@
                         <i class="fa-solid fa-circle-info ml-1"></i> يمكنك إضافة أو حذف أو تعديل عناصر القائمة الرئيسية. اترك حقل "القائمة الفرعية" فارغاً إذا لم تكن هناك قائمة منسدلة.
                     </div>
 
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-gray-600">عناصر القائمة الرئيسية</span>
-                        <button onclick="addNavItem()" class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-blue-700 transition">+ إضافة عنصر جديد</button>
+                    <div class="flex flex-wrap justify-between items-center gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-600">عناصر القائمة الرئيسية</span>
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="navbar-search" placeholder="ابحث بالاسم أو الرابط..." oninput="filterItems('navbar-list-container','navbar-search',idx=>{const n=currentData.navbar[idx]||{};return (n.label||'')+' '+(n.link||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-200">
+                            </div>
+                            <span id="navbar-search-count" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5"></span>
+                        </div>
+                        <button onclick="addNavItem()" class="bg-blue-600 text-white text-xs font-bold px-3 py-2 rounded hover:bg-blue-700 transition">+ إضافة عنصر جديد</button>
                     </div>
 
-                    <div id="navbar-list-container" class="space-y-4">
+                    <div id="navbar-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+
+                    <div id="navbar-list-container" class="space-y-3">
                         <!-- Dynamic Navbar Items -->
                     </div>
                 </section>
@@ -501,21 +544,40 @@
 
                 <!-- TAB 3: ACTIVITIES MANAGER -->
                 <section id="panel-activities" class="hidden space-y-6">
-                    <div class="border-b pb-3 flex justify-between items-center">
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-calendar-check text-dzGreen-700 ml-2"></i> إدارة النشاطات التربوية</h3>
-                        <button onclick="addActivityItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-dzGreen-800 transition">+ إضافة نشاط جديد</button>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="activities-search" placeholder="ابحث بالعنوان أو التاريخ..." oninput="filterItems('activities-list-container','activities-search',idx=>{const a=currentData.activities[idx]||{};return (a.title||'')+' '+(a.date||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-dzGreen-700 focus:outline-none focus:ring-1 focus:ring-dzGreen-200">
+                            </div>
+                            <span id="activities-search-count" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5"></span>
+                            <button onclick="addActivityItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-2 rounded hover:bg-dzGreen-800 transition">+ إضافة نشاط جديد</button>
+                        </div>
                     </div>
 
-                    <div id="activities-list-container" class="space-y-4">
+                    <div id="activities-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+
+                    <div id="activities-list-container" class="space-y-3">
                         <!-- Dynamic Activity Cards -->
                     </div>
                 </section>
 
                 <!-- TAB: CLUBS MANAGER -->
                 <section id="panel-clubs" class="hidden space-y-6">
-                    <div class="border-b pb-3 flex justify-between items-center">
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-flask text-teal-600 ml-2"></i> إدارة النوادي والأنشطة اللامنهجية</h3>
-                        <button onclick="addClubItem()" class="bg-teal-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-teal-700 transition">+ إضافة نادي جديد</button>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="clubs-search" placeholder="ابحث بالاسم أو الفئة..." oninput="filterItems('clubs-list-container','clubs-search',idx=>{const c=currentData.clubs[idx]||{};return (c.name||'')+' '+(c.category||'')+' '+(c.supervisor||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-200">
+                            </div>
+                            <span id="clubs-search-count" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5"></span>
+                            <button onclick="addClubItem()" class="bg-teal-600 text-white text-xs font-bold px-3 py-2 rounded hover:bg-teal-700 transition">+ إضافة نادي جديد</button>
+                        </div>
                     </div>
 
                     <!-- Clubs Page Settings -->
@@ -537,16 +599,32 @@
                         </div>
                     </div>
 
-                    <div id="clubs-list-container" class="space-y-4">
+                    <div id="clubs-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+                    <div id="clubs-list-container" class="space-y-3">
                         <!-- Dynamic Club Cards -->
                     </div>
                 </section>
 
                 <!-- TAB 4: ANNOUNCEMENTS MANAGER -->
                 <section id="panel-announcements" class="hidden space-y-6">
-                    <div class="border-b pb-3 flex justify-between items-center">
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-bullhorn text-dzGreen-700 ml-2"></i> إدارة البلاغات والإعلانات الرسمية</h3>
-                        <button onclick="addAnnouncementItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-dzGreen-800 transition">+ إضافة إعلان جديد</button>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="announcements-search" placeholder="ابحث بالعنوان أو التاريخ..." oninput="filterItems('announcements-list-container','announcements-search',idx=>{const a=currentData.announcements[idx]||{};return (a.title||'')+' '+(a.date||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-dzGreen-700 focus:outline-none focus:ring-1 focus:ring-dzGreen-200">
+                            </div>
+                            <span id="announcements-search-count" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5"></span>
+                            <button onclick="addAnnouncementItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-2 rounded hover:bg-dzGreen-800 transition">+ إضافة إعلان جديد</button>
+                        </div>
+                    </div>
+
+                    <div id="announcements-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
                     </div>
 
                     <div id="announcements-list-container" class="space-y-3">
@@ -556,21 +634,40 @@
 
                 <!-- TAB 5: DOSSIERS MANAGER -->
                 <section id="panel-dossiers" class="hidden space-y-6">
-                    <div class="border-b pb-3 flex justify-between items-center">
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-folder-open text-dzGreen-700 ml-2"></i> إدارة الملفات والتوجيهات</h3>
-                        <button onclick="addDossierItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-dzGreen-800 transition">+ إضافة ملف جديد</button>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="dossiers-search" placeholder="ابحث بالعنوان..." oninput="filterItems('dossiers-list-container','dossiers-search',idx=>{const d=currentData.dossiers[idx]||{};return (d.title||'')+' '+(d.description||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-dzGreen-700 focus:outline-none focus:ring-1 focus:ring-dzGreen-200">
+                            </div>
+                            <span id="dossiers-search-count" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5"></span>
+                            <button onclick="addDossierItem()" class="bg-dzGreen-700 text-white text-xs font-bold px-3 py-2 rounded hover:bg-dzGreen-800 transition">+ إضافة ملف جديد</button>
+                        </div>
                     </div>
 
-                    <div id="dossiers-list-container" class="space-y-4">
+                    <div id="dossiers-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+
+                    <div id="dossiers-list-container" class="space-y-3">
                         <!-- Dynamic Dossiers -->
                     </div>
                 </section>
 
                 <!-- TAB: TEACHERS SPACE -->
                 <section id="panel-teachers" class="hidden space-y-6">
-                    <div class="border-b pb-3 flex justify-between items-center">
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-chalkboard-user text-purple-600 ml-2"></i> فضاء الأساتذة والتأطير التربوي</h3>
-                        <button onclick="addTeacherItem()" class="bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-purple-700 transition">+ إضافة مستند/جدول جديد</button>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="teachers-search" placeholder="ابحث بالعنوان أو الفئة..." oninput="filterItems('teachers-list-container','teachers-search',idx=>{const t=currentData.teachers[idx]||{};return (t.title||'')+' '+(t.category||'')+' '+(t.date||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-200">
+                            </div>
+                            <span id="teachers-search-count" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5"></span>
+                            <button onclick="addTeacherItem()" class="bg-purple-600 text-white text-xs font-bold px-3 py-2 rounded hover:bg-purple-700 transition">+ إضافة مستند/جدول جديد</button>
+                        </div>
                     </div>
 
                     <!-- Teachers Page Settings -->
@@ -595,40 +692,64 @@
                     <div class="bg-purple-50 p-3 rounded-lg border border-purple-200 text-xs text-purple-800 font-bold">
                         <i class="fa-solid fa-circle-info ml-1"></i> أضف هنا جداول استعمال الزمن، جداول الحراسة، المناشير الوزارية للأсадلة. يمكنك إرفاق رابط ملف PDF أو صورة.
                     </div>
-                    <div id="teachers-list-container" class="space-y-4">
+                    <div id="teachers-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+                    <div id="teachers-list-container" class="space-y-3">
                         <!-- Dynamic Teacher Items -->
                     </div>
                 </section>
 
                 <!-- TAB: VIDEOS LIBRARY -->
                 <section id="panel-videos" class="hidden space-y-6">
-                    <div class="border-b pb-3 flex justify-between items-center">
-                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-video text-red-600 ml-2"></i> مكتبة الفيديوهات والتغطيات المصورة</h3>
-                        <button onclick="addVideoItem()" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-red-700 transition">+ إضافة فيديو جديد</button>
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
+                        <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-video text-red-600 ml-2"></i> مكتبة الفيديوهات والتغطيات المصورة <span id="videos-count" class="text-[11px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5 ml-1"></span></h3>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="videos-search" placeholder="ابحث بالعنوان أو الفئة..." oninput="filterItems('videos-list-container','videos-search',idx=>{const v=currentData.videos[idx]||{};return (v.title||'')+' '+(v.category||'')+' '+(v.date||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-200">
+                            </div>
+                            <button onclick="addVideoItem()" class="bg-red-600 text-white text-xs font-bold px-3 py-2 rounded hover:bg-red-700 transition whitespace-nowrap">+ إضافة فيديو جديد</button>
+                        </div>
                     </div>
                     <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-xs text-red-800 font-bold">
-                        <i class="fa-solid fa-circle-info ml-1"></i> أضف رابط YouTube Embed (مثلاً: https://www.youtube.com/embed/VIDEO_ID) أو رابط تخزين مباشر.
+                        <i class="fa-solid fa-circle-info ml-1"></i> <b>رفع مباشر:</b> ارفع فيديو من جهازك وسيُعرض في الصفحة مباشرة. <b>يوتيوب:</b> ألصق رابط YouTube وسيفتح الفيديو في موقع يوتيوب.
                     </div>
-                    <div id="videos-list-container" class="space-y-4">
+                    <div id="videos-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-video-slash text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+                    <div id="videos-list-container" class="space-y-3">
                         <!-- Dynamic Video Items -->
                     </div>
                 </section>
 
                 <!-- TAB: STATISTICS MANAGEMENT -->
                 <section id="panel-stats" class="hidden space-y-6">
-                    <div class="border-b pb-3 flex justify-between items-center">
+                    <div class="border-b pb-3 flex flex-wrap justify-between items-center gap-3">
                         <h3 class="text-base font-extrabold text-dzDark-800"><i class="fa-solid fa-chart-line text-dzGreen-700 ml-2"></i> إدارة الإحصائيات والأرقام</h3>
-                        <span class="text-xs text-gray-400">تخصيص الأرقام والعدادات الظاهرة في الصفحة الرئيسية</span>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="stats-search" placeholder="ابحث بالتسمية أو القيمة..." oninput="filterItems('stats-list-container','stats-search',idx=>{const s=currentData.stats[idx]||{};return (s.label||'')+' '+(s.value||'')+' '+(s.suffix||'');})" class="border border-gray-300 rounded-lg py-2 pr-3 pl-8 text-xs font-bold w-52 focus:border-dzGreen-700 focus:outline-none focus:ring-1 focus:ring-dzGreen-200">
+                            </div>
+                            <span id="stats-search-count" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded-full px-2 py-0.5"></span>
+                            <button onclick="addStatItem()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-3 py-2 rounded transition flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> إضافة إحصائية جديدة
+                            </button>
+                        </div>
                     </div>
                     <div class="bg-dzGreen-50 p-3 rounded-lg border border-dzGreen-200 text-xs text-dzGreen-800 font-bold">
                         <i class="fa-solid fa-circle-info ml-1"></i> يمكنك تعديل قيم الإحصائيات الأربعة الظاهرة في الصفحة الرئيسية. العداد سيتحرك تلقائياً عند التمرير.
                     </div>
-                    <div id="stats-list-container" class="space-y-4">
+                    <div id="stats-list-container-no-results" class="hidden text-center py-8 text-gray-400">
+                        <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
+                        <p class="text-xs font-bold">لا توجد نتائج مطابقة للبحث</p>
+                    </div>
+                    <div id="stats-list-container" class="space-y-3">
                         <!-- Dynamic Stats Items -->
                     </div>
-                    <button onclick="addStatItem()" class="bg-dzGreen-700 hover:bg-dzGreen-800 text-white text-xs font-bold px-3 py-1.5 rounded transition flex items-center gap-1">
-                        <i class="fa-solid fa-plus"></i> إضافة إحصائية جديدة
-                    </button>
                 </section>
 
                 <!-- TAB: STUDENTS MANAGEMENT -->
@@ -958,6 +1079,8 @@
 
     <!-- QUICK UPLOAD MODAL FILE PICKER -->
     <input type="file" id="quick-file-input" accept="image/*" class="hidden" onchange="handleQuickUpload(event)">
+    <!-- DIRECT VIDEO UPLOAD FILE PICKER -->
+    <input type="file" id="quick-video-input" accept="video/*" class="hidden" onchange="handleVideoDirectUpload(event)">
 
     <!-- SCRIPT FOR ADMIN PANEL & DATA MANAGEMENT -->
     <script>
@@ -1125,7 +1248,27 @@
                 document.getElementById('panel-' + sec).classList.add('hidden');
             });
             document.getElementById('panel-' + tabId).classList.remove('hidden');
+
+            closeSidebar();
         }
+
+        function openSidebar() {
+            document.getElementById('sidebar-menu').classList.remove('translate-x-full');
+            document.getElementById('sidebar-backdrop').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar-menu').classList.add('translate-x-full');
+            document.getElementById('sidebar-backdrop').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
 
         function initAdminForms() {
             ensureHeroDefaults();
@@ -1226,8 +1369,9 @@
 
             navbarList.forEach((item, index) => {
                 const hasDropdown = item.dropdown && item.dropdown.length > 0;
+                const open = isItemOpen('navbar-list-container', index);
                 let dropdownHtml = '';
-                
+
                 if (hasDropdown) {
                     dropdownHtml = `
                         <div class="mt-3 p-3 bg-gray-100 rounded-lg space-y-2">
@@ -1235,11 +1379,11 @@
                             <div class="space-y-2" id="dropdown-container-${index}">
                                 ${item.dropdown.map((sub, subIndex) => `
                                     <div class="flex gap-2 items-center">
-                                        <input type="text" value="${sub.label || ''}" 
+                                        <input type="text" value="${escHtml(sub.label)}" 
                                             onchange="currentData.navbar[${index}].dropdown[${subIndex}].label = this.value" 
                                             placeholder="اسم العنصر الفرعي" 
                                             class="flex-1 border rounded p-1.5 text-[11px] focus:border-blue-600">
-                                        <input type="text" value="${sub.link || ''}" 
+                                        <input type="text" value="${escHtml(sub.link)}" 
                                             onchange="currentData.navbar[${index}].dropdown[${subIndex}].link = this.value" 
                                             placeholder="الرابط" 
                                             class="flex-1 border rounded p-1.5 text-[11px] font-mono focus:border-blue-600">
@@ -1257,87 +1401,107 @@
                 }
 
                 container.innerHTML += `
-                    <div draggable="true" data-index="${index}" class="navbar-drag-item border rounded-lg p-4 bg-gray-50 relative space-y-3 text-xs font-bold cursor-grab active:cursor-grabbing transition-all">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-2">
-                                <span class="drag-handle text-gray-400 hover:text-gray-600 cursor-grab" title="اسحب للترتيب"><i class="fa-solid fa-grip-vertical"></i></span>
-                                <span class="inline-block ${item.color || 'bg-blue-600'} text-white px-2 py-0.5 rounded text-[10px]">عنصر #${index + 1}</span>
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}" draggable="true">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('navbar-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            <div class="flex items-center gap-2 shrink-0">
+                                <span class="drag-handle text-gray-400 hover:text-gray-600 cursor-grab" title="اسحب للترتيب" draggable="false" onclick="event.stopPropagation()"><i class="fa-solid fa-grip-vertical"></i></span>
+                                <span class="item-icon-box ${item.color || 'bg-blue-100 text-blue-600'}"><i class="fa-solid ${escHtml(item.icon) || 'fa-bars'}"></i></span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <label class="flex items-center gap-1 text-[11px]">
-                                    <input type="checkbox" ${item.visible ? 'checked' : ''} 
-                                        onchange="currentData.navbar[${index}].visible = this.checked" 
-                                        class="rounded">
-                                    <span>مرئي</span>
-                                </label>
-                                <button onclick="removeNavItem(${index})" class="text-red-600 hover:text-red-800" title="حذف">
-                                    <i class="fa-solid fa-trash"></i>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(item.label) || '<span class="text-gray-400">عنصر بدون اسم</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${hasDropdown ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-list"></i>قائمة منسدلة (${item.dropdown.length})</span>` : ''}
+                                    ${item.visible !== false ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-600 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-eye"></i>مرئي</span>` : '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-eye-slash"></i>مخفي</span>'}
+                                    ${item.isActive ? '<span class="inline-flex items-center text-[10px] font-bold text-yellow-700 bg-yellow-50 border border-yellow-100 rounded px-1.5 py-0.5">مفعل</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button onclick="event.stopPropagation();moveNavItem(${index},-1)" class="w-7 h-7 rounded-md bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-700 border border-gray-200 flex items-center justify-center transition" title="تحريك لأعلى" draggable="false"><i class="fa-solid fa-arrow-up text-[10px]"></i></button>
+                                <button onclick="event.stopPropagation();moveNavItem(${index},1)" class="w-7 h-7 rounded-md bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-700 border border-gray-200 flex items-center justify-center transition" title="تحريك لأسفل" draggable="false"><i class="fa-solid fa-arrow-down text-[10px]"></i></button>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                        </div>
+                        <!-- Details Body -->
+                        <div id="navbar-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-blue-50 border-t border-blue-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">تحرير العنصر #${index + 1}</span>
+                                <button onclick="removeNavItem(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف العنصر</button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">اسم العنصر</label>
+                                    <input type="text" value="${escHtml(item.label)}" 
+                                        onchange="currentData.navbar[${index}].label = this.value" 
+                                        placeholder="مثال: الرئيسية" 
+                                        class="w-full border rounded p-2 focus:border-blue-600">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">الرابط</label>
+                                    <input type="text" value="${escHtml(item.link)}" 
+                                        onchange="currentData.navbar[${index}].link = this.value" 
+                                        placeholder="مثال: #activities" 
+                                        class="w-full border rounded p-2 font-mono focus:border-blue-600">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">أيقونة (اختياري)</label>
+                                    <input type="text" value="${escHtml(item.icon)}" 
+                                        onchange="currentData.navbar[${index}].icon = this.value" 
+                                        placeholder="مثال: fa-caret-down" 
+                                        class="w-full border rounded p-2 font-mono focus:border-blue-600">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">لون النص (CSS class)</label>
+                                    <select onchange="currentData.navbar[${index}].color = this.value" class="w-full border rounded p-2 focus:border-blue-600">
+                                        <option value="" ${!item.color ? 'selected' : ''}>افتراضي (أبيض)</option>
+                                        <option value="text-dzGold-300" ${item.color === 'text-dzGold-300' ? 'selected' : ''}>ذهبي</option>
+                                        <option value="text-red-400" ${item.color === 'text-red-400' ? 'selected' : ''}>أحمر</option>
+                                        <option value="text-yellow-300" ${item.color === 'text-yellow-300' ? 'selected' : ''}>أصفر</option>
+                                        <option value="text-green-300" ${item.color === 'text-green-300' ? 'selected' : ''}>أخضر فاتح</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">مفعل (Active)</label>
+                                    <select onchange="currentData.navbar[${index}].isActive = this.value === 'true'" class="w-full border rounded p-2 focus:border-blue-600">
+                                        <option value="false" ${!item.isActive ? 'selected' : ''}>لا</option>
+                                        <option value="true" ${item.isActive ? 'selected' : ''}>نعم</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">الظهور</label>
+                                    <label class="flex items-center gap-2 p-2 bg-white border rounded">
+                                        <input type="checkbox" ${item.visible ? 'checked' : ''} 
+                                            onchange="currentData.navbar[${index}].visible = this.checked" 
+                                            class="rounded">
+                                        <span class="text-[11px]">مرئي في القائمة</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            ${dropdownHtml}
+                            
+                            ${!hasDropdown ? `
+                                <button onclick="convertToDropdown(${index})" class="text-blue-600 hover:text-blue-800 text-[11px] font-bold flex items-center gap-1 mt-2">
+                                    <i class="fa-solid fa-list text-[9px]"></i> تحويل إلى قائمة منسدلة
                                 </button>
-                            </div>
+                            ` : ''}
                         </div>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">اسم العنصر</label>
-                                <input type="text" value="${item.label || ''}" 
-                                    onchange="currentData.navbar[${index}].label = this.value" 
-                                    placeholder="مثال: الرئيسية" 
-                                    class="w-full border rounded p-2 focus:border-blue-600">
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-700">الرابط</label>
-                                <input type="text" value="${item.link || ''}" 
-                                    onchange="currentData.navbar[${index}].link = this.value" 
-                                    placeholder="مثال: #activities" 
-                                    class="w-full border rounded p-2 font-mono focus:border-blue-600">
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-700">أيقونة (اختياري)</label>
-                                <input type="text" value="${item.icon || ''}" 
-                                    onchange="currentData.navbar[${index}].icon = this.value" 
-                                    placeholder="مثال: fa-caret-down" 
-                                    class="w-full border rounded p-2 font-mono focus:border-blue-600">
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">لون النص (CSS class)</label>
-                                <select onchange="currentData.navbar[${index}].color = this.value" class="w-full border rounded p-2 focus:border-blue-600">
-                                    <option value="" ${!item.color ? 'selected' : ''}>افتراضي (أبيض)</option>
-                                    <option value="text-dzGold-300" ${item.color === 'text-dzGold-300' ? 'selected' : ''}>ذهبي</option>
-                                    <option value="text-red-400" ${item.color === 'text-red-400' ? 'selected' : ''}>أحمر</option>
-                                    <option value="text-yellow-300" ${item.color === 'text-yellow-300' ? 'selected' : ''}>أصفر</option>
-                                    <option value="text-green-300" ${item.color === 'text-green-300' ? 'selected' : ''}>أخضر فاتح</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-700">مفعل (Active)</label>
-                                <select onchange="currentData.navbar[${index}].isActive = this.value === 'true'" class="w-full border rounded p-2 focus:border-blue-600">
-                                    <option value="false" ${!item.isActive ? 'selected' : ''}>لا</option>
-                                    <option value="true" ${item.isActive ? 'selected' : ''}>نعم</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        ${dropdownHtml}
-                        
-                        ${!hasDropdown ? `
-                            <button onclick="convertToDropdown(${index})" class="text-blue-600 hover:text-blue-800 text-[11px] font-bold flex items-center gap-1 mt-2">
-                                <i class="fa-solid fa-list text-[9px]"></i> تحويل إلى قائمة منسدلة
-                            </button>
-                        ` : ''}
                     </div>
                 `;
             });
 
             // Drag and Drop handlers
-            const items = container.querySelectorAll('.navbar-drag-item');
+            const items = container.querySelectorAll('.item-card[draggable="true"]');
             let dragIndex = null;
 
             items.forEach(item => {
                 item.addEventListener('dragstart', e => {
-                    dragIndex = parseInt(item.dataset.index);
+                    if (!e.target.closest('.drag-handle')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    dragIndex = parseInt(item.getAttribute('data-item-card'));
                     item.classList.add('opacity-50', 'ring-2', 'ring-blue-500');
                     e.dataTransfer.effectAllowed = 'move';
                 });
@@ -1356,7 +1520,7 @@
 
                 item.addEventListener('drop', e => {
                     e.preventDefault();
-                    const dropIndex = parseInt(item.dataset.index);
+                    const dropIndex = parseInt(item.getAttribute('data-item-card'));
                     if (dragIndex !== null && dragIndex !== dropIndex) {
                         const movedItem = currentData.navbar.splice(dragIndex, 1)[0];
                         currentData.navbar.splice(dropIndex, 0, movedItem);
@@ -1365,6 +1529,23 @@
                     items.forEach(i => i.classList.remove('border-t-2', 'border-t-blue-500'));
                 });
             });
+
+            filterItems('navbar-list-container', 'navbar-search', idx => {
+                const n = currentData.navbar[idx] || {};
+                return (n.label || '') + ' ' + (n.link || '');
+            });
+        }
+
+        function moveNavItem(index, dir) {
+            const list = currentData.navbar;
+            if (!list || !Array.isArray(list)) return;
+            const target = index + dir;
+            if (target < 0 || target >= list.length) return;
+            const moved = list.splice(index, 1)[0];
+            list.splice(target, 0, moved);
+            renderNavbarForm();
+            openItemCard('navbar-list-container', target);
+            scrollToItem('navbar-list-container', target);
         }
 
         function addNavItem() {
@@ -1378,12 +1559,15 @@
                 isActive: false,
                 visible: true
             });
+            openItemCard('navbar-list-container', currentData.navbar.length - 1);
             renderNavbarForm();
+            scrollToItem('navbar-list-container', currentData.navbar.length - 1);
         }
 
         function removeNavItem(index) {
             if (confirm('هل أنت متأكد من حذف هذا العنصر من القائمة؟')) {
                 currentData.navbar.splice(index, 1);
+                fixOpenAfterRemove('navbar-list-container', index);
                 renderNavbarForm();
             }
         }
@@ -1432,27 +1616,42 @@
                 const title = typeof item === 'string' ? item : (item.text || '');
                 const date = typeof item === 'object' ? (item.date || '') : '';
                 const link = typeof item === 'object' ? (item.link || '') : '';
+                const open = isItemOpen('featured-titles-container', index);
                 container.innerHTML += `
-                    <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 space-y-2">
-                        <div class="flex gap-2 items-center">
-                            <span class="text-[10px] text-gray-400 w-5 text-center shrink-0">${index + 1}</span>
-                            <input type="text" value="${title}" 
-                                onchange="updateFeaturedTitle(${index}, 'text', this.value)" 
-                                placeholder="نص الخبر ${index + 1}..." 
-                                class="flex-1 border rounded p-2 text-xs focus:border-yellow-500">
-                            <input type="date" value="${date}" 
-                                onchange="updateFeaturedTitle(${index}, 'date', this.value)" 
-                                class="border rounded p-2 text-[11px] focus:border-yellow-500 w-32 shrink-0">
-                            <button onclick="removeFeaturedTitle(${index})" class="text-red-500 hover:text-red-700 p-1.5 shrink-0" title="حذف">
-                                <i class="fa-solid fa-trash text-[10px]"></i>
-                            </button>
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('featured-titles-container',${index})" title="اضغط للفتح/الإغلاق">
+                            <span class="item-icon-box bg-yellow-100 text-yellow-600"><i class="fa-solid fa-star"></i></span>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(title) || '<span class="text-gray-400">عنوان بدون نص</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${date ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-calendar"></i>${escHtml(date)}</span>` : ''}
+                                    ${link ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-link"></i>له رابط</span>' : ''}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
                         </div>
-                        <div class="flex gap-2 items-center pl-7">
-                            <i class="fa-solid fa-link text-[10px] text-gray-400"></i>
-                            <input type="text" value="${link}" 
-                                onchange="updateFeaturedTitle(${index}, 'link', this.value)" 
-                                placeholder="رابط الدخول (مثال: detail.html?type=activity&id=1 أو #activities)" 
-                                class="flex-1 border rounded p-1.5 text-[11px] font-mono focus:border-yellow-500">
+                        <div id="featured-titles-container-body-${index}" class="${open ? '' : 'hidden'} p-3 bg-yellow-50 border-t border-yellow-100 space-y-2">
+                            <div class="flex gap-2 items-center">
+                                <span class="text-[10px] text-gray-400 w-5 text-center shrink-0">${index + 1}</span>
+                                <input type="text" value="${escHtml(title)}" 
+                                    onchange="updateFeaturedTitle(${index}, 'text', this.value)" 
+                                    placeholder="نص الخبر ${index + 1}..." 
+                                    class="flex-1 border rounded p-2 text-xs focus:border-yellow-500">
+                                <input type="date" value="${escHtml(date)}" 
+                                    onchange="updateFeaturedTitle(${index}, 'date', this.value)" 
+                                    class="border rounded p-2 text-[11px] focus:border-yellow-500 w-32 shrink-0">
+                                <button onclick="removeFeaturedTitle(${index})" class="text-red-500 hover:text-red-700 p-1.5 shrink-0" title="حذف">
+                                    <i class="fa-solid fa-trash text-[10px]"></i>
+                                </button>
+                            </div>
+                            <div class="flex gap-2 items-center pl-7">
+                                <i class="fa-solid fa-link text-[10px] text-gray-400"></i>
+                                <input type="text" value="${escHtml(link)}" 
+                                    onchange="updateFeaturedTitle(${index}, 'link', this.value)" 
+                                    placeholder="رابط الدخول (مثال: detail.html?type=activity&id=1 أو #activities)" 
+                                    class="flex-1 border rounded p-1.5 text-[11px] font-mono focus:border-yellow-500">
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1465,6 +1664,7 @@
                 currentData.featuredPost.titles = currentData.featuredPost.title ? [{ text: currentData.featuredPost.title, date: '', link: '' }] : [];
             }
             currentData.featuredPost.titles.push({ text: '', date: '', link: '' });
+            openItemCard('featured-titles-container', currentData.featuredPost.titles.length - 1);
             renderFeaturedTitles(currentData.featuredPost.titles);
         }
 
@@ -1477,6 +1677,7 @@
 
         function removeFeaturedTitle(index) {
             currentData.featuredPost.titles.splice(index, 1);
+            fixOpenAfterRemove('featured-titles-container', index);
             renderFeaturedTitles(currentData.featuredPost.titles);
         }
 
@@ -1553,40 +1754,66 @@
             container.innerHTML = '';
 
             currentData.activities.forEach((act, index) => {
+                const open = isItemOpen('activities-list-container', index);
+                const thumb = act.image || '';
                 container.innerHTML += `
-                    <div class="border rounded-lg p-4 bg-gray-50 relative space-y-3 text-xs font-bold">
-                        <button onclick="removeActivity(${index})" class="absolute left-3 top-3 text-red-600 hover:text-red-800" title="حذف"><i class="fa-solid fa-trash"></i></button>
-                        <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">نشاط #${index + 1}</span>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">تاريخ النشاط</label>
-                                <input type="text" value="${act.date}" onchange="currentData.activities[${index}].date = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('activities-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            ${thumb
+                                ? `<img src="${escHtml(thumb)}" class="item-thumb !w-20" alt="" onerror="this.style.display='none'">`
+                                : '<span class="item-icon-box bg-dzGreen-100 text-dzGreen-600"><i class="fa-solid fa-calendar-check"></i></span>'}
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(act.title) || '<span class="text-gray-400">نشاط بدون عنوان</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${act.date ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-calendar"></i>${escHtml(act.date)}</span>` : ''}
+                                    ${act.fileUrl ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-600 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-paperclip"></i>مرفق</span>' : ''}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                        </div>
+                        <!-- Details Body -->
+                        <div id="activities-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-dzGreen-50 border-t border-dzGreen-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">تحرير النشاط #${index + 1}</span>
+                                <button onclick="removeActivity(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف النشاط</button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">تاريخ النشاط</label>
+                                    <input type="text" value="${escHtml(act.date)}" onchange="currentData.activities[${index}].date = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">عنوان النشاط</label>
+                                    <input type="text" value="${escHtml(act.title)}" onchange="currentData.activities[${index}].title = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                </div>
                             </div>
                             <div>
-                                <label class="block mb-1 text-gray-700">عنوان النشاط</label>
-                                <input type="text" value="${act.title}" onchange="currentData.activities[${index}].title = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                <label class="block mb-1 text-gray-700">رابط صورة النشاط</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="act-img-${index}" value="${escHtml(act.image)}" onchange="currentData.activities[${index}].image = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                    <button onclick="triggerQuickUpload('act-img-${index}', ${index})" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                        <i class="fa-solid fa-upload"></i> ImgBB
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">رابط صورة النشاط</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="act-img-${index}" value="${act.image || ''}" onchange="currentData.activities[${index}].image = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
-                                <button onclick="triggerQuickUpload('act-img-${index}', ${index})" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
-                                    <i class="fa-solid fa-upload"></i> ImgBB
-                                </button>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط ملف/مستند النشاط (PDF / Word - اختياري)</label>
+                                <input type="text" value="${escHtml(act.fileUrl)}" onchange="currentData.activities[${index}].fileUrl = this.value" placeholder="رابط الملف المرفق مع النشاط..." class="w-full border rounded p-2 font-mono focus:border-dzGreen-700">
                             </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">رابط ملف/مستند النشاط (PDF / Word - اختياري)</label>
-                            <input type="text" value="${act.fileUrl || ''}" onchange="currentData.activities[${index}].fileUrl = this.value" placeholder="رابط الملف المرفق مع النشاط..." class="w-full border rounded p-2 font-mono focus:border-dzGreen-700">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">الوصف التفصيلي للنشاط (يظهر في صفحة التفاصيل المنفصلة)</label>
-                            <textarea rows="3" onchange="currentData.activities[${index}].description = this.value" placeholder="اكتب تفاصيل وملخص النشاط هنا..." class="w-full border rounded p-2 focus:border-dzGreen-700">${act.description || ''}</textarea>
+                            <div>
+                                <label class="block mb-1 text-gray-700">الوصف التفصيلي للنشاط (يظهر في صفحة التفاصيل المنفصلة)</label>
+                                <textarea rows="3" onchange="currentData.activities[${index}].description = this.value" placeholder="اكتب تفاصيل وملخص النشاط هنا..." class="w-full border rounded p-2 focus:border-dzGreen-700">${escHtml(act.description)}</textarea>
+                            </div>
                         </div>
                     </div>
                 `;
+            });
+
+            filterItems('activities-list-container', 'activities-search', idx => {
+                const a = currentData.activities[idx] || {};
+                return (a.title || '') + ' ' + (a.date || '');
             });
         }
 
@@ -1597,12 +1824,15 @@
                 title: "نشاط تربوي جديد لمؤسسة بني جماتي",
                 image: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=600&q=80"
             });
+            openItemCard('activities-list-container', currentData.activities.length - 1);
             renderActivitiesForm();
+            scrollToItem('activities-list-container', currentData.activities.length - 1);
         }
 
         function removeActivity(index) {
             if(confirm('هل أنت متأكد من حذف هذا النشاط؟')) {
                 currentData.activities.splice(index, 1);
+                fixOpenAfterRemove('activities-list-container', index);
                 renderActivitiesForm();
             }
         }
@@ -1612,45 +1842,73 @@
             container.innerHTML = '';
 
             currentData.announcements.forEach((ann, index) => {
+                const open = isItemOpen('announcements-list-container', index);
+                const thumb = ann.image || '';
                 container.innerHTML += `
-                    <div class="border rounded-lg p-3.5 bg-gray-50 space-y-2.5 text-xs font-bold">
-                        <div class="flex justify-between items-center">
-                            <span class="text-dzGreen-700">إعلان #${index + 1}</span>
-                            <button onclick="removeAnnouncement(${index})" class="text-red-600 hover:text-red-800 p-1"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                            <input type="text" value="${ann.date || ''}" onchange="currentData.announcements[${index}].date = this.value" placeholder="التاريخ" class="border rounded p-2 focus:border-dzGreen-700">
-                            <input type="text" value="${ann.title || ''}" onchange="currentData.announcements[${index}].title = this.value" placeholder="عنوان الإعلان" class="sm:col-span-2 border rounded p-2 focus:border-dzGreen-700">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">رابط صورة الإعلان (مرفق)</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="ann-img-${index}" value="${ann.image || ''}" onchange="currentData.announcements[${index}].image = this.value" placeholder="رابط الصورة..." class="w-full border rounded p-2 focus:border-dzGreen-700">
-                                <button onclick="triggerQuickUpload('ann-img-${index}', ${index}, 'announcement')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
-                                    <i class="fa-solid fa-upload"></i> ImgBB
-                                </button>
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('announcements-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            ${thumb
+                                ? `<img src="${escHtml(thumb)}" class="item-thumb !w-20" alt="" onerror="this.style.display='none'">`
+                                : '<span class="item-icon-box bg-dzGreen-100 text-dzGreen-600"><i class="fa-solid fa-bullhorn"></i></span>'}
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(ann.title) || '<span class="text-gray-400">إعلان بدون عنوان</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${ann.date ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-calendar"></i>${escHtml(ann.date)}</span>` : ''}
+                                    ${ann.fileUrl ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-600 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-paperclip"></i>مرفق</span>' : ''}
+                                </div>
                             </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
                         </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">رابط ملف/مستند الإعلان (PDF / Word)</label>
-                            <input type="text" value="${ann.fileUrl || ''}" onchange="currentData.announcements[${index}].fileUrl = this.value" placeholder="رابط الملف المرفق..." class="w-full border rounded p-2 font-mono focus:border-dzGreen-700">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">المحتوى التفصيلي للإعلان</label>
-                            <textarea rows="3" onchange="currentData.announcements[${index}].description = this.value" placeholder="تفاصيل الإعلان الكاملة..." class="w-full border rounded p-2 focus:border-dzGreen-700">${ann.description || ''}</textarea>
+                        <!-- Details Body -->
+                        <div id="announcements-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-dzGreen-50 border-t border-dzGreen-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">تحرير الإعلان #${index + 1}</span>
+                                <button onclick="removeAnnouncement(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف الإعلان</button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <input type="text" value="${escHtml(ann.date)}" onchange="currentData.announcements[${index}].date = this.value" placeholder="التاريخ" class="border rounded p-2 focus:border-dzGreen-700">
+                                <input type="text" value="${escHtml(ann.title)}" onchange="currentData.announcements[${index}].title = this.value" placeholder="عنوان الإعلان" class="sm:col-span-2 border rounded p-2 focus:border-dzGreen-700">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط صورة الإعلان (مرفق)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="ann-img-${index}" value="${escHtml(ann.image)}" onchange="currentData.announcements[${index}].image = this.value" placeholder="رابط الصورة..." class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                    <button onclick="triggerQuickUpload('ann-img-${index}', ${index}, 'announcement')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                        <i class="fa-solid fa-upload"></i> ImgBB
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط ملف/مستند الإعلان (PDF / Word)</label>
+                                <input type="text" value="${escHtml(ann.fileUrl)}" onchange="currentData.announcements[${index}].fileUrl = this.value" placeholder="رابط الملف المرفق..." class="w-full border rounded p-2 font-mono focus:border-dzGreen-700">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">المحتوى التفصيلي للإعلان</label>
+                                <textarea rows="3" onchange="currentData.announcements[${index}].description = this.value" placeholder="تفاصيل الإعلان الكاملة..." class="w-full border rounded p-2 focus:border-dzGreen-700">${escHtml(ann.description)}</textarea>
+                            </div>
                         </div>
                     </div>
                 `;
+            });
+
+            filterItems('announcements-list-container', 'announcements-search', idx => {
+                const a = currentData.announcements[idx] || {};
+                return (a.title || '') + ' ' + (a.date || '');
             });
         }
 
         function addAnnouncementItem() {
             currentData.announcements.push({ id: Date.now(), date: "28-07-2026", title: "إعلان جديد من الإدارة" });
+            openItemCard('announcements-list-container', currentData.announcements.length - 1);
             renderAnnouncementsForm();
+            scrollToItem('announcements-list-container', currentData.announcements.length - 1);
         }
 
         function removeAnnouncement(index) {
             currentData.announcements.splice(index, 1);
+            fixOpenAfterRemove('announcements-list-container', index);
             renderAnnouncementsForm();
         }
 
@@ -1659,37 +1917,64 @@
             container.innerHTML = '';
 
             currentData.dossiers.forEach((dos, index) => {
+                const open = isItemOpen('dossiers-list-container', index);
+                const thumb = dos.image || '';
                 container.innerHTML += `
-                    <div class="border rounded-lg p-3 bg-gray-50 space-y-2 text-xs font-bold">
-                        <div class="flex justify-between items-center">
-                            <span class="text-dzGreen-700">ملف #${index + 1}</span>
-                            <button onclick="removeDossier(${index})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('dossiers-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            ${thumb
+                                ? `<img src="${escHtml(thumb)}" class="item-thumb !w-20" alt="" onerror="this.style.display='none'">`
+                                : '<span class="item-icon-box bg-dzGreen-100 text-dzGreen-600"><i class="fa-solid fa-folder-open"></i></span>'}
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(dos.title) || '<span class="text-gray-400">ملف بدون عنوان</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${dos.fileUrl ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-600 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-download"></i>ملف مرفق</span>' : ''}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
                         </div>
-                        <input type="text" value="${dos.title || ''}" onchange="currentData.dossiers[${index}].title = this.value" placeholder="عنوان الملف" class="w-full border rounded p-2">
-                        <div class="flex gap-2">
-                            <input type="text" id="dos-img-${index}" value="${dos.image || ''}" onchange="currentData.dossiers[${index}].image = this.value" placeholder="رابط الصورة" class="w-full border rounded p-2">
-                            <button onclick="triggerQuickUpload('dos-img-${index}', ${index}, 'dossier')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
-                                <i class="fa-solid fa-upload"></i> ImgBB
-                            </button>
-                        </div>
-                        <div>
-                            <input type="text" value="${dos.fileUrl || ''}" onchange="currentData.dossiers[${index}].fileUrl = this.value" placeholder="رابط تحميل الملف (PDF / Word)" class="w-full border rounded p-2 font-mono">
-                        </div>
-                        <div>
-                            <textarea rows="2" onchange="currentData.dossiers[${index}].description = this.value" placeholder="الوصف التفصيلي للملف..." class="w-full border rounded p-2">${dos.description || ''}</textarea>
+                        <!-- Details Body -->
+                        <div id="dossiers-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-dzGreen-50 border-t border-dzGreen-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">تحرير الملف #${index + 1}</span>
+                                <button onclick="removeDossier(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف الملف</button>
+                            </div>
+                            <input type="text" value="${escHtml(dos.title)}" onchange="currentData.dossiers[${index}].title = this.value" placeholder="عنوان الملف" class="w-full border rounded p-2">
+                            <div class="flex gap-2">
+                                <input type="text" id="dos-img-${index}" value="${escHtml(dos.image)}" onchange="currentData.dossiers[${index}].image = this.value" placeholder="رابط الصورة" class="w-full border rounded p-2">
+                                <button onclick="triggerQuickUpload('dos-img-${index}', ${index}, 'dossier')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                    <i class="fa-solid fa-upload"></i> ImgBB
+                                </button>
+                            </div>
+                            <div>
+                                <input type="text" value="${escHtml(dos.fileUrl)}" onchange="currentData.dossiers[${index}].fileUrl = this.value" placeholder="رابط تحميل الملف (PDF / Word)" class="w-full border rounded p-2 font-mono">
+                            </div>
+                            <div>
+                                <textarea rows="2" onchange="currentData.dossiers[${index}].description = this.value" placeholder="الوصف التفصيلي للملف..." class="w-full border rounded p-2">${escHtml(dos.description)}</textarea>
+                            </div>
                         </div>
                     </div>
                 `;
+            });
+
+            filterItems('dossiers-list-container', 'dossiers-search', idx => {
+                const d = currentData.dossiers[idx] || {};
+                return (d.title || '') + ' ' + (d.description || '');
             });
         }
 
         function addDossierItem() {
             currentData.dossiers.push({ id: Date.now(), title: "دليل تربوي جديد", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80" });
+            openItemCard('dossiers-list-container', currentData.dossiers.length - 1);
             renderDossiersForm();
+            scrollToItem('dossiers-list-container', currentData.dossiers.length - 1);
         }
 
         function removeDossier(index) {
             currentData.dossiers.splice(index, 1);
+            fixOpenAfterRemove('dossiers-list-container', index);
             renderDossiersForm();
         }
 
@@ -1707,15 +1992,36 @@
             if (!teachersList) return;
 
             teachersList.forEach((tch, index) => {
+                const open = isItemOpen('teachers-list-container', index);
+                const thumb = tch.image || '';
                 container.innerHTML += `
-                    <div class="border rounded-lg p-4 bg-purple-50 relative space-y-3 text-xs font-bold">
-                        <button onclick="removeTeacher(${index})" class="absolute left-3 top-3 text-red-600 hover:text-red-800" title="حذف"><i class="fa-solid fa-trash"></i></button>
-                        <span class="inline-block bg-purple-600 text-white px-2 py-0.5 rounded text-[10px]">أستاذ #${index + 1}</span>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">نوع المستند</label>
-                                <select onchange="currentData.teachers[${index}].type = this.value" class="w-full border rounded p-2 focus:border-purple-600">
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('teachers-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            ${thumb
+                                ? `<img src="${escHtml(thumb)}" class="item-thumb !w-20" alt="" onerror="this.style.display='none'">`
+                                : '<span class="item-icon-box bg-purple-100 text-purple-600"><i class="fa-solid fa-file-lines"></i></span>'}
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(tch.title) || '<span class="text-gray-400">مستند بدون عنوان</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${tch.category ? `<span class="inline-flex items-center text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-100 rounded px-1.5 py-0.5">${escHtml(tch.category)}</span>` : ''}
+                                    ${tch.date ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-calendar"></i>${escHtml(tch.date)}</span>` : ''}
+                                    ${tch.fileUrl ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-600 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-paperclip"></i>مرفق</span>' : ''}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                        </div>
+                        <!-- Details Body -->
+                        <div id="teachers-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-purple-50 border-t border-purple-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-purple-600 text-white px-2 py-0.5 rounded text-[10px]">تحرير المستند #${index + 1}</span>
+                                <button onclick="removeTeacher(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف المستند</button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">نوع المستند</label>
+                                    <select onchange="currentData.teachers[${index}].type = this.value" class="w-full border rounded p-2 focus:border-purple-600">
                                     <option value="timetable" ${tch.type === 'timetable' ? 'selected' : ''}>جدول استعمال الزمن</option>
                                     <option value="invigilation" ${tch.type === 'invigilation' ? 'selected' : ''}>جدول الحراسة</option>
                                     <option value="circular" ${tch.type === 'circular' ? 'selected' : ''}>مناشير وزارية</option>
@@ -1756,10 +2062,16 @@
                         </div>
                         <div>
                             <label class="block mb-1 text-gray-700">الوصف التفصيلي</label>
-                            <textarea rows="2" onchange="currentData.teachers[${index}].description = this.value" placeholder="وصف المستند..." class="w-full border rounded p-2 focus:border-purple-600">${tch.description || ''}</textarea>
+                            <textarea rows="2" onchange="currentData.teachers[${index}].description = this.value" placeholder="وصف المستند..." class="w-full border rounded p-2 focus:border-purple-600">${escHtml(tch.description)}</textarea>
+                        </div>
                         </div>
                     </div>
                 `;
+            });
+
+            filterItems('teachers-list-container', 'teachers-search', idx => {
+                const t = currentData.teachers[idx] || {};
+                return (t.title || '') + ' ' + (t.category || '') + ' ' + (t.date || '');
             });
         }
 
@@ -1774,14 +2086,93 @@
                 category: "فضاء الأساتذة",
                 description: "وصف المستند الجديد..."
             });
+            openItemCard('teachers-list-container', currentData.teachers.length - 1);
             renderTeachersForm();
+            scrollToItem('teachers-list-container', currentData.teachers.length - 1);
         }
 
         function removeTeacher(index) {
             if (confirm('هل أنت متأكد من حذف هذا المستند؟')) {
                 currentData.teachers.splice(index, 1);
+                fixOpenAfterRemove('teachers-list-container', index);
                 renderTeachersForm();
             }
+        }
+
+        let openItems = {};
+
+        function escHtml(s) {
+            return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function isItemOpen(containerId, index) {
+            return openItems[containerId] === index;
+        }
+
+        function toggleItemCard(containerId, index) {
+            const card = document.querySelector('#' + containerId + ' [data-item-card="' + index + '"]');
+            const body = document.getElementById(containerId + '-body-' + index);
+            if (!card || !body) return;
+            if (openItems[containerId] === index) {
+                body.classList.add('hidden');
+                card.classList.remove('open');
+                openItems[containerId] = null;
+            } else {
+                if (openItems[containerId] !== null && openItems[containerId] !== undefined) {
+                    const prevCard = document.querySelector('#' + containerId + ' [data-item-card="' + openItems[containerId] + '"]');
+                    const prevBody = document.getElementById(containerId + '-body-' + openItems[containerId]);
+                    if (prevCard) prevCard.classList.remove('open');
+                    if (prevBody) prevBody.classList.add('hidden');
+                }
+                body.classList.remove('hidden');
+                card.classList.add('open');
+                openItems[containerId] = index;
+            }
+        }
+
+        function openItemCard(containerId, index) {
+            document.querySelectorAll('#' + containerId + ' [data-item-card]').forEach(card => {
+                const idx = parseInt(card.getAttribute('data-item-card'), 10);
+                const body = document.getElementById(containerId + '-body-' + idx);
+                if (idx === index) {
+                    card.classList.add('open');
+                    if (body) body.classList.remove('hidden');
+                } else {
+                    card.classList.remove('open');
+                    if (body) body.classList.add('hidden');
+                }
+            });
+            openItems[containerId] = index;
+        }
+
+        function fixOpenAfterRemove(containerId, index) {
+            const cur = openItems[containerId];
+            if (cur === null || cur === undefined) return;
+            if (cur === index) openItems[containerId] = null;
+            else if (cur > index) openItems[containerId] = cur - 1;
+        }
+
+        function scrollToItem(containerId, index) {
+            setTimeout(() => {
+                const body = document.getElementById(containerId + '-body-' + index);
+                if (body) body.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function filterItems(containerId, searchId, textOf) {
+            const q = (document.getElementById(searchId).value || '').trim().toLowerCase();
+            let shown = 0;
+            document.querySelectorAll('#' + containerId + ' [data-item-card]').forEach(card => {
+                const idx = parseInt(card.getAttribute('data-item-card'), 10);
+                const text = String(textOf(idx) || '').toLowerCase();
+                const match = !q || text.includes(q) || String(idx + 1) === q;
+                card.style.display = match ? '' : 'none';
+                if (match) shown++;
+            });
+            const noRes = document.getElementById(containerId + '-no-results');
+            if (noRes) noRes.classList.toggle('hidden', shown !== 0);
+            const count = document.getElementById(searchId + '-count');
+            if (count) count.textContent = '(' + shown + ')';
         }
 
         function renderVideosForm() {
@@ -1792,55 +2183,111 @@
             if (!videosList) return;
 
             videosList.forEach((vid, index) => {
+                const vUrl = (vid.videoUrl || '').trim();
+                const isYt = !!extractYouTubeId(vUrl);
+                const isDirect = isDirectVideoUrl(vUrl);
+                const typeBadge = isYt
+                    ? '<span class="vid-type-badge yt"><i class="fa-brands fa-youtube"></i> يوتيوب</span>'
+                    : isDirect
+                    ? '<span class="vid-type-badge direct"><i class="fa-solid fa-play" style="font-size:.55rem"></i> مباشر</span>'
+                    : '<span class="vid-type-badge none">بدون رابط</span>';
+                const thumb = vid.thumbnail || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80';
+                const open = isItemOpen('videos-list-container', index);
+
                 container.innerHTML += `
-                    <div class="border rounded-lg p-4 bg-red-50 relative space-y-3 text-xs font-bold">
-                        <button onclick="removeVideo(${index})" class="absolute left-3 top-3 text-red-600 hover:text-red-800" title="حذف"><i class="fa-solid fa-trash"></i></button>
-                        <span class="inline-block bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">فيديو #${index + 1}</span>
-                        
-                        <div>
-                            <label class="block mb-1 text-gray-700">عنوان الفيديو</label>
-                            <input type="text" value="${vid.title || ''}" onchange="currentData.videos[${index}].title = this.value" placeholder="عنوان الفيديو" class="w-full border rounded p-2 focus:border-red-600">
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row (click to expand) -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('videos-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            <div class="relative shrink-0">
+                                <img src="${thumb}" class="item-thumb !w-20" alt="" onerror="this.style.display='none'">
+                                ${isDirect ? '<span class="absolute inset-0 rounded-md bg-black/25 flex items-center justify-center"><i class="fa-solid fa-play text-white text-[10px]"></i></span>' : ''}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(vid.title) || '<span class="text-gray-400">بدون عنوان</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${vid.category ? `<span class="inline-flex items-center text-[10px] font-bold text-red-700 bg-red-50 border border-red-100 rounded px-1.5 py-0.5">${escHtml(vid.category)}</span>` : ''}
+                                    ${vid.date ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-calendar"></i>${escHtml(vid.date)}</span>` : ''}
+                                    ${vid.showOnHome === false ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-eye-slash"></i>مخفي من الرئيسية</span>' : '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-700 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-house"></i>الرئيسية</span>'}
+                                    ${typeBadge}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">التاريخ</label>
-                                <input type="text" value="${vid.date || ''}" onchange="currentData.videos[${index}].date = this.value" placeholder="مثال: 14-07-2026" class="w-full border rounded p-2 focus:border-red-600">
+                        <!-- Details Body (collapsed until opened) -->
+                        <div id="videos-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-red-50 border-t border-red-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">تحرير الفيديو #${index + 1}</span>
+                                <button onclick="removeVideo(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف الفيديو</button>
                             </div>
                             <div>
-                                <label class="block mb-1 text-gray-700">الفئة</label>
-                                <input type="text" value="${vid.category || ''}" onchange="currentData.videos[${index}].category = this.value" placeholder="مثال: تغطية خاصة" class="w-full border rounded p-2 focus:border-red-600">
+                                <label class="block mb-1 text-gray-700">عنوان الفيديو</label>
+                                <input type="text" value="${escHtml(vid.title)}" onchange="currentData.videos[${index}].title = this.value" placeholder="عنوان الفيديو" class="w-full border rounded p-2 focus:border-red-600">
                             </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">رابط فيديو يوتيوب</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="vid-url-${index}" value="${vid.videoUrl || ''}" 
-                                    onchange="handleVideoUrlChange(${index}, this.value)" 
-                                    oninput="handleVideoUrlInput(${index}, this.value)"
-                                    placeholder="الصق رابط يوتيوب هنا (Watch أو Share أو Embed)" 
-                                    class="w-full border rounded p-2 font-mono focus:border-red-600">
-                                <button onclick="fetchYouTubeThumbnail(${index})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1" title="جلب الصورة المصغرة تلقائياً">
-                                    <i class="fa-brands fa-youtube"></i> جلب
-                                </button>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">التاريخ</label>
+                                    <input type="text" value="${escHtml(vid.date)}" onchange="currentData.videos[${index}].date = this.value" placeholder="مثال: 14-07-2026" class="w-full border rounded p-2 focus:border-red-600">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">الفئة</label>
+                                    <input type="text" value="${escHtml(vid.category)}" onchange="currentData.videos[${index}].category = this.value" placeholder="مثال: تغطية خاصة" class="w-full border rounded p-2 focus:border-red-600">
+                                </div>
                             </div>
-                            <p class="text-[10px] text-gray-400 mt-1">يدعم: youtube.com/watch, youtu.be, youtube.com/embed</p>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">رابط صورة المصغرة (Thumbnail)</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="vid-img-${index}" value="${vid.thumbnail || ''}" onchange="currentData.videos[${index}].thumbnail = this.value" placeholder="رابط الصورة المصغرة..." class="w-full border rounded p-2 focus:border-red-600">
-                                <button onclick="triggerQuickUpload('vid-img-${index}', ${index}, 'video')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
-                                    <i class="fa-solid fa-upload"></i> ImgBB
-                                </button>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط الفيديو</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="vid-url-${index}" value="${escHtml(vid.videoUrl)}" 
+                                        onchange="handleVideoUrlChange(${index}, this.value)" 
+                                        oninput="handleVideoUrlInput(${index}, this.value)"
+                                        placeholder="الصق رابط يوتيوب (Watch أو Share أو Embed) أو رابط فيديو مباشر (mp4)" 
+                                        class="w-full border rounded p-2 font-mono focus:border-red-600">
+                                    <button onclick="fetchYouTubeThumbnail(${index})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1" title="جلب الصورة المصغرة تلقائياً">
+                                        <i class="fa-brands fa-youtube"></i> جلب
+                                    </button>
+                                    <button onclick="triggerVideoUpload(${index})" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1" title="رفع فيديو من جهازك وعرضه مباشرة في الصفحة">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع فيديو
+                                    </button>
+                                </div>
+                                ${isDirect
+                                    ? '<p class="text-[10px] text-orange-600 mt-1"><i class="fa-solid fa-circle-check ml-1"></i>فيديو مباشر: سيُعرض داخل الصفحة.</p>'
+                                    : isYt
+                                    ? '<p class="text-[10px] text-red-600 mt-1"><i class="fa-brands fa-youtube ml-1"></i>فيديو يوتيوب: سيفتح في موقع يوتيوب.</p>'
+                                    : '<p class="text-[10px] text-gray-400 mt-1">يدعم: youtube.com/watch, youtu.be, youtube.com/embed</p>'}
                             </div>
-                            ${vid.thumbnail ? `<img src="${vid.thumbnail}" class="mt-2 w-32 h-20 object-cover rounded border" alt="معاينة">` : ''}
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">وصف الفيديو (اختياري)</label>
-                            <textarea rows="2" onchange="currentData.videos[${index}].description = this.value" placeholder="وصف مختصر للفيديو..." class="w-full border rounded p-2 focus:border-red-600">${vid.description || ''}</textarea>
+                            <div>
+                                <label class="block mb-1 text-gray-700">رابط صورة المصغرة (Thumbnail)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="vid-img-${index}" value="${escHtml(vid.thumbnail)}" onchange="currentData.videos[${index}].thumbnail = this.value" placeholder="رابط الصورة المصغرة..." class="w-full border rounded p-2 focus:border-red-600">
+                                    <button onclick="triggerQuickUpload('vid-img-${index}', ${index}, 'video')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs shrink-0 flex items-center gap-1">
+                                        <i class="fa-solid fa-upload"></i> ImgBB
+                                    </button>
+                                </div>
+                                ${vid.thumbnail ? `<img src="${escHtml(vid.thumbnail)}" class="mt-2 w-32 h-20 object-cover rounded border" alt="معاينة" onerror="this.style.display='none'">` : ''}
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-700">وصف الفيديو (اختياري)</label>
+                                <textarea rows="2" onchange="currentData.videos[${index}].description = this.value" placeholder="وصف مختصر للفيديو..." class="w-full border rounded p-2 focus:border-red-600">${escHtml(vid.description)}</textarea>
+                            </div>
+                            <div class="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-3 py-2.5">
+                                <span class="text-xs font-extrabold text-gray-700 flex items-center gap-2">
+                                    <i class="fa-solid fa-house text-dzGreen-700"></i>
+                                    إظهار في الصفحة الرئيسية (ضمن أحدث 3)
+                                </span>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="vid-home-${index}" ${vid.showOnHome === false ? '' : 'checked'} onchange="toggleVideoHome(${index}, this.checked)" class="w-5 h-5 accent-dzGreen-700 cursor-pointer">
+                                </label>
+                            </div>
                         </div>
                     </div>
                 `;
+            });
+
+            const countEl = document.getElementById('videos-count');
+            if (countEl) countEl.textContent = '(' + videosList.length + ')';
+            filterItems('videos-list-container', 'videos-search', idx => {
+                const v = currentData.videos[idx] || {};
+                return (v.title || '') + ' ' + (v.category || '') + ' ' + (v.date || '');
             });
         }
 
@@ -1888,6 +2335,10 @@
                 fetchYouTubeThumbnail(index);
             } else if (value.trim() !== '') {
                 currentData.videos[index].videoUrl = value;
+                currentData.videos[index].youtubeWatchUrl = '';
+            } else {
+                currentData.videos[index].videoUrl = '';
+                currentData.videos[index].youtubeWatchUrl = '';
             }
         }
 
@@ -1921,14 +2372,228 @@
                 thumbnail: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
                 description: "وصف الفيديو الجديد..."
             });
+            openItemCard('videos-list-container', currentData.videos.length - 1);
+            renderVideosForm();
+            scrollToItem('videos-list-container', currentData.videos.length - 1);
+        }
+
+        function toggleVideoHome(index, checked) {
+            if (!currentData.videos[index]) return;
+            currentData.videos[index].showOnHome = checked;
+            document.getElementById('status-text').innerHTML = checked
+                ? '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> الفيديو سيظهر في الصفحة الرئيسية.'
+                : '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم إخفاء الفيديو من الصفحة الرئيسية.';
             renderVideosForm();
         }
 
         function removeVideo(index) {
             if (confirm('هل أنت متأكد من حذف هذا الفيديو؟')) {
                 currentData.videos.splice(index, 1);
+                fixOpenAfterRemove('videos-list-container', index);
                 renderVideosForm();
             }
+        }
+
+        function isDirectVideoUrl(url) {
+            return /\.(mp4|webm|ogg|mov|m4v)([?#]|$)/i.test((url || '').trim());
+        }
+
+        let activeVideoIndex = null;
+
+        function triggerVideoUpload(index) {
+            activeVideoIndex = index;
+            document.getElementById('quick-video-input').click();
+        }
+
+        const MAX_VIDEO_SIZE = 500 * 1024 * 1024;
+        const CHUNKED_THRESHOLD = 100 * 1024 * 1024;
+
+        function uploadVideoSimple(file, cloudName, uploadPreset) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', uploadPreset);
+            return fetch(`https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json());
+        }
+
+        function uploadVideoChunked(file, cloudName, uploadPreset, onProgress) {
+            return new Promise((resolve, reject) => {
+                const chunkSize = 20 * 1024 * 1024;
+                const totalChunks = Math.ceil(file.size / chunkSize);
+                const uniqueId = 'vid-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+                let chunkIndex = 0;
+
+                function sendNextChunk() {
+                    const start = chunkIndex * chunkSize;
+                    const end = Math.min(start + chunkSize, file.size);
+                    const blob = file.slice(start, end);
+
+                    const fd = new FormData();
+                    fd.append('file', blob, file.name);
+                    fd.append('upload_preset', uploadPreset);
+
+                    const req = new XMLHttpRequest();
+                    req.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`);
+                    req.setRequestHeader('X-Unique-Upload-Id', uniqueId);
+
+                    req.upload.onprogress = (e) => {
+                        if (e.lengthComputable && onProgress) {
+                            const chunkPct = e.loaded / e.total;
+                            const overall = ((chunkIndex + chunkPct) / totalChunks) * 100;
+                            onProgress(Math.round(overall), chunkIndex + 1, totalChunks);
+                        }
+                    };
+
+                    req.onload = () => {
+                        if (req.status >= 200 && req.status < 300) {
+                            chunkIndex++;
+                            if (chunkIndex < totalChunks) {
+                                sendNextChunk();
+                            } else {
+                                try {
+                                    resolve(JSON.parse(req.responseText));
+                                } catch (e) {
+                                    reject(new Error('استجابة غير صالحة من Cloudinary'));
+                                }
+                            }
+                        } else {
+                            let msg = 'خطأ غير معروف (HTTP ' + req.status + ')';
+                            try {
+                                const parsed = JSON.parse(req.responseText);
+                                if (parsed && parsed.error && parsed.error.message) msg = parsed.error.message;
+                            } catch (e) { }
+                            reject(new Error(msg));
+                        }
+                    };
+
+                    req.onerror = () => reject(new Error('انقطع الاتصال بالإنترنت أثناء الرفع، أعد المحاولة'));
+                    req.send(fd);
+                }
+
+                sendNextChunk();
+            });
+        }
+
+        function detectVideoCodec(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const buf = new Uint8Array(reader.result);
+                        let ascii = '';
+                        for (let i = 0; i < buf.length && i < 262144; i++) {
+                            if (i % 4096 === 0) ascii = ascii + String.fromCharCode.apply(null, buf.subarray(i, Math.min(i + 4096, buf.length)));
+                        }
+                        ascii = ascii.replace(/\u0000/g, '');
+                        if (ascii.indexOf('ftyp') !== -1) {
+                            if (/hvc1|hev1|dvh1|av01/i.test(ascii)) return resolve('hevc');
+                            if (/avc1|avc3|isom|mp42|mp41|qt/i.test(ascii)) return resolve('h264');
+                            return resolve('mp4-unknown');
+                        }
+                        if (buf[0] === 0x1a && buf[1] === 0x45 && buf[2] === 0xdf && buf[3] === 0xa3) return resolve('webm');
+                        if (buf[0] === 0x4f && buf[1] === 0x67 && buf[2] === 0x67 && buf[3] === 0x53) return resolve('ogg');
+                        if (buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46) return resolve('riff');
+                        return resolve('unknown');
+                    } catch (e) {
+                        resolve('unknown');
+                    }
+                };
+                reader.onerror = () => resolve('unknown');
+                reader.readAsArrayBuffer(file.slice(0, 262144));
+            });
+        }
+
+        async function handleVideoDirectUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('video/')) {
+                alert('يرجى اختيار ملف فيديو صالح (MP4, WebM, OGG...)');
+                event.target.value = '';
+                return;
+            }
+            if (file.size > MAX_VIDEO_SIZE) {
+                alert('حجم الفيديو كبير جداً. الحد الأقصى 500MB.');
+                event.target.value = '';
+                return;
+            }
+
+            const codec = await detectVideoCodec(file);
+            if (codec === 'hevc' || codec === 'mp4-unknown') {
+                alert('هذا الفيديو بكوديك HEVC/H.265 أو AV1 (شائع في تسجيلات الآيفون) — Cloudinary لا يدعمه.\nالحل: حوّل الفيديو إلى كوديك H.264 بصيغة MP4 (مثلاً بـ HandBrake أو محول مجاني)، ثم أعد الرفع.');
+                event.target.value = '';
+                return;
+            }
+            if (codec === 'unknown' || codec === 'riff') {
+                alert('لم يتعرف النظام على الملف كفيديو صالح (قد يكون تالفاً أو امتداد .mp4 لتنسيق آخر مثل AVI/WMV كما يحدث مع التنزيلات من واتساب).\nالتنسيقات المدعومة: MP4 (H.264)، WebM، OGG، MOV.');
+                event.target.value = '';
+                return;
+            }
+
+            const cloudName = document.getElementById('cld-cloud-name').value.trim() || globalCfg.cloudinaryName || '';
+            const uploadPreset = document.getElementById('cld-upload-preset').value.trim() || globalCfg.cloudinaryPreset || '';
+            if (!cloudName || !uploadPreset) {
+                alert('يرجى تعبئة Cloud Name و Upload Preset في تبويب "رفع الوسائط" أولاً.');
+                event.target.value = '';
+                return;
+            }
+
+            const isLarge = file.size > CHUNKED_THRESHOLD;
+            if (isLarge) {
+                document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-orange-500 ml-1"></i> جاري رفع فيديو كبير بالطريقة المقسّمة (Chunked)...';
+            } else {
+                document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-orange-500 ml-1"></i> جاري رفع الفيديو إلى Cloudinary... قد يستغرق ذلك دقيقة حسب حجم الملف';
+            }
+
+            try {
+                const json = isLarge
+                    ? await uploadVideoChunked(file, cloudName, uploadPreset, (pct, chunk, total) => {
+                        document.getElementById('status-text').innerHTML = `<i class="fa-solid fa-spinner fa-spin text-orange-500 ml-1"></i> جاري رفع الفيديو المقسّم... الجزء ${chunk}/${total} (${pct}%)`;
+                    })
+                    : await uploadVideoSimple(file, cloudName, uploadPreset);
+
+                if (json.secure_url) {
+                    const index = activeVideoIndex;
+                    if (index === null || index === undefined) {
+                        alert('حدث خطأ: لم يتم تحديد موضع الفيديو. أعد المحاولة.');
+                        return;
+                    }
+                    if (!currentData.videos) currentData.videos = defaultCemData.videos;
+                    currentData.videos[index].videoUrl = json.secure_url;
+                    currentData.videos[index].youtubeWatchUrl = '';
+
+                    const thumb = json.secure_url.replace(/\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i, '.jpg');
+                    currentData.videos[index].thumbnail = thumb;
+
+                    const urlInput = document.getElementById(`vid-url-${index}`);
+                    if (urlInput) urlInput.value = json.secure_url;
+                    const imgInput = document.getElementById(`vid-img-${index}`);
+                    if (imgInput) imgInput.value = thumb;
+
+                    renderVideosForm();
+                    document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-check text-dzGreen-600 ml-1"></i> تم رفع الفيديو إلى Cloudinary بنجاح! سيُعرض مباشرة في الصفحة.';
+                    alert('تم رفع الفيديو بنجاح!\n' + json.secure_url);
+                } else {
+                    let errMsg = 'خطأ غير معروف';
+                    if (json.error && json.error.message) errMsg = json.error.message;
+                    let hint = '';
+                    if (/100\s*MB|file size|exceeds|limit/i.test(errMsg)) {
+                        hint = '\n\nملاحظة: خطة Cloudinary المجانية تقبل 100MB كحد أقصى حتى مع الرفع المقسّم.\nالحلول:\n1) الترقية إلى خطة مدفوعة (تسمح حتى 1GB).\n2) أو ضغط الفيديو إلى أقل من 100MB ثم إعادة الرفع.';
+                    }
+                    alert('فشل رفع الفيديو: ' + errMsg + hint);
+                    document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> فشل رفع الفيديو.';
+                }
+            } catch (err) {
+                let hint = '';
+                if (/100\s*MB|file size|exceeds|limit/i.test(err.message)) {
+                    hint = '\n\nملاحظة: خطة Cloudinary المجانية تقبل 100MB كحد أقصى حتى مع الرفع المقسّم.\nالحلول:\n1) الترقية إلى خطة مدفوعة (تسمح حتى 1GB).\n2) أو ضغط الفيديو إلى أقل من 100MB ثم إعادة الرفع.';
+                }
+                alert('خطأ في الرفع إلى Cloudinary: ' + err.message + hint);
+                document.getElementById('status-text').innerHTML = '<i class="fa-solid fa-circle-xmark text-red-600 ml-1"></i> فشل رفع الفيديو.';
+            }
+            event.target.value = '';
         }
 
         function renderStatsForm() {
@@ -1946,43 +2611,65 @@
                 const iconOptsHtml = iconOptions.map(ico =>
                     `<option value="${ico}" ${stat.icon === ico ? 'selected' : ''}>${ico}</option>`
                 ).join('');
+                const open = isItemOpen('stats-list-container', index);
 
                 container.innerHTML += `
-                    <div class="border rounded-lg p-4 bg-gray-50 relative space-y-3 text-xs font-bold">
-                        <div class="flex justify-between items-center">
-                            <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">إحصائية #${index + 1}</span>
-                            <button onclick="removeStatItem(${index})" class="text-red-600 hover:text-red-800 p-1" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('stats-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            <span class="item-icon-box bg-dzGreen-100 text-dzGreen-600"><i class="fa-solid ${escHtml(stat.icon)}"></i></span>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(stat.label) || '<span class="text-gray-400">إحصائية بدون تسمية</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-700 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5">القيمة: ${escHtml(stat.value)}${escHtml(stat.suffix)}</span>
+                                    ${stat.link ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-link"></i>له رابط</span>' : ''}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">الأيقونة</label>
-                                <select onchange="currentData.stats[${index}].icon = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700 font-mono text-[11px]">
-                                    ${iconOptsHtml}
-                                </select>
+                        <!-- Details Body -->
+                        <div id="stats-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-dzGreen-50 border-t border-dzGreen-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-dzGreen-700 text-white px-2 py-0.5 rounded text-[10px]">تحرير الإحصائية #${index + 1}</span>
+                                <button onclick="removeStatItem(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف الإحصائية</button>
                             </div>
-                            <div>
-                                <label class="block mb-1 text-gray-700">القيمة الرقمية</label>
-                                <input type="number" value="${stat.value}" onchange="currentData.stats[${index}].value = parseInt(this.value) || 0" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">الأيقونة</label>
+                                    <select onchange="currentData.stats[${index}].icon = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700 font-mono text-[11px]">
+                                        ${iconOptsHtml}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">القيمة الرقمية</label>
+                                    <input type="number" value="${escHtml(stat.value)}" onchange="currentData.stats[${index}].value = parseInt(this.value) || 0" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                </div>
                             </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">النص/التسمية</label>
-                                <input type="text" value="${stat.label}" onchange="currentData.stats[${index}].label = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">النص/التسمية</label>
+                                    <input type="text" value="${escHtml(stat.label)}" onchange="currentData.stats[${index}].label = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">اللاحقة (مثال: +)</label>
+                                    <input type="text" value="${escHtml(stat.suffix)}" onchange="currentData.stats[${index}].suffix = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700" maxlength="5" style="width:80px">
+                                </div>
                             </div>
-                            <div>
-                                <label class="block mb-1 text-gray-700">اللاحقة (مثال: +)</label>
-                                <input type="text" value="${stat.suffix || ''}" onchange="currentData.stats[${index}].suffix = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700" maxlength="5" style="width:80px">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">رابط البطاقة</label>
-                                <input type="text" value="${stat.link || ''}" onchange="currentData.stats[${index}].link = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700" placeholder="مثلاً: activities.html">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">رابط البطاقة</label>
+                                    <input type="text" value="${escHtml(stat.link)}" onchange="currentData.stats[${index}].link = this.value" class="w-full border rounded p-2 focus:border-dzGreen-700" placeholder="مثلاً: activities.html">
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
+            });
+
+            filterItems('stats-list-container', 'stats-search', idx => {
+                const s = currentData.stats[idx] || {};
+                return (s.label || '') + ' ' + (s.value || '') + ' ' + (s.suffix || '');
             });
         }
 
@@ -1996,12 +2683,15 @@
                 suffix: "",
                 link: ""
             });
+            openItemCard('stats-list-container', currentData.stats.length - 1);
             renderStatsForm();
+            scrollToItem('stats-list-container', currentData.stats.length - 1);
         }
 
         function removeStatItem(index) {
             if (confirm('هل أنت متأكد من حذف هذه الإحصائية؟')) {
                 currentData.stats.splice(index, 1);
+                fixOpenAfterRemove('stats-list-container', index);
                 renderStatsForm();
             }
         }
@@ -2028,70 +2718,111 @@
 
         function renderStudentLevels(levels) {
             const container = document.getElementById('st-levels-container');
-            container.innerHTML = levels.map((l, i) => `
-                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
-                    <input type="text" value="${l.name || ''}" onchange="currentData.students.levels[${i}].name=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="اسم المستوى">
-                    <input type="number" value="${l.count || ''}" onchange="currentData.students.levels[${i}].count=parseInt(this.value)||0" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العدد">
-                    <button onclick="removeStudentLevel(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
-                </div>
-            `).join('');
+            container.innerHTML = levels.map((l, i) => {
+                const open = isItemOpen('st-levels-container', i);
+                return `
+                <div class="item-card ${open ? 'open' : ''}" data-item-card="${i}">
+                    <div class="item-summary flex items-center gap-2.5 p-2.5" onclick="toggleItemCard('st-levels-container',${i})" title="اضغط للفتح/الإغلاق">
+                        <span class="item-icon-box bg-blue-100 text-blue-600 !w-8 !h-8 text-xs"><i class="fa-solid fa-layer-group"></i></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(l.name) || '<span class="text-gray-400">مستوى بدون اسم</span>'}</div>
+                        </div>
+                        <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">${l.count || 0} تلميذ</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                    </div>
+                    <div id="st-levels-container-body-${i}" class="${open ? '' : 'hidden'} flex items-center gap-2 p-3 bg-blue-50 border-t border-blue-100">
+                        <input type="text" value="${escHtml(l.name)}" onchange="currentData.students.levels[${i}].name=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="اسم المستوى">
+                        <input type="number" value="${l.count || ''}" onchange="currentData.students.levels[${i}].count=parseInt(this.value)||0" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العدد">
+                        <button onclick="removeStudentLevel(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function addStudentLevel() {
             if (!currentData.students) currentData.students = {};
             if (!currentData.students.levels) currentData.students.levels = [];
             currentData.students.levels.push({ name: "", count: 0, icon: "fa-book" });
+            openItemCard('st-levels-container', currentData.students.levels.length - 1);
             renderStudentLevels(currentData.students.levels);
         }
 
         function removeStudentLevel(index) {
             currentData.students.levels.splice(index, 1);
+            fixOpenAfterRemove('st-levels-container', index);
             renderStudentLevels(currentData.students.levels);
         }
 
         function renderStudentSections(sections) {
             const container = document.getElementById('st-sections-container');
-            container.innerHTML = sections.map((s, i) => `
-                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
-                    <input type="text" value="${s.name || ''}" onchange="currentData.students.sections[${i}].name=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="اسم الشعبة">
-                    <input type="number" value="${s.count || ''}" onchange="currentData.students.sections[${i}].count=parseInt(this.value)||0" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العدد">
-                    <button onclick="removeStudentSection(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
-                </div>
-            `).join('');
+            container.innerHTML = sections.map((s, i) => {
+                const open = isItemOpen('st-sections-container', i);
+                return `
+                <div class="item-card ${open ? 'open' : ''}" data-item-card="${i}">
+                    <div class="item-summary flex items-center gap-2.5 p-2.5" onclick="toggleItemCard('st-sections-container',${i})" title="اضغط للفتح/الإغلاق">
+                        <span class="item-icon-box bg-blue-100 text-blue-600 !w-8 !h-8 text-xs"><i class="fa-solid fa-table-cells"></i></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(s.name) || '<span class="text-gray-400">شعبة بدون اسم</span>'}</div>
+                        </div>
+                        <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">${s.count || 0} تلميذ</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                    </div>
+                    <div id="st-sections-container-body-${i}" class="${open ? '' : 'hidden'} flex items-center gap-2 p-3 bg-blue-50 border-t border-blue-100">
+                        <input type="text" value="${escHtml(s.name)}" onchange="currentData.students.sections[${i}].name=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="اسم الشعبة">
+                        <input type="number" value="${s.count || ''}" onchange="currentData.students.sections[${i}].count=parseInt(this.value)||0" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العدد">
+                        <button onclick="removeStudentSection(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function addStudentSection() {
             if (!currentData.students) currentData.students = {};
             if (!currentData.students.sections) currentData.students.sections = [];
             currentData.students.sections.push({ name: "", count: 0, icon: "fa-chalkboard" });
+            openItemCard('st-sections-container', currentData.students.sections.length - 1);
             renderStudentSections(currentData.students.sections);
         }
 
         function removeStudentSection(index) {
             currentData.students.sections.splice(index, 1);
+            fixOpenAfterRemove('st-sections-container', index);
             renderStudentSections(currentData.students.sections);
         }
 
         function renderStudentInfo(info) {
             const container = document.getElementById('st-info-container');
-            container.innerHTML = info.map((item, i) => `
-                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
-                    <input type="text" value="${item.title || ''}" onchange="currentData.students.info[${i}].title=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
-                    <input type="text" value="${item.description || ''}" onchange="currentData.students.info[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
-                    <button onclick="removeStudentInfo(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
-                </div>
-            `).join('');
+            container.innerHTML = info.map((item, i) => {
+                const open = isItemOpen('st-info-container', i);
+                return `
+                <div class="item-card ${open ? 'open' : ''}" data-item-card="${i}">
+                    <div class="item-summary flex items-center gap-2.5 p-2.5" onclick="toggleItemCard('st-info-container',${i})" title="اضغط للفتح/الإغلاق">
+                        <span class="item-icon-box bg-blue-100 text-blue-600 !w-8 !h-8 text-xs"><i class="fa-solid fa-circle-info"></i></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(item.title) || '<span class="text-gray-400">معلومة بدون عنوان</span>'}</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                    </div>
+                    <div id="st-info-container-body-${i}" class="${open ? '' : 'hidden'} flex items-center gap-2 p-3 bg-blue-50 border-t border-blue-100">
+                        <input type="text" value="${escHtml(item.title)}" onchange="currentData.students.info[${i}].title=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
+                        <input type="text" value="${escHtml(item.description)}" onchange="currentData.students.info[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
+                        <button onclick="removeStudentInfo(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function addStudentInfo() {
             if (!currentData.students) currentData.students = {};
             if (!currentData.students.info) currentData.students.info = [];
             currentData.students.info.push({ title: "", description: "", icon: "fa-circle-check" });
+            openItemCard('st-info-container', currentData.students.info.length - 1);
             renderStudentInfo(currentData.students.info);
         }
 
         function removeStudentInfo(index) {
             currentData.students.info.splice(index, 1);
+            fixOpenAfterRemove('st-info-container', index);
             renderStudentInfo(currentData.students.info);
         }
 
@@ -2114,94 +2845,149 @@
 
         function renderAboutIdentity(items) {
             const container = document.getElementById('about-identity-container');
-            container.innerHTML = items.map((item, i) => `
-                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
-                    <input type="text" value="${item.label || ''}" onchange="currentData.about.identity[${i}].label=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="التسمية">
-                    <input type="text" value="${item.value || ''}" onchange="currentData.about.identity[${i}].value=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="القيمة">
-                    <button onclick="removeAboutIdentity(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
-                </div>
-            `).join('');
+            container.innerHTML = items.map((item, i) => {
+                const open = isItemOpen('about-identity-container', i);
+                return `
+                <div class="item-card ${open ? 'open' : ''}" data-item-card="${i}">
+                    <div class="item-summary flex items-center gap-2.5 p-2.5" onclick="toggleItemCard('about-identity-container',${i})" title="اضغط للفتح/الإغلاق">
+                        <span class="item-icon-box bg-purple-100 text-purple-600 !w-8 !h-8 text-xs"><i class="fa-solid fa-id-card"></i></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(item.label) || '<span class="text-gray-400">بطاقة بدون تسمية</span>'}</div>
+                        </div>
+                        <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5 truncate max-w-[160px]">${escHtml(item.value) || '—'}</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                    </div>
+                    <div id="about-identity-container-body-${i}" class="${open ? '' : 'hidden'} flex items-center gap-2 p-3 bg-purple-50 border-t border-purple-100">
+                        <input type="text" value="${escHtml(item.label)}" onchange="currentData.about.identity[${i}].label=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="التسمية">
+                        <input type="text" value="${escHtml(item.value)}" onchange="currentData.about.identity[${i}].value=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="القيمة">
+                        <button onclick="removeAboutIdentity(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function addAboutIdentity() {
             if (!currentData.about) currentData.about = {};
             if (!currentData.about.identity) currentData.about.identity = [];
             currentData.about.identity.push({ icon: "fa-info-circle", label: "", value: "" });
+            openItemCard('about-identity-container', currentData.about.identity.length - 1);
             renderAboutIdentity(currentData.about.identity);
         }
 
         function removeAboutIdentity(index) {
             currentData.about.identity.splice(index, 1);
+            fixOpenAfterRemove('about-identity-container', index);
             renderAboutIdentity(currentData.about.identity);
         }
 
         function renderAboutHistory(items) {
             const container = document.getElementById('about-history-container');
-            container.innerHTML = items.map((item, i) => `
-                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
-                    <input type="text" value="${item.year || ''}" onchange="currentData.about.history[${i}].year=this.value" class="w-28 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الفترة">
-                    <input type="text" value="${item.title || ''}" onchange="currentData.about.history[${i}].title=this.value" class="w-40 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
-                    <input type="text" value="${item.description || ''}" onchange="currentData.about.history[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
-                    <button onclick="removeAboutHistory(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
-                </div>
-            `).join('');
+            container.innerHTML = items.map((item, i) => {
+                const open = isItemOpen('about-history-container', i);
+                return `
+                <div class="item-card ${open ? 'open' : ''}" data-item-card="${i}">
+                    <div class="item-summary flex items-center gap-2.5 p-2.5" onclick="toggleItemCard('about-history-container',${i})" title="اضغط للفتح/الإغلاق">
+                        <span class="item-icon-box bg-purple-100 text-purple-600 !w-8 !h-8 text-xs"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(item.title) || '<span class="text-gray-400">محطة بدون عنوان</span>'}</div>
+                        </div>
+                        ${item.year ? `<span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">${escHtml(item.year)}</span>` : ''}
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                    </div>
+                    <div id="about-history-container-body-${i}" class="${open ? '' : 'hidden'} flex items-center gap-2 p-3 bg-purple-50 border-t border-purple-100">
+                        <input type="text" value="${escHtml(item.year)}" onchange="currentData.about.history[${i}].year=this.value" class="w-28 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الفترة">
+                        <input type="text" value="${escHtml(item.title)}" onchange="currentData.about.history[${i}].title=this.value" class="w-40 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
+                        <input type="text" value="${escHtml(item.description)}" onchange="currentData.about.history[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
+                        <button onclick="removeAboutHistory(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function addAboutHistory() {
             if (!currentData.about) currentData.about = {};
             if (!currentData.about.history) currentData.about.history = [];
             currentData.about.history.push({ year: "", title: "", description: "", color: "green" });
+            openItemCard('about-history-container', currentData.about.history.length - 1);
             renderAboutHistory(currentData.about.history);
         }
 
         function removeAboutHistory(index) {
             currentData.about.history.splice(index, 1);
+            fixOpenAfterRemove('about-history-container', index);
             renderAboutHistory(currentData.about.history);
         }
 
         function renderAboutGoals(items) {
             const container = document.getElementById('about-goals-container');
-            container.innerHTML = items.map((item, i) => `
-                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
-                    <input type="text" value="${item.title || ''}" onchange="currentData.about.goals[${i}].title=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
-                    <input type="text" value="${item.description || ''}" onchange="currentData.about.goals[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
-                    <button onclick="removeAboutGoal(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
-                </div>
-            `).join('');
+            container.innerHTML = items.map((item, i) => {
+                const open = isItemOpen('about-goals-container', i);
+                return `
+                <div class="item-card ${open ? 'open' : ''}" data-item-card="${i}">
+                    <div class="item-summary flex items-center gap-2.5 p-2.5" onclick="toggleItemCard('about-goals-container',${i})" title="اضغط للفتح/الإغلاق">
+                        <span class="item-icon-box bg-purple-100 text-purple-600 !w-8 !h-8 text-xs"><i class="fa-solid fa-bullseye"></i></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(item.title) || '<span class="text-gray-400">هدف بدون عنوان</span>'}</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                    </div>
+                    <div id="about-goals-container-body-${i}" class="${open ? '' : 'hidden'} flex items-center gap-2 p-3 bg-purple-50 border-t border-purple-100">
+                        <input type="text" value="${escHtml(item.title)}" onchange="currentData.about.goals[${i}].title=this.value" class="w-32 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="العنوان">
+                        <input type="text" value="${escHtml(item.description)}" onchange="currentData.about.goals[${i}].description=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="الوصف">
+                        <button onclick="removeAboutGoal(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function addAboutGoal() {
             if (!currentData.about) currentData.about = {};
             if (!currentData.about.goals) currentData.about.goals = [];
             currentData.about.goals.push({ icon: "fa-bullseye", title: "", description: "" });
+            openItemCard('about-goals-container', currentData.about.goals.length - 1);
             renderAboutGoals(currentData.about.goals);
         }
 
         function removeAboutGoal(index) {
             currentData.about.goals.splice(index, 1);
+            fixOpenAfterRemove('about-goals-container', index);
             renderAboutGoals(currentData.about.goals);
         }
 
         function renderAboutStatsForm(items) {
             const container = document.getElementById('about-stats-container');
-            container.innerHTML = items.map((item, i) => `
-                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
-                    <input type="text" value="${item.value || ''}" onchange="currentData.about.stats[${i}].value=this.value" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="القيمة">
-                    <input type="text" value="${item.label || ''}" onchange="currentData.about.stats[${i}].label=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="التسمية">
-                    <button onclick="removeAboutStat(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
-                </div>
-            `).join('');
+            container.innerHTML = items.map((item, i) => {
+                const open = isItemOpen('about-stats-container', i);
+                return `
+                <div class="item-card ${open ? 'open' : ''}" data-item-card="${i}">
+                    <div class="item-summary flex items-center gap-2.5 p-2.5" onclick="toggleItemCard('about-stats-container',${i})" title="اضغط للفتح/الإغلاق">
+                        <span class="item-icon-box bg-purple-100 text-purple-600 !w-8 !h-8 text-xs"><i class="fa-solid fa-chart-simple"></i></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-extrabold text-gray-800 truncate">${escHtml(item.label) || '<span class="text-gray-400">إحصائية بدون تسمية</span>'}</div>
+                        </div>
+                        <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">${escHtml(item.value) || '—'}</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
+                    </div>
+                    <div id="about-stats-container-body-${i}" class="${open ? '' : 'hidden'} flex items-center gap-2 p-3 bg-purple-50 border-t border-purple-100">
+                        <input type="text" value="${escHtml(item.value)}" onchange="currentData.about.stats[${i}].value=this.value" class="w-20 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="القيمة">
+                        <input type="text" value="${escHtml(item.label)}" onchange="currentData.about.stats[${i}].label=this.value" class="flex-1 border rounded p-1.5 text-xs focus:border-dzGreen-700" placeholder="التسمية">
+                        <button onclick="removeAboutStat(${i})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function addAboutStat() {
             if (!currentData.about) currentData.about = {};
             if (!currentData.about.stats) currentData.about.stats = [];
             currentData.about.stats.push({ icon: "fa-chart-simple", value: "", label: "" });
+            openItemCard('about-stats-container', currentData.about.stats.length - 1);
             renderAboutStatsForm(currentData.about.stats);
         }
 
         function removeAboutStat(index) {
             currentData.about.stats.splice(index, 1);
+            fixOpenAfterRemove('about-stats-container', index);
             renderAboutStatsForm(currentData.about.stats);
         }
 
@@ -2218,55 +3004,82 @@
             if (clubsList.length === 0) { container.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">لا توجد نوادي حالياً</p>'; return; }
 
             clubsList.forEach((club, index) => {
+                const open = isItemOpen('clubs-list-container', index);
+                const thumb = club.image || '';
                 container.innerHTML += `
-                    <div class="border rounded-lg p-4 bg-teal-50 relative space-y-3 text-xs font-bold">
-                        <div class="flex justify-between items-center">
-                            <span class="inline-block bg-teal-600 text-white px-2 py-0.5 rounded text-[10px]">نادي #${index + 1}</span>
-                            <button onclick="removeClubItem(${index})" class="text-red-600 hover:text-red-800 p-1" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                    <div class="item-card ${open ? 'open' : ''}" data-item-card="${index}">
+                        <!-- Summary Row -->
+                        <div class="item-summary flex items-center gap-3 p-3" onclick="toggleItemCard('clubs-list-container',${index})" title="اضغط للفتح/الإغلاق">
+                            ${thumb
+                                ? `<img src="${escHtml(thumb)}" class="item-thumb !w-20" alt="" onerror="this.style.display='none'">`
+                                : '<span class="item-icon-box bg-teal-100 text-teal-600"><i class="fa-solid fa-flask"></i></span>'}
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-extrabold text-gray-800 truncate">${escHtml(club.name) || '<span class="text-gray-400">نادي بدون اسم</span>'}</div>
+                                <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                    <span class="inline-flex items-center text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5">#${index + 1}</span>
+                                    ${club.category ? `<span class="inline-flex items-center text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-100 rounded px-1.5 py-0.5">${escHtml(club.category)}</span>` : ''}
+                                    ${club.status === 'inactive'
+                                        ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5"><i class="fa-solid fa-circle"></i>غير نشط</span>'
+                                        : '<span class="inline-flex items-center gap-1 text-[10px] font-bold text-dzGreen-600 bg-dzGreen-50 border border-dzGreen-100 rounded px-1.5 py-0.5"><i class="fa-solid fa-circle"></i>نشط</span>'}
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-xs item-chevron shrink-0"></i>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">اسم النادي</label>
-                                <input type="text" value="${club.name || ''}" onchange="currentData.clubs[${index}].name=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="اسم النادي">
+                        <!-- Details Body -->
+                        <div id="clubs-list-container-body-${index}" class="${open ? '' : 'hidden'} p-4 bg-teal-50 border-t border-teal-100 space-y-3 text-xs font-bold">
+                            <div class="flex justify-between items-center">
+                                <span class="inline-block bg-teal-600 text-white px-2 py-0.5 rounded text-[10px]">تحرير النادي #${index + 1}</span>
+                                <button onclick="removeClubItem(${index})" class="text-red-600 hover:text-red-800 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-trash"></i> حذف النادي</button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">اسم النادي</label>
+                                    <input type="text" value="${escHtml(club.name)}" onchange="currentData.clubs[${index}].name=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="اسم النادي">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">الفئة</label>
+                                    <input type="text" value="${escHtml(club.category)}" onchange="currentData.clubs[${index}].category=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="علوم، رياضة، ثقافة...">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">المؤطّر</label>
+                                    <input type="text" value="${escHtml(club.supervisor)}" onchange="currentData.clubs[${index}].supervisor=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="أ. محمد بن عمر">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">الموعد</label>
+                                    <input type="text" value="${escHtml(club.schedule)}" onchange="currentData.clubs[${index}].schedule=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="الثلاثاء 14:00">
+                                </div>
                             </div>
                             <div>
-                                <label class="block mb-1 text-gray-700">الفئة</label>
-                                <input type="text" value="${club.category || ''}" onchange="currentData.clubs[${index}].category=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="علوم، رياضة، ثقافة...">
+                                <label class="block mb-1 text-gray-700">الوصف</label>
+                                <textarea rows="2" onchange="currentData.clubs[${index}].description=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="وصف النادي...">${escHtml(club.description)}</textarea>
                             </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">المؤطّر</label>
-                                <input type="text" value="${club.supervisor || ''}" onchange="currentData.clubs[${index}].supervisor=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="أ. محمد بن عمر">
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-700">الموعد</label>
-                                <input type="text" value="${club.schedule || ''}" onchange="currentData.clubs[${index}].schedule=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="الثلاثاء 14:00">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">الوصف</label>
-                            <textarea rows="2" onchange="currentData.clubs[${index}].description=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="وصف النادي...">${club.description || ''}</textarea>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-700">الحالة</label>
-                                <select onchange="currentData.clubs[${index}].status=this.value" class="w-full border rounded p-2 focus:border-teal-600">
-                                    <option value="active" ${club.status === 'active' ? 'selected' : ''}>نشط</option>
-                                    <option value="inactive" ${club.status === 'inactive' ? 'selected' : ''}>غير نشط</option>
-                                </select>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block mb-1 text-gray-700">الحالة</label>
+                                    <select onchange="currentData.clubs[${index}].status=this.value" class="w-full border rounded p-2 focus:border-teal-600">
+                                        <option value="active" ${club.status === 'active' ? 'selected' : ''}>نشط</option>
+                                        <option value="inactive" ${club.status === 'inactive' ? 'selected' : ''}>غير نشط</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-gray-700">رابط الصورة</label>
+                                    <input type="text" value="${escHtml(club.image)}" onchange="currentData.clubs[${index}].image=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="رابط صورة النادي...">
+                                </div>
                             </div>
                             <div>
-                                <label class="block mb-1 text-gray-700">رابط الصورة</label>
-                                <input type="text" value="${club.image || ''}" onchange="currentData.clubs[${index}].image=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="رابط صورة النادي...">
+                                <label class="block mb-1 text-gray-700">رابط الانضمام للنادي</label>
+                                <input type="text" value="${escHtml(club.joinLink)}" onchange="currentData.clubs[${index}].joinLink=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="رابط نموذج Google Form أو رقم واتساب...">
                             </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-700">رابط الانضمام للنادي</label>
-                            <input type="text" value="${club.joinLink || ''}" onchange="currentData.clubs[${index}].joinLink=this.value" class="w-full border rounded p-2 focus:border-teal-600" placeholder="رابط نموذج Google Form أو رقم واتساب...">
                         </div>
                     </div>
                 `;
+            });
+
+            filterItems('clubs-list-container', 'clubs-search', idx => {
+                const c = currentData.clubs[idx] || {};
+                return (c.name || '') + ' ' + (c.category || '') + ' ' + (c.supervisor || '');
             });
         }
 
@@ -2291,12 +3104,15 @@
                 image: "",
                 joinLink: ""
             });
+            openItemCard('clubs-list-container', currentData.clubs.length - 1);
             renderClubsForm();
+            scrollToItem('clubs-list-container', currentData.clubs.length - 1);
         }
 
         function removeClubItem(index) {
             if (confirm('هل أنت متأكد من حذف هذا النادي؟')) {
                 currentData.clubs.splice(index, 1);
+                fixOpenAfterRemove('clubs-list-container', index);
                 renderClubsForm();
             }
         }

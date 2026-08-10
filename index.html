@@ -908,6 +908,10 @@
                     <div id="videos-sidebar-container" class="space-y-4">
                         <!-- Dynamic Video Cards rendered here -->
                     </div>
+                    <a id="videos-more-link" href="videos.html" class="hidden items-center justify-center gap-2 w-full bg-dzRed-50 border border-dzRed-200 text-dzRed-700 hover:bg-dzRed-600 hover:text-white transition rounded-lg py-2.5 text-xs font-extrabold">
+                        <span id="videos-more-label">المزيد من الفيديوهات</span>
+                        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                    </a>
                 </div>
 
             </aside>
@@ -1024,7 +1028,7 @@
         </div>
     </div>
 
-    <div id="video-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+    <div id="video-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4" onclick="if(event.target===this) closeVideoModal()">
         <div class="bg-black rounded-lg max-w-3xl w-full overflow-hidden shadow-2xl">
             <div class="flex justify-between items-center px-4 py-2.5 bg-gray-900 text-white">
                 <span class="text-xs font-bold text-dzGold-400" id="video-modal-title">مكتبة الفيديو للمؤسسة</span>
@@ -1032,7 +1036,15 @@
                         class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="aspect-video bg-black flex items-center justify-center text-white" id="video-player-container">
-                <iframe id="video-modal-iframe" src="" class="w-full h-full border-0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                <iframe id="video-modal-iframe" src="" class="w-full h-full border-0 hidden" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                <video id="video-modal-video" src="" controls autoplay playsinline class="w-full h-full hidden" style="background:#000"></video>
+                <div id="video-modal-yt" class="hidden flex-col items-center justify-center gap-4 text-center px-6 w-full h-full">
+                    <i class="fa-brands fa-youtube text-6xl text-red-600"></i>
+                    <p class="text-sm font-bold text-white">سيُفتح هذا الفيديو على موقع يوتيوب</p>
+                    <button onclick="var u=document.getElementById('video-modal-yt').dataset.url; if(u){window.open(u,'_blank','noopener');} closeVideoModal();" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 transition">
+                        <i class="fa-brands fa-youtube"></i> تشغيل على يوتيوب
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1076,6 +1088,7 @@
                 dossiersTitle: 'الملفات والتوجيهات',
                 pressTitle: 'البلاغات والإعلانات الرسمية',
                 videosTitle: 'مكتبة الفيديوهات',
+                viewAllVideos: 'المزيد من الفيديوهات',
                 newsTitle: 'إعلانات الإدارة',
                 backToTop: 'العودة للأعلى',
                 searchTitle: 'البحث في موقع متوسطة بني جماتي',
@@ -1130,6 +1143,7 @@
                 dossiersTitle: 'Files & Guides',
                 pressTitle: 'Official Announcements',
                 videosTitle: 'Video Library',
+                viewAllVideos: 'More videos',
                 newsTitle: 'Administration News',
                 backToTop: 'Back to top',
                 searchTitle: 'Search Beni Jmatti School',
@@ -1593,17 +1607,36 @@
                 });
             }
 
-            // Render Video Gallery Section Cards (Sidebar)
+            // Render Video Gallery Section Cards (Sidebar) - Latest 3 + "More" button
+            function videoSortKey(vid) {
+                if (!vid || !vid.date) return 0;
+                const p = String(vid.date).split(/[-\/]/);
+                let d = 0, m = 0, y = 0;
+                if (p.length === 3) {
+                    if (p[2].length === 4) { d = +p[0]; m = +p[1]; y = +p[2]; }
+                    else if (p[0].length === 4) { y = +p[0]; m = +p[1]; d = +p[2]; }
+                } else if (p.length === 1) {
+                    y = +p[0];
+                }
+                if (!y) return 0;
+                return y * 10000 + (m || 0) * 100 + (d || 0);
+            }
             const videosContainer = document.getElementById('videos-sidebar-container');
-            const videosList = siteData.videos || defaultCemData.videos;
+            const videosList = (siteData.videos || defaultCemData.videos).filter(v => v && v.showOnHome !== false);
             if (videosContainer && videosList) {
+                const sortedVideos = videosList.map((v, idx) => ({ v, idx }))
+                    .sort((a, b) => {
+                        const k = videoSortKey(b.v) - videoSortKey(a.v);
+                        return k !== 0 ? k : b.idx - a.idx;
+                    })
+                    .map(o => o.v);
                 videosContainer.innerHTML = '';
-                videosList.forEach(vid => {
-                    const youtubeUrl = vid.youtubeWatchUrl || (vid.videoUrl ? vid.videoUrl.replace('youtube.com/embed/', 'youtube.com/watch?v=') : '#');
+                sortedVideos.slice(0, 3).forEach(vid => {
+                    const playClick = `playVideoModal('${String(vid.videoUrl || '').replace(/'/g, "\\'")}','${String(vid.title || '').replace(/'/g, "\\'")}')`;
                     videosContainer.innerHTML += `
-                        <a href="${youtubeUrl}" target="_blank" rel="noopener" class="block bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition group">
+                        <div onclick="${playClick}" class="block bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition group cursor-pointer">
                             <div class="relative h-32 overflow-hidden">
-                                <img src="${vid.thumbnail || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80'}" alt="${vid.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <img src="${vid.thumbnail || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80'}" alt="${vid.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                                 <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition flex items-center justify-center">
                                     <div class="w-10 h-10 rounded-full bg-dzRed-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
                                         <i class="fa-solid fa-play text-sm ml-0.5"></i>
@@ -1619,9 +1652,19 @@
                                     ${vid.title}
                                 </h4>
                             </div>
-                        </a>
+                        </div>
                     `;
                 });
+                const moreLink = document.getElementById('videos-more-link');
+                if (moreLink) {
+                    if (videosList.length > 0) {
+                        moreLink.classList.remove('hidden');
+                        moreLink.classList.add('flex');
+                    } else {
+                        moreLink.classList.add('hidden');
+                        moreLink.classList.remove('flex');
+                    }
+                }
             }
 
             // Render Navigation Bar (Dynamic)
@@ -1864,17 +1907,57 @@
             resultsEl.classList.remove('hidden');
             emptyEl.classList.add('hidden');
         }
+        function getYouTubeIdSimple(url) {
+            if (!url) return null;
+            url = String(url).trim();
+            let m = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+            if (m) return m[1];
+            m = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+            if (m) return m[1];
+            m = url.match(/youtube\.com\/(shorts|embed)\/([a-zA-Z0-9_-]{11})/);
+            if (m) return m[2];
+            return null;
+        }
+
         function playVideoModal(videoUrl, title) {
             const iframe = document.getElementById('video-modal-iframe');
+            const video = document.getElementById('video-modal-video');
+            const ytPanel = document.getElementById('video-modal-yt');
             const titleEl = document.getElementById('video-modal-title');
-            iframe.src = videoUrl || '';
             if (titleEl) titleEl.textContent = title || 'مكتبة الفيديو للمؤسسة';
+            iframe.src = ''; iframe.classList.add('hidden');
+            video.src = ''; video.classList.add('hidden');
+            ytPanel.classList.add('hidden');
+
+            const url = (videoUrl || '').trim();
+            const isDirect = /\.(mp4|webm|ogg|mov|m4v)([?#]|$)/i.test(url);
+            const ytId = getYouTubeIdSimple(url);
+
+            if (isDirect) {
+                video.src = url;
+                video.classList.remove('hidden');
+                video.play().catch(function () { });
+            } else if (ytId) {
+                ytPanel.dataset.url = 'https://www.youtube.com/watch?v=' + ytId;
+                ytPanel.classList.remove('hidden');
+                ytPanel.classList.add('flex');
+            } else if (url) {
+                iframe.src = url;
+                iframe.classList.remove('hidden');
+            }
             document.getElementById('video-modal').classList.remove('hidden');
             document.getElementById('video-modal').classList.add('flex');
         }
         function openVideoModal() { playVideoModal('', 'مكتبة الفيديو للمؤسسة'); }
         function closeVideoModal() {
             document.getElementById('video-modal-iframe').src = '';
+            document.getElementById('video-modal-iframe').classList.add('hidden');
+            const video = document.getElementById('video-modal-video');
+            video.pause();
+            video.removeAttribute('src');
+            video.load();
+            video.classList.add('hidden');
+            document.getElementById('video-modal-yt').classList.add('hidden');
             document.getElementById('video-modal').classList.add('hidden');
             document.getElementById('video-modal').classList.remove('flex');
         }
@@ -1924,6 +2007,7 @@
                 document.getElementById('sec-teach-subtitle').textContent = 'Timetable • Invigilation • Circulars';
                 document.getElementById('sec-supp-title').textContent = 'Official Announcements';
                 document.getElementById('sec-vid-sidebar-title').textContent = 'Video Library';
+                document.getElementById('videos-more-label').textContent = 'More videos';
                 document.getElementById('wb-press-title').textContent = 'Administration News';
                 document.getElementById('stats-heading').textContent = 'School by Numbers';
                 // Footer
@@ -1977,6 +2061,7 @@
                 document.getElementById('sec-teach-subtitle').textContent = 'استعمال الزمن • الحراسة • المناشير الرسمية';
                 document.getElementById('sec-supp-title').textContent = 'البلاغات والإعلانات الرسمية';
                 document.getElementById('sec-vid-sidebar-title').textContent = 'مكتبة الفيديوهات';
+                document.getElementById('videos-more-label').textContent = 'المزيد من الفيديوهات';
                 document.getElementById('wb-press-title').textContent = 'إعلانات الإدارة';
                 document.getElementById('stats-heading').textContent = 'المؤسسة بالأرقام';
                 // Footer
