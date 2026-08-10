@@ -44,6 +44,20 @@
         }
         .cat-btn:hover{border-color:#006633;color:#006633;background:#f0fdf4;}
         .cat-btn.active{background:#006633;color:#fff;border-color:#006633;box-shadow:0 2px 8px rgba(0,102,51,.25);}
+        .cat-scroll-wrap{-webkit-overflow-scrolling:touch;}
+        .cat-scroll{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px;scroll-snap-type:x proximity;}
+        .cat-scroll::-webkit-scrollbar{display:none;}
+        .cat-scroll .cat-btn{flex-shrink:0;scroll-snap-align:start;}
+        .cat-btn-side{
+            display:flex;align-items:center;justify-content:space-between;gap:.5rem;width:100%;
+            padding:.55rem .85rem;border-radius:.75rem;border:1.5px solid #e2e8f0;background:#fff;
+            color:#64748b;font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;
+            cursor:pointer;transition:all .2s ease;text-align:right;
+        }
+        .cat-btn-side:hover{border-color:#006633;color:#006633;background:#f0fdf4;}
+        .cat-btn-side.active{background:#006633;color:#fff;border-color:#006633;box-shadow:0 2px 8px rgba(0,102,51,.25);}
+        .cat-btn-side .cnt{font-size:.62rem;font-weight:800;padding:.1rem .5rem;border-radius:2rem;background:rgba(0,0,0,.07);}
+        .cat-btn-side.active .cnt{background:rgba(255,255,255,.22);}
         .year-sel{
             padding:.42rem .9rem;border-radius:.65rem;
             border:1.5px solid #e2e8f0;font-family:'Cairo',sans-serif;
@@ -159,71 +173,107 @@
 
     <main class="max-w-7xl mx-auto px-4 py-6 md:py-10 space-y-6 w-full">
 
-        <!-- Filter Bar -->
-        <div class="filter-bar space-y-4" id="filter-section" style="display:none">
+        <!-- Filter Bar (mobile) -->
+        <div class="filter-bar space-y-3.5 lg:hidden" id="filter-section" style="display:none">
             <!-- Search -->
             <div class="search-wrap">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
                 <input type="text" id="search-input" placeholder="ابحث عن فيديو بالعنوان..." oninput="applyFilters(); debouncedNotifyVideosBelow()">
             </div>
-            <!-- Category buttons + Year + Counter -->
-            <div class="flex flex-wrap items-center gap-2">
+            <!-- Category chips: horizontal scroll on mobile only -->
+            <div class="flex items-center gap-2 lg:hidden">
                 <span class="text-xs font-bold text-gray-500 shrink-0">التصنيف:</span>
-                <div id="cat-btns" class="flex flex-wrap gap-1.5"></div>
-                <div class="mr-auto flex items-center gap-2 flex-wrap">
-                    <select id="year-filter" class="year-sel" onchange="applyFilters(); notifyVideosBelow()">
+                <div class="cat-scroll-wrap flex-1 min-w-0">
+                    <div id="cat-btns" class="cat-scroll"></div>
+                </div>
+            </div>
+            <!-- Year + Counter + Reset -->
+            <div class="flex items-center gap-2">
+                <select id="year-filter" class="year-sel" onchange="applyFilters(); notifyVideosBelow()">
+                    <option value="">كل السنوات</option>
+                </select>
+                <span class="results-badge">
+                    <i class="fa-solid fa-film"></i>
+                    <span id="results-count">0</span> فيديو
+                </span>
+                <button onclick="resetFilters()" class="cat-btn mr-auto" title="إعادة ضبط الفلاتر">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span class="hidden sm:inline">إعادة الضبط</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Categories sidebar (desktop) + content -->
+        <div class="lg:grid lg:grid-cols-4 gap-6 items-start">
+
+            <aside class="hidden lg:block lg:sticky lg:top-20 filter-bar p-4 self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+                <h4 class="text-xs font-extrabold text-gray-600 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-dzRed-700"></i> البحث والتصنيفات
+                </h4>
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input-side" placeholder="ابحث عن فيديو بالعنوان..." oninput="syncFilterInputs(this); applyFilters(); debouncedNotifyVideosBelow()">
+                </div>
+                <div id="cat-btns-sidebar" class="space-y-1.5 mt-3"></div>
+                <div class="flex items-center gap-2 mt-3">
+                    <select id="year-filter-side" class="year-sel flex-1" onchange="syncFilterInputs(this); applyFilters(); notifyVideosBelow()">
                         <option value="">كل السنوات</option>
                     </select>
                     <span class="results-badge">
                         <i class="fa-solid fa-film"></i>
-                        <span id="results-count">0</span> فيديو
+                        <span id="results-count-side">0</span> فيديو
                     </span>
                 </div>
-            </div>
-        </div>
+                <button onclick="resetFilters()" class="cat-btn-side justify-center mt-2" title="إعادة ضبط الفلاتر">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-rotate-left text-xs"></i> إعادة ضبط الفلاتر</span>
+                </button>
+            </aside>
 
-        <!-- YouTube-style Main Player -->
-        <section id="main-player-section" class="hidden">
-            <div class="lg:grid lg:grid-cols-3 gap-6 items-start">
-                <!-- Player + Info -->
-                <div class="lg:col-span-2 space-y-4">
-                    <div id="main-player-frame" class="aspect-video rounded-2xl overflow-hidden relative"></div>
-                    <div id="main-player-info"></div>
+            <div class="lg:col-span-3 space-y-6 min-w-0">
+                <!-- YouTube-style Main Player -->
+                <section id="main-player-section" class="hidden">
+                    <div class="lg:grid lg:grid-cols-3 gap-6 items-start">
+                        <!-- Player + Info -->
+                        <div class="lg:col-span-2 space-y-4">
+                            <div id="main-player-frame" class="aspect-video rounded-2xl overflow-hidden relative"></div>
+                            <div id="main-player-info"></div>
+                        </div>
+                        <!-- Related videos sidebar -->
+                        <aside class="mt-6 lg:mt-0">
+                            <h4 class="text-xs font-extrabold text-gray-500 mb-3 flex items-center gap-2"><i class="fa-solid fa-list text-dzRed-700"></i> فيديوهات أخرى</h4>
+                            <div id="related-list" class="space-y-2.5"></div>
+                        </aside>
+                    </div>
+                </section>
+
+                <div class="grid-label text-sm font-extrabold text-dzDark-800">
+                    <i class="fa-solid fa-clapperboard text-dzRed-700"></i>
+                    <span id="all-videos-label">كل الفيديوهات</span>
+                    <span id="all-videos-count" class="text-[11px] font-bold text-gray-400"></span>
                 </div>
-                <!-- Related videos sidebar -->
-                <aside class="mt-6 lg:mt-0">
-                    <h4 class="text-xs font-extrabold text-gray-500 mb-3 flex items-center gap-2"><i class="fa-solid fa-list text-dzRed-700"></i> فيديوهات أخرى</h4>
-                    <div id="related-list" class="space-y-2.5"></div>
-                </aside>
+                <div id="videos-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                    <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
+                </div>
+                <!-- No videos at all -->
+                <div id="empty-state" class="hidden text-center py-16 text-gray-400">
+                    <i class="fa-solid fa-video-slash text-4xl mb-3 block"></i>
+                    <p class="text-sm font-bold">لا توجد فيديوهات حالياً</p>
+                </div>
+                <!-- No results after filtering -->
+                <div id="no-results-state" class="hidden text-center py-16">
+                    <i class="fa-solid fa-filter-circle-xmark text-4xl mb-3 block text-dzGold-400"></i>
+                    <p class="text-base font-bold text-gray-700">لا توجد نتائج مطابقة</p>
+                    <p class="text-xs mt-1 text-gray-400">جرّب تعديل كلمة البحث أو اختر تصنيفاً مختلفاً</p>
+                    <button onclick="resetFilters()" style="margin-top:.9rem;display:inline-flex;align-items:center;gap:.5rem;background:#006633;color:#fff;padding:.5rem 1.2rem;border-radius:2rem;font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:700;border:none;cursor:pointer;">
+                        <i class="fa-solid fa-rotate-left text-xs"></i> إعادة ضبط الفلاتر
+                    </button>
+                </div>
             </div>
-        </section>
-
-        <div class="grid-label text-sm font-extrabold text-dzDark-800">
-            <i class="fa-solid fa-clapperboard text-dzRed-700"></i>
-            <span id="all-videos-label">كل الفيديوهات</span>
-            <span id="all-videos-count" class="text-[11px] font-bold text-gray-400"></span>
-        </div>
-        <div id="videos-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
-            <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
-            <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
-            <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
-            <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
-            <div class="sk-card"><div class="sk-shimmer aspect-video"></div><div class="p-4 space-y-2"><div class="sk-shimmer h-4 rounded w-3/4"></div><div class="sk-shimmer h-3 rounded w-1/3"></div></div></div>
-        </div>
-        <!-- No videos at all -->
-        <div id="empty-state" class="hidden text-center py-16 text-gray-400">
-            <i class="fa-solid fa-video-slash text-4xl mb-3 block"></i>
-            <p class="text-sm font-bold">لا توجد فيديوهات حالياً</p>
-        </div>
-        <!-- No results after filtering -->
-        <div id="no-results-state" class="hidden text-center py-16">
-            <i class="fa-solid fa-filter-circle-xmark text-4xl mb-3 block text-dzGold-400"></i>
-            <p class="text-base font-bold text-gray-700">لا توجد نتائج مطابقة</p>
-            <p class="text-xs mt-1 text-gray-400">جرّب تعديل كلمة البحث أو اختر تصنيفاً مختلفاً</p>
-            <button onclick="resetFilters()" style="margin-top:.9rem;display:inline-flex;align-items:center;gap:.5rem;background:#006633;color:#fff;padding:.5rem 1.2rem;border-radius:2rem;font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:700;border:none;cursor:pointer;">
-                <i class="fa-solid fa-rotate-left text-xs"></i> إعادة ضبط الفلاتر
-            </button>
         </div>
     </main>
 
@@ -256,7 +306,7 @@
     <footer class="bg-dzDark-800 text-gray-300 pt-10 pb-6 border-t-4 border-dzGreen-700 mt-auto">
         <div class="max-w-7xl mx-auto px-4 pt-4 flex flex-col items-center justify-center gap-1 text-[11px] text-gray-400">
             <p id="ft-copy" class="text-center">متوسطة إسغيد علي - بني جماتي - © 2026 جميع الحقوق محفوظة</p>
-            <p class="text-gray-500 text-center mt-1"><i class="fa-solid fa-code text-dzGreen-700 ml-1"></i> تم التطوير بواسطة <span class="font-bold text-dzGreen-700">الأستاذ حكيم بوزورداز</span></p>
+            <p class="text-gray-500 text-center mt-1.5 flex items-center justify-center gap-2 flex-wrap"><i class="fa-solid fa-code text-dzGreen-700"></i> تم التطوير بواسطة <a href="https://hbouzourdaz.space" target="_blank" rel="noopener" title="hbouzourdaz.space" class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full font-extrabold bg-dzGreen-700/20 border border-dzGreen-700/40 text-dzGreen-600 hover:bg-dzGreen-700 hover:text-white transition shadow-sm"><i class="fa-solid fa-laptop-code text-[10px]"></i><span id="ft-developer-name">الأستاذ حكيم بوزورداز</span></a></p>
         </div>
     </footer>
 
@@ -654,35 +704,51 @@
 
         function initFilters(){
             const vids = siteData.videos||[];
-            // Build category buttons
+            // Build category buttons (mobile chips + desktop sidebar)
             const cats = [...new Set(vids.map(v=>v.category).filter(Boolean))];
             const catContainer = document.getElementById('cat-btns');
+            const catSidebar = document.getElementById('cat-btns-sidebar');
             catContainer.innerHTML = '';
-            // All button
-            const allBtn = document.createElement('button');
-            allBtn.className = 'cat-btn' + (activeCategory==='all'?' active':'');
-            allBtn.dataset.cat = 'all';
-            allBtn.innerHTML = '<i class="fa-solid fa-border-all" style="font-size:.7rem"></i> الكل';
-            allBtn.onclick = ()=>{ activeCategory='all'; updateCatBtns(); applyFilters(); notifyVideosBelow(); };
-            catContainer.appendChild(allBtn);
-            cats.forEach(c=>{
-                const btn = document.createElement('button');
-                btn.className = 'cat-btn' + (activeCategory===c?' active':'');
-                btn.dataset.cat = c;
-                const count = vids.filter(v=>v.category===c).length;
-                btn.innerHTML = `<span>${c}</span><span style="opacity:.7">(${count})</span>`;
-                btn.onclick = ()=>{ activeCategory=c; updateCatBtns(); applyFilters(); notifyVideosBelow(); };
-                catContainer.appendChild(btn);
-            });
-            // Build year select
-            const yearSel = document.getElementById('year-filter');
-            const savedYear = yearSel.value;
+            if(catSidebar) catSidebar.innerHTML = '';
+            const allCount = vids.length;
+            const build = (container, isSide)=>{
+                const cls = isSide ? 'cat-btn-side' : 'cat-btn';
+                const allBtn = document.createElement('button');
+                allBtn.className = cls + (activeCategory==='all'?' active':'');
+                allBtn.dataset.cat = 'all';
+                allBtn.innerHTML = '<i class="fa-solid fa-border-all" style="font-size:.7rem"></i> <span>الكل</span>' + (isSide ? `<span class="cnt">${allCount}</span>` : '');
+                allBtn.onclick = ()=>{ activeCategory='all'; updateCatBtns(); applyFilters(); notifyVideosBelow(); };
+                container.appendChild(allBtn);
+                cats.forEach(c=>{
+                    const btn = document.createElement('button');
+                    btn.className = cls + (activeCategory===c?' active':'');
+                    btn.dataset.cat = c;
+                    const count = vids.filter(v=>v.category===c).length;
+                    btn.innerHTML = isSide ? `<span>${c}</span><span class="cnt">${count}</span>` : `<span>${c}</span><span style="opacity:.7">(${count})</span>`;
+                    btn.onclick = ()=>{ activeCategory=c; updateCatBtns(); applyFilters(); notifyVideosBelow(); };
+                    container.appendChild(btn);
+                });
+            };
+            build(catContainer, false);
+            if(catSidebar) build(catSidebar, true);
+            // Build year select (both mobile + sidebar)
             const years = [...new Set(vids.map(v=>extractYear(v.date||'')).filter(Boolean))].sort((a,b)=>b-a);
-            yearSel.innerHTML = '<option value="">كل السنوات</option>' + years.map(y=>`<option value="${y}"${y===savedYear?' selected':''}>${y}</option>`).join('');
+            const yearOptions = '<option value="">كل السنوات</option>' + years.map(y=>`<option value="${y}">${y}</option>`).join('');
+            ['year-filter','year-filter-side'].forEach(id=>{
+                const sel = document.getElementById(id);
+                if(sel) sel.innerHTML = yearOptions;
+            });
+        }
+
+        function syncFilterInputs(el){
+            if(!el) return;
+            const isSide = el.id.endsWith('-side');
+            const other = document.getElementById(el.id.replace(/-side$/,'') + (isSide ? '' : '-side'));
+            if(other) other.value = el.value;
         }
 
         function updateCatBtns(){
-            document.querySelectorAll('#cat-btns .cat-btn').forEach(b=>{
+            document.querySelectorAll('#cat-btns .cat-btn, #cat-btns-sidebar .cat-btn-side').forEach(b=>{
                 b.classList.toggle('active', b.dataset.cat===activeCategory);
             });
         }
@@ -690,7 +756,10 @@
         function applyFilters(){
             const vids = siteData.videos || [];
             const filtered = getFilteredVideos();
-            document.getElementById('results-count').textContent = filtered.length;
+            const rc1 = document.getElementById('results-count');
+            const rc2 = document.getElementById('results-count-side');
+            if(rc1) rc1.textContent = filtered.length;
+            if(rc2) rc2.textContent = filtered.length;
             const countLabel = document.getElementById('all-videos-count');
             if(countLabel) countLabel.textContent = '(' + vids.length + ')';
             const noR = document.getElementById('no-results-state');
@@ -705,6 +774,10 @@
         function resetFilters(){
             document.getElementById('search-input').value='';
             document.getElementById('year-filter').value='';
+            const si = document.getElementById('search-input-side');
+            const ys = document.getElementById('year-filter-side');
+            if(si) si.value='';
+            if(ys) ys.value='';
             activeCategory='all';
             updateCatBtns();
             applyFilters();
