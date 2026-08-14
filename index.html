@@ -1313,7 +1313,7 @@
                 </div>
                 <button onclick="this.closest('.ann-notif-card').remove()" style="background:none;border:none;color:#9ca3af;font-size:14px;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;" aria-label="إغلاق">&times;</button>
             `;
-            card.onclick=function(e){if(e.target.closest('button'))return;markAnnAsRead(ann.id);window.location.href='announcements.html';};
+            card.onclick=function(e){if(e.target.closest('button'))return;markAnnAsRead(ann.id);window.location.href='detail?type=announcement&id='+ann.id;};
             wrap.appendChild(card);
             requestAnimationFrame(()=>{requestAnimationFrame(()=>{card.style.opacity='1';card.style.transform='translateY(0) scale(1)';});});
             setTimeout(()=>{card.style.opacity='0';card.style.transform='translateY(-10px) scale(.95)';setTimeout(()=>card.remove(),400);},6000);
@@ -1345,7 +1345,7 @@
                 const isRead=readIds.includes(a.id);
                 const date=a.date||'';
                 return `
-                <a href="announcements.html" onclick="markAnnAsRead('${a.id}')" class="notif-item" style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid #f3f4f6;text-decoration:none;color:inherit;transition:background .15s;${isRead?'opacity:.65;':''}">
+                <a href="detail?type=announcement&id=${a.id}" onclick="markAnnAsRead('${a.id}')" class="notif-item" style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid #f3f4f6;text-decoration:none;color:inherit;transition:background .15s;${isRead?'opacity:.65;':''}">
                     <div style="width:36px;height:36px;border-radius:10px;background:${isRead?'#f3f4f6':'linear-gradient(135deg,#007a3d,#004d26)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="fa-solid fa-bullhorn" style="color:${isRead?'#9ca3af':'#fff'};font-size:13px;"></i>
                     </div>
